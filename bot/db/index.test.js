@@ -11,11 +11,14 @@ const { Deadline, Log, Mahasiswa, Submission } = Models
 const migration = require('./migrations/20200224185139_initial_database')
 
 beforeAll(async () => {
+  // Drop tables
   await migration.down(knex)
+  // Create tables
   await migration.up(knex)
 })
 
 afterAll(async () => {
+  // Close database connection
   knex.destroy()
 })
 
@@ -40,7 +43,6 @@ describe('testing database', () => {
       const all = await Deadline.query()
       expect(all).toHaveLength(3)
       expect(psd).toEqual(all[1])
-      console.log(psd)
     })
   
     test('delete deadline', async () => {
@@ -62,7 +64,27 @@ describe('testing database', () => {
         log_message: 'this is just info'
       })
       const all = await Log.query()
-      console.log(all)
+      expect(all).toHaveLength(1)
+    })
+  })
+
+  describe('mahasiswa', () => {
+    test('double insert', async () => {
+      expect.assertions(1)
+      await Mahasiswa.query().insert({
+        telegram_id: 1234,
+        email: 'a@a.com'
+      })
+      // Trying to insert same mahasiswa again
+      try {
+        await Mahasiswa.query().insert({
+          telegram_id: 1234,
+          email: 'b@a.com'
+        })
+      }
+      catch (err) {
+        expect(err.name).toBe('UniqueViolationError')
+      }
     })
   })
 })
