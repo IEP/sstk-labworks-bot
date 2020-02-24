@@ -1,2 +1,2 @@
-# sstk-labworks-bot
-Bot that handle lab-works submission
+# SSTK Labworks Bot
+

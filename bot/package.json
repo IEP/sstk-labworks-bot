@@ -1,0 +1,22 @@
+{
+  "name": "sstk-labworks-bot",
+  "version": "1.0.0",
+  "description": "Telegram bot based on Telegraf.js",
+  "main": "index.js",
+  "repository": "git@github.com:gpratama/sstk-labworks-bot.git",
+  "author": "Ivan Ega Pratama <ivan.ega.p@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest --watchAll"
+  },
+  "dependencies": {
+    "fs-extra": "^8.1.0",
+    "knex": "^0.20.10",
+    "objection": "^2.1.3",
+    "sqlite3": "^4.1.1",
+    "telegraf": "^3.36.0"
+  },
+  "devDependencies": {
+    "jest": "^25.1.0"
+  }
+}
