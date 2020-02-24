@@ -5,9 +5,23 @@ class Submission extends Model {
     return 'submission'
   }
 
+  static get jsonSchema() {
+    return {
+      type: 'object',
+      required: ['telegram_id', 'filename'],
+      properties: {
+        telegram_id: { type: 'integer' },
+        filename: { type: 'string' },
+        submitted_at: {
+          type: 'integer',
+          default: Date.now()
+        }
+      }
+    }
+  }
+
   static get relationMappings() {
     const Mahasiswa = require('./Mahasiswa')
-
     return {
       mahasiswa: {
         relation: Model.BelongsToOneRelation,

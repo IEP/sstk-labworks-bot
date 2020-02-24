@@ -40,6 +40,7 @@ describe('testing database', () => {
       const all = await Deadline.query()
       expect(all).toHaveLength(3)
       expect(psd).toEqual(all[1])
+      console.log(psd)
     })
   
     test('delete deadline', async () => {
@@ -51,6 +52,17 @@ describe('testing database', () => {
       expect(all).toHaveLength(2)
       const kode_praktikum = all.map(item => item.kode_praktikum)
       expect(kode_praktikum).not.toContain('PSD01')
+    })
+  })
+
+  describe('log', () => {
+    test('test insert', async () => {
+      await Log.query().insert({
+        category: 'info',
+        log_message: 'this is just info'
+      })
+      const all = await Log.query()
+      console.log(all)
     })
   })
 })
