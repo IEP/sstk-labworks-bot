@@ -1,4 +1,5 @@
 const { Model } = require('objection')
+const { add, formatISO } = require('date-fns')
 
 class Deadline extends Model {
   static get tableName() {
@@ -13,15 +14,25 @@ class Deadline extends Model {
         id: { type: 'integer' },
         kode_praktikum: { type: 'string' },
         start: {
-          type: 'integer',
-          default: Date.now()
+          type: 'string',
+          default: formatISO(new Date())
         },
         end: {
-          type: 'integer',
-          default: Date.now() + 3600 * 1000
+          type: 'string',
+          default: formatISO(add(new Date(), {
+            hours: 1
+          }))
         }
       }
     }
+  }
+
+  $beforeInsert() {
+    this.created_at = formatISO(new Date())
+  }
+
+  $beforeUpdate() {
+    this.updated_at = formatISO(new Date())
   }
 }
 

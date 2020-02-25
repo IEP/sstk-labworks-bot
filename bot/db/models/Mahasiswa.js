@@ -1,4 +1,5 @@
 const { Model } = require('objection')
+const { formatISO } = require('date-fns')
 
 class Mahasiswa extends Model {
   static get tableName() {
@@ -15,11 +16,7 @@ class Mahasiswa extends Model {
       required: ['telegram_id', 'email'],
       properties: {
         telegram_id: { type: 'number' },
-        email: { type: 'string' },
-        verified_at: {
-          type: 'number',
-          default: Date.now()
-        }
+        email: { type: 'string' }
       }
     }
   }
@@ -36,6 +33,14 @@ class Mahasiswa extends Model {
         }
       }
     }
+  }
+
+  $beforeInsert() {
+    this.created_at = formatISO(new Date())
+  }
+
+  $beforeUpdate() {
+    this.updated_at = formatISO(new Date())
   }
 }
 

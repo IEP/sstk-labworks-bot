@@ -1,4 +1,5 @@
 const { Model } = require('objection')
+const { formatISO } = require('date-fns')
 
 class Submission extends Model {
   static get tableName() {
@@ -11,11 +12,7 @@ class Submission extends Model {
       required: ['telegram_id', 'filename'],
       properties: {
         telegram_id: { type: 'integer' },
-        filename: { type: 'string' },
-        submitted_at: {
-          type: 'integer',
-          default: Date.now()
-        }
+        filename: { type: 'string' }
       }
     }
   }
@@ -32,6 +29,14 @@ class Submission extends Model {
         }
       }
     }
+  }
+
+  $beforeInsert() {
+    this.created_at = formatISO(new Date())
+  }
+
+  $beforeUpdate() {
+    this.updated_at = formatISO(new Date())
   }
 }
 

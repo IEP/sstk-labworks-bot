@@ -1,0 +1,5 @@
+Alamat surat elektronik salah.
+Silakan gunakan perintah:
+```
+/register alamat_surel@mail.ugm.ac.id
+```

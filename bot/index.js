@@ -1,23 +1,24 @@
-// require('./core')
-const { knex, Models } = require('./db')
-const { Mahasiswa } = Models
+require('./core')
+require('./db')
+// const { knex, Models } = require('./db')
+// const { Mahasiswa } = Models
 
-async function main() {
-  await Mahasiswa.query().delete()
+// async function main() {
+//   await Mahasiswa.query().delete()
 
-  await Mahasiswa.query().insert({
-    telegram_id: 123456,
-    email: 'ivan.ega.p@gmail.com'
-  })
+//   await Mahasiswa.query().insert({
+//     telegram_id: 123456,
+//     email: 'ivan.ega.p@gmail.com'
+//   })
 
-  const me = await Mahasiswa.query()
+//   const me = await Mahasiswa.query()
 
-  console.log(me)
-}
+//   console.log(me)
+// }
 
-main()
-  .then(() => knex.destroy())
-  .catch(err => {
-    console.error(err)
-    return knex.destroy()
-  })
+// main()
+//   .then(() => knex.destroy())
+//   .catch(err => {
+//     console.error(err)
+//     return knex.destroy()
+//   })

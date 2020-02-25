@@ -4,6 +4,8 @@ const { Model } = require('objection')
 const knex = Knex(knexConfig.development)
 Model.knex(knex)
 
+const { add, formatISO } = require('date-fns')
+
 const Models = require('./models')
 const { Deadline, Log, Mahasiswa, Submission } = Models
 
@@ -27,22 +29,29 @@ describe('testing database', () => {
     test('insert and check deadline', async () => {
       await Deadline.query().insert({
         kode_praktikum: 'PPK01',
-        start: Date.now(),
-        end: Date.now() + 7 * 24 * 3600 * 1000 // timestamp stored in ms
+        start: formatISO(new Date()),
+        end: formatISO(add(new Date(), {
+          days: 7
+        }))
       })
-      const psd = await Deadline.query().insert({
+      const psd = await Deadline.query().insertAndFetch({
         kode_praktikum: 'PSD01',
-        start: Date.now(),
-        end: Date.now() + 14 * 24 * 3600 * 1000
+        start: formatISO(new Date()),
+        end: formatISO(add(new Date(), {
+          days: 14
+        }))
       })
       await Deadline.query().insert({
         kode_praktikum: 'PKD04',
-        start: Date.now(),
-        end: Date.now() + 21 * 24 * 3600 * 1000
+        start: formatISO(new Date()),
+        end: formatISO(add(new Date(), {
+          days: 21
+        }))
       })
       const all = await Deadline.query()
       expect(all).toHaveLength(3)
       expect(psd).toEqual(all[1])
+      // console.log(psd, all[1])
     })
   
     test('delete deadline', async () => {
@@ -70,7 +79,6 @@ describe('testing database', () => {
 
   describe('mahasiswa', () => {
     test('double insert', async () => {
-      expect.assertions(1)
       await Mahasiswa.query().insert({
         telegram_id: 1234,
         email: 'a@a.com'
@@ -85,6 +93,15 @@ describe('testing database', () => {
       catch (err) {
         expect(err.name).toBe('UniqueViolationError')
       }
+    })
+  })
+
+  describe('submission', () => {
+    test('test submission', async () => {
+      await Submission.query().insert({
+        telegram_id: 1234,
+        filename: '12345_PKD01_Hehe.pdf'
+      })
     })
   })
 })
