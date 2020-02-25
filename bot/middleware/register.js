@@ -17,7 +17,8 @@ module.exports = async (ctx, next) => {
   const telegram_id = ctx.message.from.id
   const message_id = ctx.message.message_id
   const message = ctx.message.text
-  // Fetch the user from database, if already exists then reject
+
+  // - Fetch the user from database, if already exists/registered then reject
   // the registration
   const mahasiswa = await Mahasiswa.query().findById(telegram_id)
   if (mahasiswa) {
@@ -25,17 +26,21 @@ module.exports = async (ctx, next) => {
     next()
     return
   }
-  // The user haven't been registered
-  // This block will be triggered if the user entering wrong email format
+
+  // - The user haven't been registered
+  // -- This block will be triggered if the user entering wrong email format
   if (!email_filter.test(message)) {
     ctx.replyWithMarkdown(dialog.invalid, Extra.inReplyTo(message_id))
     next()
     return
   }
-  // This block will be triggered if the user entering correct email format
+
+  // -- This block will be triggered if the user entering correct email format
   const email_address = email_filter.exec(message)[0]
+
   // Print correct email address
   console.log(email_address)
+
   // Send login email
   sendLoginEmail(email_address)
   ctx.reply(dialog.valid, Extra.inReplyTo(message_id))

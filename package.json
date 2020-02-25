@@ -1,0 +1,10 @@
+{
+  "name": "sstk-labworks-bot",
+  "version": "1.0.0",
+  "repository": "git@github.com:gpratama/sstk-labworks-bot.git",
+  "author": "Ivan Ega Pratama <ivan.ega.p@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "birth": "sh ./preparation.sh"
+  }
+}

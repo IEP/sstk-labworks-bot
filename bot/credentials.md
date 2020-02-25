@@ -30,13 +30,3 @@ module.exports = firebaseConfig
 1. Go to Firebase Console > Project Settings > Service accounts.
 2. Click "Generate new private key".
 3. Save the file into `credentials/lab-sstk.admin.json`.
-
-## Private and Public Key
-
-1. Go to `credentials` folder on shell.
-2. Run the following commands:
-
-```bash
-openssl genrsa -out private.key 2048
-openssl rsa -in private.key -pubout -out public.pem
-```
