@@ -1,6 +1,9 @@
 const fs = require('fs-extra')
 const path = require('path')
 
+// Use dialog for long message, no template literal in dialog file is
+// supported right now
+
 /**
  * 
  * @param {string} file_path relative file path for dialog file

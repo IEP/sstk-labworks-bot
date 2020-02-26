@@ -6,12 +6,6 @@ exports.up = function(knex) {
       table.text('email')
       table.timestamps()
     })
-    .createTable('log', table => {
-      table.increments('id').primary()
-      table.string('category')
-      table.text('log_message')
-      table.timestamps()
-    })
     .createTable('submission', table => {
       table.increments('id').primary()
       table.integer('telegram_id').references('mahasiswa.telegram_id')
@@ -29,7 +23,6 @@ exports.up = function(knex) {
 
 exports.down = function(knex) {
   return knex.schema
-    .dropTable('log')
     .dropTable('submission')
     .dropTable('mahasiswa')
     .dropTable('deadline')

@@ -6,7 +6,9 @@ const sendLoginEmail = require('../helper/sendLoginEmail')
 // Message dialog for valid and invalid registration attempt
 const dialog = {
   valid: loadDialog('../dialog/register-valid-email.txt'),
-  invalid: loadDialog('../dialog/register-invalid-email.txt')
+  invalid: loadDialog('../dialog/register-invalid-email.txt'),
+  registered_email: loadDialog('../dialog/register-registered-email.txt'),
+  registered_telegram_id: loadDialog('../dialog/register-registered-telegram_id.txt')
 }
 
 // UGM email address regex
@@ -22,8 +24,7 @@ module.exports = async (ctx, next) => {
   // the registration
   const mahasiswa = await Mahasiswa.query().findById(telegram_id)
   if (mahasiswa) {
-    ctx.reply('Maaf. Anda sudah terdaftar ' + 
-      'dengan alamat surat elektronik:\n' + mahasiswa.email, 
+    ctx.reply(dialog.registered_telegram_id + mahasiswa.email, 
       Extra.inReplyTo(message_id)
     )
     next()
@@ -40,6 +41,16 @@ module.exports = async (ctx, next) => {
 
   // -- This block will be triggered if the user entering correct email format
   const email_address = email_filter.exec(message)[0]
+  const check_email = await Mahasiswa.query()
+    .select('email')
+    .where('email', email_address)
+  // Check whether the email already registered
+  if (check_email.length) {
+    console.log(check_email)
+    ctx.reply(dialog.registered_email, Extra.inReplyTo(message_id))
+    next()
+    return
+  }
 
   // Print correct email address
   console.log(email_address)

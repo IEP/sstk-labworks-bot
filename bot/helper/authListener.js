@@ -13,6 +13,7 @@ const authListener = (telegram) => {
     .onSnapshot((querySnapshot) => {
       try {
         querySnapshot.forEach(async (doc) => {
+          // Extract user data
           const { email, telegram_id } = doc.data()
   
           // Check if already exists
@@ -25,6 +26,9 @@ const authListener = (telegram) => {
             })
             return
           })
+
+          // after the user already added into db then update the firestore
+          // collection
           await db.collection('authorized').doc(doc.id).update({
             notified: true
           })

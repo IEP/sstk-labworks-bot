@@ -7,7 +7,7 @@ Model.knex(knex)
 const { add, formatISO } = require('date-fns')
 
 const Models = require('./models')
-const { Deadline, Log, Mahasiswa, Submission } = Models
+const { Deadline, Mahasiswa, Submission } = Models
 
 // Migration file
 const migration = require('./migrations/20200224185139_initial_database')
@@ -63,17 +63,6 @@ describe('testing database', () => {
       expect(all).toHaveLength(2)
       const kode_praktikum = all.map(item => item.kode_praktikum)
       expect(kode_praktikum).not.toContain('PSD01')
-    })
-  })
-
-  describe('log', () => {
-    test('test insert', async () => {
-      await Log.query().insert({
-        category: 'info',
-        log_message: 'this is just info'
-      })
-      const all = await Log.query()
-      expect(all).toHaveLength(1)
     })
   })
 
