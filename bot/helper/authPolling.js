@@ -3,6 +3,10 @@ const { Mahasiswa } = require('../db').Models
 
 const db = admin.firestore()
 
+/**
+ * 
+ * @param {object} telegram "telegraf/telegram" object
+ */
 const authPolling = async (telegram) => {
   try {
     const snapshot = await db
@@ -29,7 +33,10 @@ const authPolling = async (telegram) => {
       })
       console.log(email, 'has been notified')
       // Send notification message
-      telegram.sendMessage(telegram_id, "Akun Anda telah teregistrasi. Terimakasih.")
+      telegram.sendMessage(
+        telegram_id,
+        "Akun Anda telah terdaftar. Terimakasih."
+      )
     })
   } catch(err) {
     console.error(err)

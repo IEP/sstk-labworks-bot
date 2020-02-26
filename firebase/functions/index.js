@@ -34,6 +34,8 @@ exports.auth = functions.https.onRequest(async (req, res) => {
         notified: false
       })
       res.send('registration success, wait for our bot notification')
+    } else {
+      res.send('what do you do?')
     }
   } catch(err) {
     console.error(err)
