@@ -105,3 +105,4 @@ dist
 
 *.sqlite3
 credentials
+*.zip

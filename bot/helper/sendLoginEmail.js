@@ -11,16 +11,22 @@ const privateKey = fs.readFileSync(
  * 
  * @param {string} email destination email address for login
  */
-const send_login_email = (email) => {
+const sendLoginEmail = (telegram_id, email, url = undefined) => {
+  try {
   // Generate JWT Token
   const token = jwt.sign({
     exp: Math.floor(Date.now() / 1000) + (60 * 60),
-    email: email
+    telegram_id,
+    email
   }, privateKey, { algorithm: 'RS256' })
+
+  const login_url = url
+    ? url
+    : `https://lab-sstk.firebaseapp.com/auth?token=${token}`
 
   // Embed the JWT Token into login URL
   const settings = {
-    url: `https://lab-sstk.web.app/?token=${token}`,
+    url: login_url,
     handleCodeInApp: true
   }
 
@@ -29,6 +35,9 @@ const send_login_email = (email) => {
     .then(() => {
       console.log('email sent to', email)
     })
+  } catch(err) {
+    console.error(err)
+  }
 }
 
-module.exports = send_login_email
+module.exports = sendLoginEmail

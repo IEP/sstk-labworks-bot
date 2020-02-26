@@ -1,11 +1,45 @@
+const admin = require('firebase-admin')
+const firebase = require('firebase/app')
 const functions = require('firebase-functions');
+require('firebase/auth')
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
+const fs = require('fs')
+const jwt = require('jsonwebtoken')
+const ObjectID = require('bson-objectid')
+const path = require('path')
+
+const firebaseConfig = require('./credentials/lab-sstk-web')
+const publicKey = fs.readFileSync(path.join(__dirname, './credentials/public.pem'))
+
+firebase.initializeApp(firebaseConfig)
+admin.initializeApp(functions.config().firebase)
+
+const db = admin.firestore()
+
+exports.auth = functions.https.onRequest(async (req, res) => {
+  try {
+    const url = 'https://lab-sstk.firebaseapp.com' + req.url
+    if (firebase.auth().isSignInWithEmailLink(url)) {
+      const { token } = req.query
+      const decoded = await jwt.verify(token, publicKey)
+      const { email, telegram_id } = decoded
+      const snapshot = await db
+        .collection('authorized')
+        .where('email', '==', email).get()
+      if (!snapshot.empty) throw new Error(email + ' already registered')
+      await firebase.auth().signInWithEmailLink(email, url) 
+      await db.collection('authorized').doc(ObjectID().str).set({
+        email,
+        telegram_id,
+        notified: false
+      })
+      res.send('registration success, wait for our bot notification')
+    }
+  } catch(err) {
+    console.error(err)
+    res.send('error, try again later')
+  }
+})
 
 exports.test = functions.https.onRequest((req, res) => {
   res.send("This is test")

@@ -19,11 +19,11 @@ else
   echo "### $PRIVATE_KEY is found, not creating"
 fi
 
-echo "### DB Migration"
-cd bot/db
-echo "### Rollback First"
-../node_modules/.bin/knex migrate:rollback --all --env development
-../node_modules/.bin/knex migrate:rollback --all --env production
-echo "### Migrate"
-../node_modules/.bin/knex migrate:latest --env development
-../node_modules/.bin/knex migrate:latest --env production
+# echo "### DB Migration"
+# cd bot/db
+# echo "### Rollback First"
+# ../node_modules/.bin/knex migrate:rollback --all --env development
+# ../node_modules/.bin/knex migrate:rollback --all --env production
+# echo "### Migrate"
+# ../node_modules/.bin/knex migrate:latest --env development
+# ../node_modules/.bin/knex migrate:latest --env production

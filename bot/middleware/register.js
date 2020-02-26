@@ -22,7 +22,10 @@ module.exports = async (ctx, next) => {
   // the registration
   const mahasiswa = await Mahasiswa.query().findById(telegram_id)
   if (mahasiswa) {
-    ctx.reply('Maaf. Anda sudah terdaftar.', Extra.inReplyTo(message_id))
+    ctx.reply('Maaf. Anda sudah terdaftar ' + 
+      'dengan alamat surat elektronik:\n' + mahasiswa.email, 
+      Extra.inReplyTo(message_id)
+    )
     next()
     return
   }
@@ -42,7 +45,7 @@ module.exports = async (ctx, next) => {
   console.log(email_address)
 
   // Send login email
-  sendLoginEmail(email_address)
+  sendLoginEmail(telegram_id, email_address)
   ctx.reply(dialog.valid, Extra.inReplyTo(message_id))
   next()
 }
