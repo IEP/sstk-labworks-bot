@@ -33,13 +33,13 @@ exports.auth = functions.https.onRequest(async (req, res) => {
         telegram_id,
         notified: false
       })
-      res.send('registration success, wait for our bot notification')
+      res.send('pendaftaran sukses, bot akan mengirimkan notifikasi')
     } else {
       res.send('what do you do?')
     }
   } catch(err) {
     console.error(err)
-    res.send('error, try again later')
+    res.send('galat, silakan lakukan proses registrasi kembali')
   }
 })
 

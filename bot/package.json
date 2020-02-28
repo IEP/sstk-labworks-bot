@@ -7,9 +7,10 @@
   "author": "Ivan Ega Pratama <ivan.ega.p@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node -r dotenv/config index.js",
+    "start": "node -r dotenv/config --max-old-space-size=256 index.js",
     "test": "jest --watchAll",
-    "dev": "nodemon -r dotenv/config index.js"
+    "dev": "nodemon -r dotenv/config --max-old-space-size=256 index.js",
+    "dev:inspect": "nodemon -r dotenv/config --max-old-space-size=256 --inspect index.js"
   },
   "dependencies": {
     "date-fns": "^2.9.0",
