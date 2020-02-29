@@ -1,6 +1,6 @@
 require('./core')
 require('./db')
-require('./next/server')
+require('./server')
 
 // const authListener = require('./helper/authListener')
 
