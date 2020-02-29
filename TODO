@@ -1,0 +1,3 @@
+Change:
+Font Awesome: https://github.com/FortAwesome/react-fontawesome/tree/master/examples/nextjs-app
+Bulma: Only import the important one
