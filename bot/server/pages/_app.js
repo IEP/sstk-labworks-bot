@@ -30,9 +30,12 @@ const StateInitializer = (props) => {
 
   // Token Validator Hook - only fires once at the initial rendering
   useEffect(() => {
-    axios.post('/api/validate', {
-      token: state.token
-    }).then((res) => {
+    axios.post('/api/validate',
+      null,
+      {
+        headers: { 'Authorization': `Bearer ${state.token}` }
+      }
+    ).then((res) => {
       const { valid_token } = res.data
       if (!valid_token) { // If validator return true
         dispatch({
