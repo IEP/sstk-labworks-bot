@@ -10,7 +10,7 @@ const StateInitializer = (props) => {
   const { state, dispatch } = useContext(store)
   const handleInitialized = props.onInitialized
   
-  // Loader & Saver Hook
+  // Loader & Saver Hook - PLS Check; right now this only fired when login or logout
   useEffect(() => {
     if (state.ready) {
       // Only writes to localStorage after ready to prevent state overwriting

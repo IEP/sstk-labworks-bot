@@ -60,7 +60,7 @@ const submission = async (ctx, next) => {
     .where('kode_praktikum', kode_praktikum)
   if (!deadline) {
     ctx.replyWithMarkdown(
-      `Maaf. kode praktikum \`${kode_praktikum}\` tidak ditemukan`,
+      `Maaf. Kode praktikum \`${kode_praktikum}\` tidak ditemukan`,
       Extra.inReplyTo(message_id)
     )
     next()
