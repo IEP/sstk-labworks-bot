@@ -13,9 +13,12 @@ bot.catch((err, ctx) => {
 
 // User registration middleware
 bot.hears(/^\/register [a-z@.]+$/g, middleware.register)
+// File submission middleware
+bot.on('document', middleware.submission)
 // Memory debug middleware
 bot.hears('/debug memory', middleware.debug.memory)
 bot.start(middleware.start)
+
 
 bot.launch()
 
