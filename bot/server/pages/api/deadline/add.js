@@ -2,6 +2,10 @@ import { zonedTimeToUtc } from 'date-fns-tz'
 import { formatISO, isBefore } from 'date-fns'
 
 export default async (req, res) => {
+  if (!req.authorized) {
+    res.json({ status: 'permission denied' })
+    return
+  }
   const { Deadline } = req.db
   if (!req.body.kode_praktikum ||
     !req.body.start ||

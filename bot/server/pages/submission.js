@@ -56,7 +56,9 @@ const Submission = () => {
   const { token } = context.state
   if (!token) Router.push('/')
   useEffect(() => {
-    axios.get('/api/submission')
+    axios.get('/api/submission', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
     .then((res) => {
       setSubmission(res.data)
     })

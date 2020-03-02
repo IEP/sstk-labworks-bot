@@ -185,7 +185,9 @@ const Deadline = () => {
   if (!token) Router.push('/')
 
   useEffect(() => {
-    axios.get('/api/deadline')
+    axios.get('/api/deadline', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
     .then((res) => {
       setDeadline(res.data)
     })

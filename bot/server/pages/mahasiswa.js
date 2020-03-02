@@ -75,7 +75,9 @@ const Mahasiswa = () => {
   if (!token) Router.push('/')
   // Fetch mahasiswa
   useEffect(() => {
-    axios.get('/api/mahasiswa')
+    axios.get('/api/mahasiswa', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
     .then((res) => {
       setMahasiswa(res.data)
     })

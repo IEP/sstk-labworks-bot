@@ -1,4 +1,8 @@
 export default async (req, res) => {
+  if (!req.authorized) {
+    res.json({ status: 'permission denied' })
+    return
+  }
   const { Mahasiswa } = req.db
   const { admin } = req.firebase
   const db = admin.firestore()

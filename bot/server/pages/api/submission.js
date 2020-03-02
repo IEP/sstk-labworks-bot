@@ -1,4 +1,8 @@
 export default async (req, res) => {
+  if (!req.authorized) {
+    res.json([])
+    return
+  }
   const { Submission } = req.db
   const submission = await Submission.query()
     .select('submission.*', 'mahasiswa.email')
