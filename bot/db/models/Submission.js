@@ -9,9 +9,10 @@ class Submission extends Model {
   static get jsonSchema() {
     return {
       type: 'object',
-      required: ['telegram_id', 'filename'],
+      required: ['telegram_id', 'kode_praktikum', 'filename'],
       properties: {
         telegram_id: { type: 'integer' },
+        kode_praktikum: { type: 'string' },
         filename: { type: 'string' }
       }
     }

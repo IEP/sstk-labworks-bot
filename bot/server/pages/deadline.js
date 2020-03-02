@@ -34,7 +34,6 @@ const DeadlineModalInput = (props) => {
 }
 
 const DeadlineModal = (props) => {
-  const { dispatch } = useContext(store)
   const [kode_praktikum, setKodePraktikum] = useState()
   const [start, setStart] = useState()
   const [end, setEnd] = useState()
@@ -144,6 +143,11 @@ const DeadlineTableRow = ({ item, update }) => {
       <td>{ str_start }</td>
       <td>{ str_end }</td>
       <td>
+        {/* <button
+          className="button is-primary"
+        >
+          Ubah
+        </button> */}
         <button
           className="button is-danger"
           onClick={() => handleClick()}

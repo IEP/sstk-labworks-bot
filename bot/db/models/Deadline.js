@@ -6,6 +6,10 @@ class Deadline extends Model {
     return 'deadline'
   }
 
+  static get idColumn() {
+    return 'kode_praktikum'
+  }
+
   static get jsonSchema() {
     return {
       type: 'object',

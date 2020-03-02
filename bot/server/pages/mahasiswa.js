@@ -87,7 +87,7 @@ const Mahasiswa = () => {
         mahasiswa.length > 0
           ? <MahasiswaTable mahasiswa={mahasiswa} update={setUpdated} />
           : <div className="has-text-centered">
-              Belum ada mahasiswa mendaftar
+              Belum ada mahasiswa yang terdaftar
             </div>
       }
     </>
