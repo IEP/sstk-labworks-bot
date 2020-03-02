@@ -9,9 +9,8 @@ class Deadline extends Model {
   static get jsonSchema() {
     return {
       type: 'object',
-      required: ['kode_praktikum'],
+      required: ['kode_praktikum', 'start', 'end'],
       properties: {
-        id: { type: 'integer' },
         kode_praktikum: { type: 'string' },
         start: {
           type: 'string',
@@ -22,6 +21,20 @@ class Deadline extends Model {
           default: formatISO(add(new Date(), {
             hours: 1
           }))
+        }
+      }
+    }
+  }
+
+  static get relationMappings() {
+    const Submission = require('./Submission')
+    return {
+      submission: {
+        relation: Model.HasManyRelation,
+        modelClass: Submission,
+        join: {
+          from: 'deadline.kode_praktikum',
+          to: 'submission.kode_praktikum'
         }
       }
     }

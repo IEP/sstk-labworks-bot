@@ -12,13 +12,14 @@
     "test": "jest --watchAll",
     "dev": "nodemon -r dotenv/config --max-old-space-size=256 index.js",
     "dev:inspect": "nodemon -r dotenv/config --max-old-space-size=256 --inspect index.js",
-    "server": "cd server && nodemon -r dotenv/config --max-old-space-size=256 index.js"
+    "server": "cd server && node -r dotenv/config --max-old-space-size=256 index.js"
   },
   "dependencies": {
     "@zeit/next-sass": "^1.0.1",
     "axios": "^0.19.2",
     "bulma": "^0.8.0",
     "date-fns": "^2.9.0",
+    "date-fns-tz": "^1.0.10",
     "dotenv": "^8.2.0",
     "firebase": "^7.9.1",
     "firebase-admin": "^8.9.2",

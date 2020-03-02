@@ -2,6 +2,7 @@ const { createServer } = require('http')
 const { parse } = require('url')
 const next = require('next')
 const db = require('../db').Models
+const firebase = require('../lib/firebase')
 
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev, dir: __dirname })
@@ -11,6 +12,7 @@ app.prepare().then(() => {
   createServer((req, res) => {
     const parsedUrl = parse(req.url, true)
     req.db = db
+    req.firebase = firebase
     handle(req, res, parsedUrl)
   }).listen(3000, err => {
     if (err) throw err

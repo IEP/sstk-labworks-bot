@@ -25,46 +25,46 @@ afterAll(async () => {
 })
 
 describe('testing database', () => {
-  describe('deadline', () => {
-    test('insert and check deadline', async () => {
-      await Deadline.query().insert({
-        kode_praktikum: 'PPK01',
-        start: formatISO(new Date()),
-        end: formatISO(add(new Date(), {
-          days: 7
-        }))
-      })
-      const psd = await Deadline.query().insertAndFetch({
-        kode_praktikum: 'PSD01',
-        start: formatISO(new Date()),
-        end: formatISO(add(new Date(), {
-          days: 14
-        }))
-      })
-      await Deadline.query().insert({
-        kode_praktikum: 'PKD04',
-        start: formatISO(new Date()),
-        end: formatISO(add(new Date(), {
-          days: 21
-        }))
-      })
-      const all = await Deadline.query()
-      expect(all).toHaveLength(3)
-      expect(psd).toEqual(all[1])
-      // console.log(psd, all[1])
-    })
+  // describe('deadline', () => {
+  //   test('insert and check deadline', async () => {
+  //     await Deadline.query().insert({
+  //       kode_praktikum: 'PPK01',
+  //       start: formatISO(new Date()),
+  //       end: formatISO(add(new Date(), {
+  //         days: 7
+  //       }))
+  //     })
+  //     const psd = await Deadline.query().insertAndFetch({
+  //       kode_praktikum: 'PSD01',
+  //       start: formatISO(new Date()),
+  //       end: formatISO(add(new Date(), {
+  //         days: 14
+  //       }))
+  //     })
+  //     await Deadline.query().insert({
+  //       kode_praktikum: 'PKD04',
+  //       start: formatISO(new Date()),
+  //       end: formatISO(add(new Date(), {
+  //         days: 21
+  //       }))
+  //     })
+  //     const all = await Deadline.query()
+  //     expect(all).toHaveLength(3)
+  //     expect(psd).toEqual(all[1])
+  //     // console.log(psd, all[1])
+  //   })
   
-    test('delete deadline', async () => {
-      await Deadline.query()
-        .delete()
-        .where('kode_praktikum', 'PSD01')
-      const all = await Deadline.query()
-        .select('kode_praktikum')
-      expect(all).toHaveLength(2)
-      const kode_praktikum = all.map(item => item.kode_praktikum)
-      expect(kode_praktikum).not.toContain('PSD01')
-    })
-  })
+  //   test('delete deadline', async () => {
+  //     await Deadline.query()
+  //       .delete()
+  //       .where('kode_praktikum', 'PSD01')
+  //     const all = await Deadline.query()
+  //       .select('kode_praktikum')
+  //     expect(all).toHaveLength(2)
+  //     const kode_praktikum = all.map(item => item.kode_praktikum)
+  //     expect(kode_praktikum).not.toContain('PSD01')
+  //   })
+  // })
 
   describe('mahasiswa', () => {
     test('double insert', async () => {

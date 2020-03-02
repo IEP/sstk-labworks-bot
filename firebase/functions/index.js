@@ -5,7 +5,6 @@ require('firebase/auth')
 
 const fs = require('fs')
 const jwt = require('jsonwebtoken')
-const ObjectID = require('bson-objectid')
 const path = require('path')
 
 const firebaseConfig = require('./credentials/lab-sstk-web')
@@ -28,9 +27,10 @@ exports.auth = functions.https.onRequest(async (req, res) => {
         .where('email', '==', email).get()
       if (!snapshot.empty) throw new Error(email + ' already registered')
       await firebase.auth().signInWithEmailLink(email, url) 
-      await db.collection('authorized').doc(ObjectID().str).set({
+      await db.collection('authorized').doc(String(telegram_id)).set({
         email,
         telegram_id,
+        date: new Date(),
         notified: false
       })
       res.send('pendaftaran sukses, bot akan mengirimkan notifikasi')

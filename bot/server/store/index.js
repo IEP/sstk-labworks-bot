@@ -2,6 +2,7 @@ import React, { createContext, useReducer } from 'react'
 
 const initialState = {
   token: '',
+  updated: Math.random(),
   ready: false
 }
 
@@ -20,6 +21,8 @@ export const StateProvider = ({ children }) => {
         return Object.assign(state, action.payload)
       case 'SET_READY':
         return Object.assign(state, { ready: true })
+      case 'SET_UPDATED':
+        return Object.assign(state, { updated: action.payload })
       default:
         return state
     }
