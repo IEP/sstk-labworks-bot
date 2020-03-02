@@ -20,6 +20,7 @@ class Submission extends Model {
 
   static get relationMappings() {
     const Mahasiswa = require('./Mahasiswa')
+    const Deadline = require('./Deadline')
     return {
       mahasiswa: {
         relation: Model.BelongsToOneRelation,
@@ -27,6 +28,14 @@ class Submission extends Model {
         join: {
           from: 'submission.telegram_id',
           to: 'mahasiswa.telegram_id'
+        }
+      },
+      deadline: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: Deadline,
+        join: {
+          from: 'submission.kode_praktikum',
+          to: 'deadline.kode_praktikum'
         }
       }
     }

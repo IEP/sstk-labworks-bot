@@ -1,7 +1,7 @@
 const loadDialog = require('../helper/loadDialog')
 const Extra = require('telegraf/extra')
 const { parseISO, isWithinInterval } = require('date-fns')
-const { Deadline, Mahasiswa } = require('../db').Models
+const { Deadline, Mahasiswa, Submission } = require('../db').Models
 const saveSubmission = require('../helper/saveSubmission')
 
 const dialog = {
@@ -55,9 +55,22 @@ const submission = async (ctx, next) => {
   // Second exit: invalid submission time (outside the deadline)
   const submission_time = new Date(submission_timestamp * 1000)
   const deadline = await Deadline.query().findById(kode_praktikum)
+  const submission = await Submission.query()
+    .where('telegram_id', telegram_id)
+    .where('kode_praktikum', kode_praktikum)
   if (!deadline) {
     ctx.replyWithMarkdown(
       `Maaf. kode praktikum \`${kode_praktikum}\` tidak ditemukan`,
+      Extra.inReplyTo(message_id)
+    )
+    next()
+    return
+  }
+
+  if (submission.length > 0) {
+    ctx.reply(
+      'Maaf. Pengumpulan laporan praktikum hanya bisa dilakukan satu ' + 
+      'kali saja.',
       Extra.inReplyTo(message_id)
     )
     next()

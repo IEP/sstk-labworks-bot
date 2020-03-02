@@ -143,17 +143,20 @@ const DeadlineTableRow = ({ item, update }) => {
       <td>{ str_start }</td>
       <td>{ str_end }</td>
       <td>
-        {/* <button
-          className="button is-primary"
-        >
-          Ubah
-        </button> */}
-        <button
-          className="button is-danger"
-          onClick={() => handleClick()}
-        >
-          Hapus
-        </button>
+        <div className="buttons">
+          <button
+            className="button is-primary"
+            disabled
+          >
+            Ubah
+          </button>
+          <button
+            className="button is-danger"
+            onClick={() => handleClick()}
+          >
+            Hapus
+          </button>
+        </div>
       </td>
     </tr>
   )
