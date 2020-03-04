@@ -13,7 +13,7 @@ const StateInitializer = (props) => {
   // Loader & Saver Hook - PLS Check; right now this only fired when login or logout
   useEffect(() => {
     // Load localState fron localStorage
-    const localState = JSON.parse(localStorage.getItem('state'))
+    const localState = JSON.parse(localStorage.getItem('state')) || {}
     dispatch({
       type: 'SET_ALL',
       payload: localState
