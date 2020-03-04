@@ -20,7 +20,6 @@ const saveSubmission = async (ctx, telegram_id, kode_praktikum, file_id, filenam
     `Laporan praktikum Anda telah berhasil dikumpulkan. Terimakasih.`,
     Extra.inReplyTo(ctx.message.id)
   )
-  console.log('saved')
 
   // await fs.writeFile(`${folder}/${filename}`, res.data)
   // console.log('saved')

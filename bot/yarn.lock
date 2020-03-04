@@ -5095,6 +5095,11 @@ ignore-walk@^3.0.1:
   dependencies:
     minimatch "^3.0.4"
 
+immer@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-6.0.0.tgz#39cf65c7720c6ec4bdbd9ced0960b8ff126f3cd6"
+  integrity sha512-vqOfnW3+VEV6vVxniMLPxTI+tEz1w7POYwOE1okOfnOS9Zl/mCObxino2lxiDC5l9o4NdWy+Rkxk9Em6ThBZBA==
+
 import-cwd@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/import-cwd/-/import-cwd-2.1.0.tgz#aa6cf36e722761285cb371ec6519f53e2435b0a9"

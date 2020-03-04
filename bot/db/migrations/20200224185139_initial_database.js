@@ -15,7 +15,9 @@ exports.up = function(knex) {
     .createTable('submission', table => {
       table.increments('id').primary()
       table.integer('telegram_id').references('mahasiswa.telegram_id')
+        .onUpdate('CASCADE').onDelete('CASCADE')
       table.string('kode_praktikum').references('deadline.kode_praktikum')
+        .onUpdate('CASCADE').onDelete('CASCADE')
       table.string('filename')
       table.timestamps()
     })

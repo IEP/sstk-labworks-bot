@@ -12,30 +12,21 @@ const StateInitializer = (props) => {
   
   // Loader & Saver Hook - PLS Check; right now this only fired when login or logout
   useEffect(() => {
-    if (state.ready) {
-      // Only writes to localStorage after ready to prevent state overwriting
-      localStorage.setItem('state', JSON.stringify(state))
-    } else {
-      // Load localState fron localStorage
-      const localState = JSON.parse(localStorage.getItem('state'))
-      dispatch({
-        type: 'SET_ALL',
-        payload: {
-          ...localState,
-          ready: true
-        }
-      })
-    }
-  }, [state])
-
-  // Token Validator Hook - only fires once at the initial rendering
-  useEffect(() => {
+    // Load localState fron localStorage
+    const localState = JSON.parse(localStorage.getItem('state'))
+    dispatch({
+      type: 'SET_ALL',
+      payload: localState
+    })
+    // Check auth
     axios.post('/api/validate',
-      null,
+      {},
       {
-        headers: { 'Authorization': `Bearer ${state.token}` }
+        headers: { 'Authorization': `Bearer ${localState.token}` }
       }
     ).then((res) => {
+      console.log('token', state.token)
+      console.log(res.data)
       const { valid_token } = res.data
       if (!valid_token) { // If validator return true
         dispatch({
@@ -45,8 +36,13 @@ const StateInitializer = (props) => {
       }
       // Make sure token is valid before rendering other component
       handleInitialized()
+      dispatch({
+        type: 'SET_READY'
+      })
     })
   }, [])
+
+  // Token Validator Hook - only fires once at the initial rendering
   return null
 }
 

@@ -27,7 +27,6 @@ export default async (req, res) => {
         start: formatISO(startDate),
         end: formatISO(endDate)
       })
-      console.log('new deadline')
       return
     })
   }

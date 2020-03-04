@@ -14,6 +14,9 @@
     "dev:inspect": "nodemon -r dotenv/config --max-old-space-size=256 --inspect index.js",
     "server": "cd server && node -r dotenv/config --max-old-space-size=256 index.js"
   },
+  "nodemonConfig": {
+    "ignore": ["server/**/*.js"]
+  },
   "dependencies": {
     "@zeit/next-sass": "^1.0.1",
     "axios": "^0.19.2",
@@ -24,6 +27,7 @@
     "firebase": "^7.9.1",
     "firebase-admin": "^8.9.2",
     "fs-extra": "^8.1.0",
+    "immer": "^6.0.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.20.10",
     "next": "^9.2.2",

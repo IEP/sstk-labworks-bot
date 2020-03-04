@@ -4,16 +4,21 @@ import store from '../store'
 import axios from 'axios'
 import { format, utcToZonedTime } from 'date-fns-tz'
 
-const DeadlineAddButton = (props) => (
-  <div className="buttons has-addons">
-    <button
-      className="button is-primary"
-      onClick={() => props.action(true)}
-    >
-      Tambah Deadline
-    </button>
-  </div>
-)
+const DeadlineAddButton = () => {
+  const { dispatch } = useContext(store)
+  return (
+    <div className="buttons has-addons">
+      <button
+        className="button is-primary"
+        onClick={() => dispatch({
+          type: 'SET_DEADLINE_MODAL', payload: true }
+        )}
+      >
+        Tambah Deadline
+      </button>
+    </div>
+  )
+}
 
 const DeadlineModalInput = (props) => {
   return (
@@ -33,10 +38,12 @@ const DeadlineModalInput = (props) => {
   )
 }
 
-const DeadlineModal = (props) => {
+const DeadlineModal = () => {
   const [kode_praktikum, setKodePraktikum] = useState()
   const [start, setStart] = useState()
   const [end, setEnd] = useState()
+  const { state, dispatch } = useContext(store)
+  const { token, deadline } = state
 
   const rowEntry = [
     { action: setKodePraktikum, label: 'Kode Praktikum', placeholder: 'PKD01' },
@@ -46,7 +53,10 @@ const DeadlineModal = (props) => {
 
   const handleKeyPress = (e) => {
     if (e.keyCode === 27) { // Escape key pressed
-      props.action(false)
+      dispatch({
+        type: 'SET_DEADLINE_MODAL',
+        payload: false
+      })
     }
   }
 
@@ -54,15 +64,26 @@ const DeadlineModal = (props) => {
     axios.post('/api/deadline/add',{
       kode_praktikum,
       start,
-      end
+      end,
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     }).then((res) => {
       console.log(res.data)
     })
-    props.action(false)
+    dispatch({
+      type: 'SET_DEADLINE_MODAL',
+      payload: false
+    })
+    dispatch({
+      type: 'SET_DEADLINE_UPDATED',
+      payload: new Date()
+    })
   }
   
   return (
-    <div className="modal is-active" onKeyDown={handleKeyPress} >
+    <div className={deadline.modal.open ? "modal is-active" : "modal"} onKeyDown={handleKeyPress} >
       <div className="modal-background" />
       <div className="modal-card">
         <header className="modal-card-head">
@@ -91,7 +112,7 @@ const DeadlineModal = (props) => {
       </div>
       <button
         className="modal-close is-large"
-        onClick={() => props.action(false)}
+        onClick={() => dispatch({ type: 'SET_DEADLINE_MODAL', payload: false })}
       />
     </div>
   )
@@ -108,8 +129,10 @@ const DeadlineTableHead = () => (
   </thead>
 )
 
-const DeadlineTableRow = ({ item, update }) => {
+const DeadlineTableRow = ({ item }) => {
   const { kode_praktikum, start, end } = item
+  const { state, dispatch } = useContext(store)
+  const { token } = state
   const zoned_start = utcToZonedTime(
     start,
     'Asia/Jakarta'
@@ -132,9 +155,15 @@ const DeadlineTableRow = ({ item, update }) => {
   const handleClick = () => {
     axios.post('/api/deadline/delete', {
       kode_praktikum
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     })
-    const random = Math.random()
-    update(random)
+    dispatch({
+      type: 'SET_DEADLINE_UPDATED',
+      payload: new Date()
+    })
   }
 
   return (
@@ -162,56 +191,72 @@ const DeadlineTableRow = ({ item, update }) => {
   )
 }
 
-const DeadlineTable = (props) => (
-  <table className="table is-striped is-hoverable is-fullwidth">
-    <DeadlineTableHead />
-    <tbody>
-      {
-        props.deadline.map((item) => (
-          <DeadlineTableRow key={item.kode_praktikum} item={item} update={props.update} />
-        ))
-      }
-    </tbody>
-  </table>
-)
+const DeadlineTable = () => {
+  const { state } = useContext(store)
+  const { deadline } = state
+  return (
+    <table className="table is-striped is-hoverable is-fullwidth">
+      <DeadlineTableHead />
+      <tbody>
+        {
+          deadline.list.map((item) => (
+            <DeadlineTableRow key={item.kode_praktikum} item={item} />
+          ))
+        }
+      </tbody>
+    </table>
+  )
+}
 
 const Deadline = () => {
-  const context = useContext(store)
-  const { state } = context
-  const { token } = state
-  const [deadline, setDeadline] = useState([])
-  const [modal, setModal] = useState(false)
-  const [updated, setUpdated] = useState(Math.random())
+  const { state, dispatch } = useContext(store)
+  const { token, deadline } = state
   if (!token) Router.push('/')
 
+  const fetchDeadline = async () => {
+    const res = await axios.get('/api/deadline', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    dispatch({
+      type: 'SET_DEADLINE',
+      payload: res.data
+    })
+  }
+
   useEffect(() => {
-    axios.get('/api/deadline', {
-      headers: { 'Authorization': `Bearer ${token}` }
-    })
-    .then((res) => {
-      setDeadline(res.data)
-    })
-  }, [modal, updated])
+    fetchDeadline()
+  }, [deadline.updated])
+
+  useEffect(() => {
+    const refresh = setInterval(() => {
+      fetchDeadline()
+      console.log('refresh')
+    }, 30 * 1000) // autofetch every 30 s
+    return () => clearInterval(refresh)
+  }, [])
 
   const handleKeyPress = (e) => {
     if (e.keyCode === 27) { // Escape key pressed
-      setModal(false)
+      dispatch({
+        type: 'SET_DEADLINE_MODAL',
+        payload: false
+      })
     }
   }
 
   return (
     <div onKeyDown={(e) => handleKeyPress(e)}>
-      <DeadlineAddButton action={setModal} />
+      <DeadlineAddButton />
       {
-        deadline.length > 0
-          ? <DeadlineTable deadline={deadline} update={setUpdated} />
+        deadline.list.length > 0
+          ? <DeadlineTable />
           : <div className="has-text-centered">
-              Tidak ada deadline
+              Tidak ada deadline yang telah diatur
             </div>
       }
-      {
-        modal && <DeadlineModal action={setModal} />
-      }
+      <DeadlineModal />
     </div>
   )
 }

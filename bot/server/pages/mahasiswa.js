@@ -4,9 +4,6 @@ import store from '../store'
 import axios from 'axios'
 import { format, utcToZonedTime } from 'date-fns-tz'
 
-// Create table with button to unregister
-// | Telegram ID | Email | Unregister (Bebas Bot) |
-
 const MahasiswaTableHead = () => (
   <thead>
     <tr>
@@ -18,8 +15,10 @@ const MahasiswaTableHead = () => (
   </thead>
 )
 
-const MahasiswaTableRow = ({ mahasiswa, update }) => {
+const MahasiswaTableRow = ({ mahasiswa }) => {
   const { telegram_id, email, created_at } = mahasiswa
+  const { state, dispatch } = useContext(store)
+  const { token } = state
   const zoned_date = utcToZonedTime(
     created_at,
     'Asia/Jakarta'
@@ -29,8 +28,15 @@ const MahasiswaTableRow = ({ mahasiswa, update }) => {
   const handleClick = () => {
     axios.post('/api/mahasiswa/delete', {
       telegram_id
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     })
-    update(Math.random())
+    dispatch({
+      type: 'SET_MAHASISWA_UPDATED',
+      payload: new Date()
+    })
   }
   
   return (
@@ -41,7 +47,7 @@ const MahasiswaTableRow = ({ mahasiswa, update }) => {
       <td>
         <button
           className="button is-danger"
-          onClick={handleClick}
+          onClick={() => handleClick()}
         >
           Bebas Lab
         </button>
@@ -50,44 +56,59 @@ const MahasiswaTableRow = ({ mahasiswa, update }) => {
   )
 }
 
-const MahasiswaTable = ({ mahasiswa, update }) => (
-  <table className="table is-striped is-hoverable is-fullwidth">
-    <MahasiswaTableHead />
-    <tbody>
-      {
-        mahasiswa.map((item) => (
-          <MahasiswaTableRow
-            key={item.telegram_id}
-            mahasiswa={item}
-            update={update}
-          />
-        ))
-      }
-    </tbody>
-  </table>
-)
+const MahasiswaTable = () => {
+  const { state } = useContext(store)
+  const mahasiswa = state.mahasiswa.list
+  return (
+    <table className="table is-striped is-hoverable is-fullwidth">
+      <MahasiswaTableHead />
+      <tbody>
+        {
+          mahasiswa.map((item) => (
+            <MahasiswaTableRow
+              key={item.telegram_id}
+              mahasiswa={item}
+            />
+          ))
+        }
+      </tbody>
+    </table>
+  )
+}
 
 const Mahasiswa = () => {
-  const context = useContext(store)
-  const [mahasiswa, setMahasiswa] = useState([])
-  const [updated, setUpdated] = useState(Math.random())
-  const { token } = context.state
+  const { state, dispatch } = useContext(store)
+  const { token, mahasiswa } = state
   if (!token) Router.push('/')
   // Fetch mahasiswa
+  const fetchMahasiswa = async () => {
+    const res = await axios.get('/api/mahasiswa', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    dispatch({
+      type: 'SET_MAHASISWA',
+      payload: res.data
+    })
+  }
+
   useEffect(() => {
-    axios.get('/api/mahasiswa', {
-      headers: { 'Authorization': `Bearer ${token}` }
-    })
-    .then((res) => {
-      setMahasiswa(res.data)
-    })
-  }, [updated])
+    fetchMahasiswa()
+  }, [mahasiswa.updated])
+
+  useEffect(() => {
+    const refresh = setInterval(() => {
+      fetchMahasiswa()
+    }, 30 * 1000) // autofetch every 30 s
+    return () => clearInterval(refresh)
+  }, [])
 
   return (
     <>
       {
-        mahasiswa.length > 0
-          ? <MahasiswaTable mahasiswa={mahasiswa} update={setUpdated} />
+        mahasiswa.list.length > 0
+          ? <MahasiswaTable />
           : <div className="has-text-centered">
               Belum ada mahasiswa yang terdaftar
             </div>

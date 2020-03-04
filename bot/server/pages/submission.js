@@ -4,21 +4,25 @@ import store from '../store'
 import axios from 'axios'
 import { format, utcToZonedTime } from 'date-fns-tz'
 
-const SubmissionTable = ({ submission }) => (
-  <table className="table is-striped is-hoverable is-fullwidth">
-    <SubmissionTableHead />
-    <tbody>
-      {
-        submission.map((item) => (
-          <SubmissionTableRow
-            key={item.id}
-            submission={item}
-          />
-        ))
-      }
-    </tbody>
-  </table>
-)
+const SubmissionTable = () => {
+  const { state } = useContext(store)
+  const { submission } = state
+  return (
+    <table className="table is-striped is-hoverable is-fullwidth">
+      <SubmissionTableHead />
+      <tbody>
+        {
+          submission.list.map((item) => (
+            <SubmissionTableRow
+              key={item.id}
+              submission={item}
+            />
+          ))
+        }
+      </tbody>
+    </table>
+  )
+}
 
 const SubmissionTableHead = () => (
   <thead>
@@ -51,23 +55,35 @@ const SubmissionTableRow = ({ submission }) => {
 }
 
 const Submission = () => {
-  const context = useContext(store)
-  const [submission, setSubmission] = useState([])
-  const { token } = context.state
+  const { state, dispatch } = useContext(store)
+  const { token, submission } = state
   if (!token) Router.push('/')
+
+  const fetchSubmission = async () => {
+    const res = await axios.get('/api/submission', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    dispatch({
+      type: 'SET_SUBMISSION',
+      payload: res.data
+    })
+  }
+
   useEffect(() => {
-    axios.get('/api/submission', {
-      headers: { 'Authorization': `Bearer ${token}` }
-    })
-    .then((res) => {
-      setSubmission(res.data)
-    })
+    fetchSubmission()
+    const refresh = setInterval(() => {
+      fetchSubmission()
+    }, 30 * 1000) // autofetch every 30 s
+    return () => clearInterval(refresh)
   }, [])
+
   return (
     <>
       {
-        submission.length > 0
-          ? <SubmissionTable submission={submission} />
+        submission.list.length > 0
+          ? <SubmissionTable submission={submission.list} />
           : <div className="has-text-centered">
               Belum ada laporan praktikum yang telah dikumpulkan
             </div>
