@@ -14,12 +14,10 @@ const StateInitializer = (props) => {
   useEffect(() => {
     // Load localState fron localStorage
     const localState = JSON.parse(localStorage.getItem('state')) || {}
-    if (Object.keys(localState).length > 0) {
-      dispatch({
-        type: 'SET_ALL',
-        payload: Object.assign({}, state, localState, { ready: 'false' })
-      })
-    }
+    dispatch({
+      type: 'SET_ALL',
+      payload: Object.assign({}, state, localState, { ready: 'false' })
+    })
     // Check auth
     axios.post('/api/validate',
       {},
