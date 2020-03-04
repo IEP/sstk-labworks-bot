@@ -173,12 +173,13 @@ const DeadlineTableRow = ({ item }) => {
       <td>{ str_end }</td>
       <td>
         <div className="buttons">
-          <button
+          {/* Ubah: only allow to readjust start and end date */}
+          {/* <button
             className="button is-primary"
             disabled
           >
             Ubah
-          </button>
+          </button> */}
           <button
             className="button is-danger"
             onClick={() => handleClick()}

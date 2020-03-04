@@ -10,14 +10,9 @@ const StateInitializer = (props) => {
   const { state, dispatch } = useContext(store)
   const handleInitialized = props.onInitialized
   
-  // Loader & Saver Hook - PLS Check; right now this only fired when login or logout
   useEffect(() => {
     // Load localState fron localStorage
     const localState = JSON.parse(localStorage.getItem('state')) || {}
-    dispatch({
-      type: 'SET_ALL',
-      payload: Object.assign({}, state, localState, { ready: 'false' })
-    })
     // Check auth
     axios.post('/api/validate',
       {},
@@ -25,13 +20,16 @@ const StateInitializer = (props) => {
         headers: { 'Authorization': `Bearer ${localState.token}` }
       }
     ).then((res) => {
-      console.log('token', state.token)
-      console.log(res.data)
       const { valid_token } = res.data
       if (!valid_token) { // If validator return true
         dispatch({
           type: 'SET_TOKEN',
           payload: ''
+        })
+      } else { // only load state if the token is verified to be legitimate
+        dispatch({
+          type: 'SET_ALL',
+          payload: Object.assign({}, state, localState, { ready: false })
         })
       }
       // Make sure token is valid before rendering other component
@@ -46,6 +44,7 @@ const StateInitializer = (props) => {
   return null
 }
 
+// REFACTOR: change into function if possible
 class MyApp extends App {
   constructor(props) {
     super(props)
@@ -68,15 +67,15 @@ class MyApp extends App {
         <StateInitializer onInitialized={this.onInitialized} />
         {
           this.state.initialized
-          ? (
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            )
-          : <progress
-              className="progress is-small is-dark"
-              max="100"
-            />
+            ? (
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              )
+            : <progress
+                className="progress is-small is-dark"
+                max="100"
+              />
         }
       </StateProvider>
     )
