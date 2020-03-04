@@ -17,7 +17,7 @@ const StateInitializer = (props) => {
     if (Object.keys(localState).length > 0) {
       dispatch({
         type: 'SET_ALL',
-        payload: {...state, ...localState}
+        payload: Object.assign({}, state, localState, { ready: 'false' })
       })
     }
     // Check auth
