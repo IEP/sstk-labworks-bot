@@ -22,7 +22,7 @@ export default async (req, res) => {
 
   // Check kode_praktikum, exit if file format is not valid
   const kode_praktikum_filter = /[A-Z]+\d{2}/
-  if (!kode_praktikum_filter.test(kode_praktikum)) {
+  if (!kode_praktikum_filter.test(req.body.kode_praktikum)) {
     res.send('wrong file format')
     return
   }

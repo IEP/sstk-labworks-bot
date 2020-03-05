@@ -60,6 +60,12 @@ const DeadlineModal = () => {
     }
   }
 
+  const handleEnter = (e) => {
+    if (e.keyCode === 13) {
+      handleSave()
+    }
+  }
+
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
@@ -88,7 +94,8 @@ const DeadlineModal = () => {
   
   return (
     <div
-      className="modal is-active" 
+      className="modal is-active"
+      onKeyDown={handleEnter}
     >
       <div className="modal-background" />
       <div className="modal-card">

@@ -52,8 +52,7 @@ const submission = async (ctx, next) => {
     nama_praktikan
   } = filename.match(filename_filter).groups
 
-  // Second exit: invalid submission time (outside the deadline)
-  const submission_time = new Date(submission_timestamp * 1000)
+  
   const deadline = await Deadline.query().findById(kode_praktikum)
   const submission = await Submission.query()
     .where('telegram_id', telegram_id)
@@ -77,6 +76,8 @@ const submission = async (ctx, next) => {
     return
   }
 
+  // Second exit: invalid submission time (outside the deadline)
+  const submission_time = new Date(submission_timestamp * 1000)
   const start_deadline = parseISO(deadline.start)
   const end_deadline = parseISO(deadline.end)
   const is_valid_submission_date = isWithinInterval(

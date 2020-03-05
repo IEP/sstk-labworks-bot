@@ -1,6 +1,7 @@
 const axios = require('axios')
 const fs = require('fs-extra')
 const Extra = require('telegraf/extra')
+const { formatISO } = require('date-fns')
 const { join } = require('path')
 const { Submission } = require('../db').Models
 
@@ -24,7 +25,7 @@ const saveSubmission = async (
       telegram_id,
       kode_praktikum,
       filename,
-      created_at: submission_time
+      created_at: formatISO(submission_time)
     })
   
   // Notify the user
