@@ -70,7 +70,7 @@ export const StateProvider = ({ children }) => {
       localStorage.setItem('state', JSON.stringify(state))
     }
   }, [state])
-  // Check Token every 5 minutes
+  // Check token function
   const checkToken = () => {
     axios.post('/api/validate',
       {},
@@ -87,11 +87,12 @@ export const StateProvider = ({ children }) => {
       }
     })
   }
+  // Check token every 5 minutes
   useEffect(() => {
     const refresh = setInterval(() => {
       console.log('Checking token')
       checkToken()
-    }, 60 * 1000)
+    }, 5 * 60 * 1000)
     return () => clearInterval(refresh)
   })
   // Rendered
