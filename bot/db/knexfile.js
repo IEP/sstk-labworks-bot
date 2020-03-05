@@ -18,7 +18,7 @@ module.exports = {
     client: 'sqlite3',
     useNullAsDefault: true,
     connection: {
-      filename: path.join(__dirname, 'db.sqlite3')
+      filename: path.join(__dirname, '../external/db.sqlite3')
     },
     pool: {
       afterCreate: (conn, callback) => {

@@ -1,8 +1,20 @@
-import React from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import Link from 'next/link'
+import Router from 'next/router'
 import store from '../store'
+import axios from 'axios'
 
-const Menu = (props) => {
+const Menu = () => {
+  const { dispatch } = useContext(store)
+
+  const handleClick = () => {
+    dispatch({
+      type: 'SET_TOKEN',
+      payload: ''
+    })
+    Router.push('/')
+  }
+
   return (
     <div className="navbar-menu">
       <div className="navbar-end">
@@ -28,7 +40,7 @@ const Menu = (props) => {
         </Link>
         <a
           className="navbar-item has-background-info has-text-white"
-          onClick={() => props.loginHandle('')}
+          onClick={() => handleClick()}
         >
           Logout
         </a>
@@ -37,18 +49,145 @@ const Menu = (props) => {
   )
 }
 
-const Login = (props) => {
+// TODO: Add Modal to Prompt Token
+
+const LoginModal = () => {
+  const { state, dispatch } = useContext(store)
+  const { token } = state
+  const [otp, setOtp] = useState('')
+
+  const handleChange = (e) => {
+    setOtp(e.target.value)
+  }
+
+  const handleLogin = () => {
+    console.log('OTP', otp)
+    axios.post('/api/login', {
+      otp
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((res) => {
+      const { correct, token } = res.data
+      if (correct) {
+        dispatch({
+          type: 'SET_TOKEN',
+          payload: token
+        })
+      } else {
+        dispatch({
+          type: 'SET_LOGIN_MODAL',
+          payload: false
+        })
+      }
+    })
+    // dispatch({
+    //   type: 'SET_LOGIN_MODAL',
+    //   payload: false
+    // })
+  }
+
+  const handleClick = () => {
+    handleLogin()
+  }
+
+  const handleEnter = (e) => {
+    if (e.keyCode === 13) { // Enter key
+      handleLogin()
+    }
+  }
+
+  const handleClickClose = () => {
+    setOtp('')
+    dispatch({
+      type: 'SET_LOGIN_MODAL',
+      payload: false
+    })
+  }
+
   return (
-    <div className="navbar-menu">
-      <div className="navbar-end">
-        <a
-          className="navbar-item has-background-info has-text-white"
-          onClick={() => props.loginHandle('loginCui')}
-        >
-          Login
-        </a>
+    <div
+      className="modal is-active"
+    >
+      <div className="modal-background" />
+      <div className="modal-card">
+        <header className="modal-card-head">
+          <p className="modal-card-title">Login</p>
+        </header>
+        <section className="modal-card-body">
+          <div className="field is-horizontal">
+            <div className="field-label is-normal">
+              <label className="label">OTP</label>
+            </div>
+            <div className="field-body field is-expanded">
+              <input
+                className="input"
+                type="password"
+                placeholder="123456"
+                onChange={(e) => handleChange(e)}
+                value={otp}
+                onKeyDown={(e) => handleEnter(e)}
+              />
+            </div>
+          </div>
+        </section>
+        <footer className="modal-card-foot">
+          <button
+            className="button is-link"
+            onClick={() => handleClick()}
+          >
+            Login
+          </button>
+        </footer>
       </div>
+      <button
+        className="modal-close is-large"
+        onClick={() => handleClickClose()}
+      />
     </div>
+  )
+}
+
+const Login = () => {
+  const { state, dispatch } = useContext(store)
+  const { login } = state
+
+  const handleClick = () => {
+    dispatch({
+      type: 'SET_LOGIN_MODAL',
+      payload: true
+    })
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 27) { // Escape key
+      dispatch({
+        type: 'SET_LOGIN_MODAL',
+        payload: false
+      })
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
+  return (
+    <>
+      <div className="navbar-menu">
+        <div className="navbar-end">
+          <a
+            className="navbar-item has-background-info has-text-white"
+            onClick={() => handleClick()}
+          >
+            Login
+          </a>
+        </div>
+      </div>
+      { login.modal.open && <LoginModal /> }
+    </>
   )
 }
 
@@ -66,21 +205,15 @@ const Title = () => {
 }
 
 const Navbar = () => {
-  const context = React.useContext(store)
-  const { token } = context.state
-  const loginHandle = (payload) => {
-    const { dispatch } = context
-    dispatch({
-      type: 'SET_TOKEN',
-      payload
-    })
-  }
+  const { state } = useContext(store)
+  const { token } = state
+  
   return (
     <nav className="navbar">
       <Title />
       { token
-        ? <Menu loginHandle={loginHandle} />
-        : <Login loginHandle={loginHandle}/>
+        ? <Menu />
+        : <Login />
       }
     </nav>
   )

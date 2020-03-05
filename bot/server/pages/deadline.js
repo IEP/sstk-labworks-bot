@@ -51,7 +51,7 @@ const DeadlineModal = () => {
     { action: setEnd, label: 'Selesai', placeholder: '2020-12-31 23:59:59' }
   ]
 
-  const handleKeyPress = (e) => {
+  const handleKeyDown = (e) => {
     if (e.keyCode === 27) { // Escape key pressed
       dispatch({
         type: 'SET_DEADLINE_MODAL',
@@ -60,8 +60,13 @@ const DeadlineModal = () => {
     }
   }
 
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
   const handleSave = async () => {
-    axios.post('/api/deadline/add',{
+    await axios.post('/api/deadline/add',{
       kode_praktikum,
       start,
       end,
@@ -69,9 +74,8 @@ const DeadlineModal = () => {
       headers: {
         Authorization: `Bearer ${token}`
       }
-    }).then((res) => {
-      console.log(res.data)
     })
+    // Close modal
     dispatch({
       type: 'SET_DEADLINE_MODAL',
       payload: false
@@ -83,7 +87,9 @@ const DeadlineModal = () => {
   }
   
   return (
-    <div className={deadline.modal.open ? "modal is-active" : "modal"} onKeyDown={handleKeyPress} >
+    <div
+      className="modal is-active" 
+    >
       <div className="modal-background" />
       <div className="modal-card">
         <header className="modal-card-head">
@@ -248,16 +254,16 @@ const Deadline = () => {
   }
 
   return (
-    <div onKeyDown={(e) => handleKeyPress(e)}>
+    <div>
       <DeadlineAddButton />
       {
         deadline.list.length > 0
           ? <DeadlineTable />
           : <div className="has-text-centered">
-              Tidak ada deadline yang telah diatur
+              Belum ada deadline yang telah diatur
             </div>
       }
-      <DeadlineModal />
+      { deadline.modal.open && <DeadlineModal /> }
     </div>
   )
 }

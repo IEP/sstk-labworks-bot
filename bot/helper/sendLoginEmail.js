@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const { firebase } = require('../lib/firebase')
 
 const privateKey = fs.readFileSync(
-  path.join(__dirname, '../credentials/private.key')
+  path.join(__dirname, '../external/credentials/private.key')
 )
 
 /**
@@ -15,7 +15,7 @@ const sendLoginEmail = (telegram_id, email, url = undefined) => {
   try {
   // Generate JWT Token
   const token = jwt.sign({
-    exp: Math.floor(Date.now() / 1000) + (60 * 60),
+    exp: Math.floor(Date.now() / 1000) + (60 * 60), // 1 hour
     telegram_id,
     email
   }, privateKey, { algorithm: 'RS256' })
