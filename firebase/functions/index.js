@@ -7,7 +7,7 @@ const fs = require('fs')
 const jwt = require('jsonwebtoken')
 const path = require('path')
 
-const firebaseConfig = require('./credentials/lab-sstk-web')
+const firebaseConfig = require('./credentials/lab-sstk-web.json')
 const publicKey = fs.readFileSync(path.join(__dirname, './credentials/public.pem'))
 
 firebase.initializeApp(firebaseConfig)
