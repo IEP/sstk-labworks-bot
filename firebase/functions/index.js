@@ -30,8 +30,8 @@ exports.auth = functions.https.onRequest(async (req, res) => {
       await db.collection('authorized').doc(String(telegram_id)).set({
         email,
         telegram_id,
-        date: new Date(),
-        notified: false
+        date: new Date()
+        // notified: false
       })
       res.send('pendaftaran sukses, bot akan mengirimkan notifikasi')
     } else {

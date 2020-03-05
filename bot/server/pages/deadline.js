@@ -254,7 +254,7 @@ const Deadline = () => {
         deadline.list.length > 0
           ? <DeadlineTable />
           : <div className="has-text-centered">
-              Tidak ada deadline yang telah diatur
+              Belum ada deadline yang telah diatur
             </div>
       }
       <DeadlineModal />

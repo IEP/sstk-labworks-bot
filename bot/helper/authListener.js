@@ -9,7 +9,7 @@ const db = admin.firestore()
  */
 const authListener = (telegram) => {
   db.collection('authorized')
-    .where('notified', '==', false)
+    // .where('notified', '==', false)
     .onSnapshot((querySnapshot) => {
       try {
         querySnapshot.forEach(async (doc) => {
@@ -18,7 +18,8 @@ const authListener = (telegram) => {
   
           // Check if already exists
           const mahasiswa = await Mahasiswa.query().findById(telegram_id)
-          if (mahasiswa) throw new Error(`${email} already registered`)
+          if (mahasiswa) return // Exit; continue to next mahasiswa
+          // Add to database
           await Mahasiswa.transaction(async (trx) => {
             await Mahasiswa.query(trx).insert({
               email,
@@ -29,9 +30,13 @@ const authListener = (telegram) => {
 
           // after the user already added into db then update the firestore
           // collection
-          await db.collection('authorized').doc(doc.id).update({
-            notified: true
-          })
+          // await db.collection('authorized').doc(doc.id).update({
+          //   notified: true
+          // })
+
+          // Delete firestore document after registered
+          await db.collection('authorized').doc(doc.id).delete()
+
           console.log(email, 'has been notified')
 
           // Send notification message
