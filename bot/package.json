@@ -12,10 +12,13 @@
     "test": "jest --watchAll",
     "dev": "nodemon -r dotenv/config --max-old-space-size=256 index.js",
     "dev:inspect": "nodemon -r dotenv/config --max-old-space-size=256 --inspect index.js",
+    "inspect": "NODE_ENV=production node -r dotenv/config --max-old-space-size=256 --inspect index.js",
     "server": "cd server && node -r dotenv/config --max-old-space-size=256 index.js"
   },
   "nodemonConfig": {
-    "ignore": ["server/**/*.js"]
+    "ignore": [
+      "server/**/*.js"
+    ]
   },
   "dependencies": {
     "@zeit/next-sass": "^1.0.1",
