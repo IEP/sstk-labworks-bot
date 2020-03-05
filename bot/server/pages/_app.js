@@ -8,6 +8,7 @@ import Layout from '../components/Layout'
 
 const StateInitializer = (props) => {
   const { state, dispatch } = useContext(store)
+  const { token } = state
   const handleInitialized = props.onInitialized
   
   useEffect(() => {
@@ -17,7 +18,7 @@ const StateInitializer = (props) => {
     axios.post('/api/validate',
       {},
       {
-        headers: { 'Authorization': `Bearer ${localState.token}` }
+        headers: { Authorization: `Bearer ${localState.token}` }
       }
     ).then((res) => {
       const { valid_token } = res.data
@@ -38,28 +39,6 @@ const StateInitializer = (props) => {
         type: 'SET_READY'
       })
     })
-  }, [])
-
-  // Refresh every 5 minutes to check the token
-  useEffect(() => {
-    const refresh = setInterval(() => {
-      axios.post('/api/validate',
-        {},
-        {
-          headers: { Authorization: `Bearer ${state.token}` }
-        }
-      ).then((res) => {
-        const { valid_token } = res.data
-        if (!valid_token) {
-          // If the token is not valid then set it null
-          dispatch({
-            type: 'SET_TOKEN',
-            payload: ''
-          })
-        }
-      })
-      return () => clearInterval(refresh)
-    }, 5 * 60 * 1000) // Every 5 minutes
   }, [])
 
   // Token Validator Hook - only fires once at the initial rendering

@@ -1,5 +1,6 @@
 import React, { createContext, useReducer, useEffect } from 'react'
 import produce from 'immer'
+import axios from 'axios'
 
 const initialState = {
   token: '',
@@ -69,6 +70,30 @@ export const StateProvider = ({ children }) => {
       localStorage.setItem('state', JSON.stringify(state))
     }
   }, [state])
+  // Check Token every 5 minutes
+  const checkToken = () => {
+    axios.post('/api/validate',
+      {},
+      {
+        headers: { Authorization: `Bearer ${state.token}` }
+      }
+    ).then((res) => {
+      const { valid_token } = res.data
+      if (!valid_token) {
+        dispatch({
+          type: 'SET_TOKEN',
+          payload: ''
+        })
+      }
+    })
+  }
+  useEffect(() => {
+    const refresh = setInterval(() => {
+      console.log('Checking token')
+      checkToken()
+    }, 60 * 1000)
+    return () => clearInterval(refresh)
+  })
   // Rendered
   return <Provider value={{ state, dispatch }}>{ children }</Provider>
 }

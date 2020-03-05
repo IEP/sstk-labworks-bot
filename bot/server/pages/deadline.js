@@ -246,7 +246,6 @@ const Deadline = () => {
   useEffect(() => {
     const refresh = setInterval(() => {
       fetchDeadline()
-      console.log('refresh')
     }, 30 * 1000) // autofetch every 30 s
     return () => clearInterval(refresh)
   }, [])
