@@ -7,6 +7,13 @@ import axios from 'axios'
 const Menu = () => {
   const { dispatch } = useContext(store)
 
+  useEffect(() => {
+    dispatch({
+      type: 'SET_LOGIN_MODAL',
+      payload: false
+    })
+  }, [])
+
   const handleClick = () => {
     dispatch({
       type: 'SET_TOKEN',
@@ -82,10 +89,6 @@ const LoginModal = () => {
         })
       }
     })
-    // dispatch({
-    //   type: 'SET_LOGIN_MODAL',
-    //   payload: false
-    // })
   }
 
   const handleClick = () => {
