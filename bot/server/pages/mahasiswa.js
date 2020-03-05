@@ -23,7 +23,11 @@ const MahasiswaTableRow = ({ mahasiswa }) => {
     created_at,
     'Asia/Jakarta'
   )
-  const date = format(zoned_date, 'dd MMMM yyyy HH:mm:ss', { timeZone: 'Asia/Jakarta' })
+  const date = format(
+    zoned_date,
+    'dd MMMM yyyy HH:mm:ss',
+    { timeZone: 'Asia/Jakarta' }
+  )
 
   const handleClick = () => {
     axios.post('/api/mahasiswa/delete', {

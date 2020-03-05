@@ -21,12 +21,12 @@ const StateInitializer = (props) => {
       }
     ).then((res) => {
       const { valid_token } = res.data
-      if (!valid_token) { // If validator return true
+      if (!valid_token) { // If validator return false
         dispatch({
           type: 'SET_TOKEN',
           payload: ''
         })
-      } else { // only load state if the token is verified to be legitimate
+      } else { // only load state if only the token is verified to be legitimate
         dispatch({
           type: 'SET_ALL',
           payload: Object.assign({}, state, localState, { ready: false })
@@ -39,10 +39,8 @@ const StateInitializer = (props) => {
       })
     })
   }, [])
-  // 
-  // TODO
-  // Add new effect: refresh token every 5 minutes to make sure the user
-  // is legitimate
+
+  // Refresh every 5 minutes to check the token
   useEffect(() => {
     const refresh = setInterval(() => {
       axios.post('/api/validate',
@@ -53,6 +51,7 @@ const StateInitializer = (props) => {
       ).then((res) => {
         const { valid_token } = res.data
         if (!valid_token) {
+          // If the token is not valid then set it null
           dispatch({
             type: 'SET_TOKEN',
             payload: ''

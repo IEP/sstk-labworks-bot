@@ -22,7 +22,7 @@ export default (req, res) => {
     return
   }
 
-  // Sign new JWT
+  // Sign the JWT
   const jwt = req.jwt
   const privateKey = req.privateKey
 

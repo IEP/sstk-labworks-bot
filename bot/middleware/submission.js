@@ -106,9 +106,9 @@ const submission = async (ctx, next) => {
     `${telegram_id}_${submission_timestamp}_${NIF}_${kode_praktikum}` +
     `_${nama_praktikan}.pdf`
   console.log('Receiving:', final_filename)
-  saveSubmission(ctx, telegram_id, kode_praktikum, file_id, final_filename)
-  // // Filename after altering
-  // // telegramID_timestamp_NIF_KodePraktikum_Nama Lengkap.pdf
+  saveSubmission(
+    ctx, telegram_id, kode_praktikum, file_id, final_filename, submission_time
+  )
 }
 
 module.exports = submission
