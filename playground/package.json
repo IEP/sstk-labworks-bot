@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "fs-extra": "^8.1.0",
     "otplib": "^12.0.1",
     "qrcode": "^1.4.4"
   },
