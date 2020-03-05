@@ -23,3 +23,5 @@ bot.start(middleware.start)
 bot.launch()
 
 authListener(telegram)
+
+console.log('> Bot is ready')

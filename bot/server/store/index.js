@@ -17,6 +17,11 @@ const initialState = {
   },
   submission: {
     list: []
+  },
+  login: {
+    modal: {
+      open: false
+    }
   }
 }
 
@@ -50,6 +55,9 @@ export const StateProvider = ({ children }) => {
         return
       case 'SET_SUBMISSION':
         draft.submission.list = action.payload
+        return
+      case 'SET_LOGIN_MODAL':
+        draft.login.modal.open = action.payload
         return
       case 'SET_ALL': // Load state from localStorage
         return action.payload
