@@ -106,4 +106,4 @@ dist
 *.sqlite3
 credentials
 *.zip
-download
+downloads

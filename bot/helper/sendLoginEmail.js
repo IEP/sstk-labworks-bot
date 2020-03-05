@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const { firebase } = require('../lib/firebase')
 
 const privateKey = fs.readFileSync(
-  path.join(__dirname, '../credentials/private.key')
+  path.join(__dirname, '../external/credentials/private.key')
 )
 
 /**
