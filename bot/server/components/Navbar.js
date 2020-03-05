@@ -1,8 +1,20 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Link from 'next/link'
+import Router from 'next/router'
 import store from '../store'
+import axios from 'axios'
 
-const Menu = (props) => {
+const Menu = () => {
+  const { dispatch } = useContext(store)
+
+  const handleClick = () => {
+    dispatch({
+      type: 'SET_TOKEN',
+      payload: ''
+    })
+    Router.push('/')
+  }
+
   return (
     <div className="navbar-menu">
       <div className="navbar-end">
@@ -28,7 +40,7 @@ const Menu = (props) => {
         </Link>
         <a
           className="navbar-item has-background-info has-text-white"
-          onClick={() => props.loginHandle('')}
+          onClick={() => handleClick()}
         >
           Logout
         </a>
@@ -37,13 +49,34 @@ const Menu = (props) => {
   )
 }
 
-const Login = (props) => {
+const Login = () => {
+  const { state, dispatch } = useContext(store)
+  const { token } = state
+  
+  const handleClick = () => {
+    axios.post('/api/login', {
+      password: 'benar'
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((res) => {
+      const { correct, token } = res.data
+      if (correct) {
+        dispatch({
+          type: 'SET_TOKEN',
+          payload: token
+        })
+      }
+    })
+  }
+
   return (
     <div className="navbar-menu">
       <div className="navbar-end">
         <a
           className="navbar-item has-background-info has-text-white"
-          onClick={() => props.loginHandle('loginCui')}
+          onClick={() => handleClick()}
         >
           Login
         </a>
@@ -66,21 +99,15 @@ const Title = () => {
 }
 
 const Navbar = () => {
-  const context = React.useContext(store)
-  const { token } = context.state
-  const loginHandle = (payload) => {
-    const { dispatch } = context
-    dispatch({
-      type: 'SET_TOKEN',
-      payload
-    })
-  }
+  const { state } = useContext(store)
+  const { token } = state
+  
   return (
     <nav className="navbar">
       <Title />
       { token
-        ? <Menu loginHandle={loginHandle} />
-        : <Login loginHandle={loginHandle}/>
+        ? <Menu />
+        : <Login />
       }
     </nav>
   )

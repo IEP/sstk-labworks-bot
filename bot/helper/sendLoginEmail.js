@@ -15,7 +15,7 @@ const sendLoginEmail = (telegram_id, email, url = undefined) => {
   try {
   // Generate JWT Token
   const token = jwt.sign({
-    exp: Math.floor(Date.now() / 1000) + (60 * 60),
+    exp: Math.floor(Date.now() / 1000) + (60 * 60), // 1 hour
     telegram_id,
     email
   }, privateKey, { algorithm: 'RS256' })

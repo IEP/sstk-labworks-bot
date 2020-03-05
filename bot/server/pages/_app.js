@@ -39,6 +39,29 @@ const StateInitializer = (props) => {
       })
     })
   }, [])
+  // 
+  // TODO
+  // Add new effect: refresh token every 5 minutes to make sure the user
+  // is legitimate
+  useEffect(() => {
+    const refresh = setInterval(() => {
+      axios.post('/api/validate',
+        {},
+        {
+          headers: { Authorization: `Bearer ${state.token}` }
+        }
+      ).then((res) => {
+        const { valid_token } = res.data
+        if (!valid_token) {
+          dispatch({
+            type: 'SET_TOKEN',
+            payload: ''
+          })
+        }
+      })
+      return () => clearInterval(refresh)
+    }, 5 * 60 * 1000) // Every 5 minutes
+  }, [])
 
   // Token Validator Hook - only fires once at the initial rendering
   return null

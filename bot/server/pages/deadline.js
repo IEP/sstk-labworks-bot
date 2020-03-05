@@ -61,7 +61,7 @@ const DeadlineModal = () => {
   }
 
   const handleSave = async () => {
-    axios.post('/api/deadline/add',{
+    await axios.post('/api/deadline/add',{
       kode_praktikum,
       start,
       end,
@@ -69,9 +69,12 @@ const DeadlineModal = () => {
       headers: {
         Authorization: `Bearer ${token}`
       }
-    }).then((res) => {
-      console.log(res.data)
     })
+    // Clear local state
+    setKodePraktikum('')
+    setStart('')
+    setEnd('')
+    // Close modal
     dispatch({
       type: 'SET_DEADLINE_MODAL',
       payload: false
