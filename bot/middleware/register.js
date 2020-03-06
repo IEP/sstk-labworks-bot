@@ -1,5 +1,5 @@
 const { Extra } = require('telegraf') 
-const { Mahasiswa } = require('../db/models')
+const { Mahasiswa } = require('../db').Models
 const loadDialog = require('../helper/loadDialog')
 const sendLoginEmail = require('../helper/sendLoginEmail')
 

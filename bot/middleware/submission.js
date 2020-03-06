@@ -97,7 +97,7 @@ const submission = async (ctx, next) => {
   const file_size_ceil_MB = Math.ceil(file_size / 1000000)
   if (file_size_ceil_MB > 10) {
     ctx.reply(
-      'Ukuran maksimal berkas laporan praktikum yang diijinkan adalah 10 MB',
+      'Ukuran maksimal berkas laporan praktikum yang diijinkan adalah 10 MB.',
       Extra.inReplyTo(message_id)
     )
     next()

@@ -1,6 +1,7 @@
 import React, { createContext, useReducer, useEffect } from 'react'
 import produce from 'immer'
 import axios from 'axios'
+import useInterval from '../hooks/useInterval'
 
 const initialState = {
   token: '',
@@ -87,14 +88,12 @@ export const StateProvider = ({ children }) => {
       }
     })
   }
-  // Check token every 5 minutes
-  useEffect(() => {
-    const refresh = setInterval(() => {
-      console.log('Checking token')
+  // Check token every 5 minutes using custom hooks
+  useInterval(() => {
+    if (state.token) {
       checkToken()
-    }, 5 * 60 * 1000)
-    return () => clearInterval(refresh)
-  })
+    }
+  }, 5 * 60 * 1000)
   // Rendered
   return <Provider value={{ state, dispatch }}>{ children }</Provider>
 }

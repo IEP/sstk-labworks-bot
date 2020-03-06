@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import Router from 'next/router'
 import store from '../store'
 import axios from 'axios'
+import useInterval from '../hooks/useInterval'
 import { format, utcToZonedTime } from 'date-fns-tz'
 
 const MahasiswaTableHead = () => (
@@ -101,12 +102,15 @@ const Mahasiswa = () => {
     fetchMahasiswa()
   }, [mahasiswa.updated])
 
-  useEffect(() => {
-    const refresh = setInterval(() => {
-      fetchMahasiswa()
-    }, 30 * 1000) // autofetch every 30 s
-    return () => clearInterval(refresh)
-  }, [])
+  // useEffect(() => {
+  //   const refresh = setInterval(() => {
+  //     fetchMahasiswa()
+  //   }, 30 * 1000) // autofetch every 30 s
+  //   return () => clearInterval(refresh)
+  // }, [])
+  useInterval(() => {
+    fetchMahasiswa()
+  }, 30 * 1000)
 
   return (
     <>

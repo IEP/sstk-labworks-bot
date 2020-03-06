@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import Router from 'next/router'
 import store from '../store'
 import axios from 'axios'
+import useInterval from '../hooks/useInterval'
 import { format, utcToZonedTime } from 'date-fns-tz'
 
 const SubmissionTable = () => {
@@ -71,13 +72,16 @@ const Submission = () => {
     })
   }
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   fetchSubmission()
+  //   const refresh = setInterval(() => {
+  //     fetchSubmission()
+  //   }, 30 * 1000) // autofetch every 30 s
+  //   return () => clearInterval(refresh)
+  // }, [])
+  useInterval(() => {
     fetchSubmission()
-    const refresh = setInterval(() => {
-      fetchSubmission()
-    }, 30 * 1000) // autofetch every 30 s
-    return () => clearInterval(refresh)
-  }, [])
+  }, 30 * 1000)
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import App from 'next/app'
 import axios from 'axios'
 import store, { StateProvider } from '../store'
@@ -12,7 +12,7 @@ const StateInitializer = (props) => {
   const handleInitialized = props.onInitialized
   
   useEffect(() => {
-    // Load localState fron localStorage
+    // Load localState from localStorage
     const localState = JSON.parse(localStorage.getItem('state')) || {}
     // Check auth
     axios.post('/api/validate',
@@ -35,6 +35,7 @@ const StateInitializer = (props) => {
       }
       // Make sure token is valid before rendering other component
       handleInitialized()
+      // Activate state persistence to localStorage
       dispatch({
         type: 'SET_READY'
       })

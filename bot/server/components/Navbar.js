@@ -56,8 +56,6 @@ const Menu = () => {
   )
 }
 
-// TODO: Add Modal to Prompt Token
-
 const LoginModal = () => {
   const { state, dispatch } = useContext(store)
   const { token } = state
@@ -68,7 +66,6 @@ const LoginModal = () => {
   }
 
   const handleLogin = () => {
-    console.log('OTP', otp)
     axios.post('/api/login', {
       otp
     }, {

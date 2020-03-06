@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react'
 import Router from 'next/router'
 import store from '../store'
 import axios from 'axios'
+import useInterval from '../hooks/useInterval'
 import { format, utcToZonedTime } from 'date-fns-tz'
 
 const DeadlineAddButton = () => {
@@ -243,21 +244,15 @@ const Deadline = () => {
     fetchDeadline()
   }, [deadline.updated])
 
-  useEffect(() => {
-    const refresh = setInterval(() => {
-      fetchDeadline()
-    }, 30 * 1000) // autofetch every 30 s
-    return () => clearInterval(refresh)
-  }, [])
-
-  const handleKeyPress = (e) => {
-    if (e.keyCode === 27) { // Escape key pressed
-      dispatch({
-        type: 'SET_DEADLINE_MODAL',
-        payload: false
-      })
-    }
-  }
+  // useEffect(() => {
+  //   const refresh = setInterval(() => {
+  //     fetchDeadline()
+  //   }, 30 * 1000) // autofetch every 30 s
+  //   return () => clearInterval(refresh)
+  // }, [])
+  useInterval(() => {
+    fetchDeadline()
+  }, 30 * 1000)
 
   return (
     <div>
