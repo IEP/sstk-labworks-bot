@@ -4,9 +4,10 @@
 
 1. Create Telegram Bot via [t.me/BotFather](t.me/BotFather).
 2. Create Firebase Project (Web App).
-3. Create `.env` file inside `bot` folder.
+3. Create `.env` file inside `bot` directory.
 4. Put the Telegram Bot Token inside the `bot/.env` file.
 5. Prepare random secret from OTP Login, put into `bot/.env` file.
+   Do not forget to `yarn install` inside `bot` directory.
 
 `.env`:
 ```
@@ -17,7 +18,7 @@ OTP_SECRET=<OTP Secret>
 6. Prepare `bot/external/` directory, do all the steps in
    `bot/external/README.md`.
 7. Deploy the Firebase project (inside `firebase/` directory).
-8. `cd` to `bot` folder.
+8. `cd` to `bot` directory.
 9. Run `yarn build`.
 10. Run `yarn start`.
 11. Scan the `qrcode.png` file generated inside `bot/external/` using
