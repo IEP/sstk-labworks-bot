@@ -17,12 +17,13 @@ OTP_SECRET=<OTP Secret>
 6. Prepare `bot/external/` directory, do all the steps in
    `bot/external/README.md`.
 7. Deploy the Firebase project (inside `firebase/` directory).
-8. Run `yarn build`.
-9. Run `yarn start`.
-10. Scan the `qrcode.png` file generated inside `bot/external/` using
+8. `cd` to `bot` folder.
+9. Run `yarn build`.
+10. Run `yarn start`.
+11. Scan the `qrcode.png` file generated inside `bot/external/` using
     `Google Authenticator`.
-11. Open the server in [http://localhost:3000](http://localhost:3000).
-12. Login into the dashboard using `Google Authenticator` generated OTP.
+12. Open the server in [http://localhost:3000](http://localhost:3000).
+13. Login into the dashboard using `Google Authenticator` generated OTP.
 
-For future execution, you only need to do steps 8-12 (step 10 is not needed if
+For future execution, you only need to do steps 9-13 (step 11 is not needed if
 you're not changing the `OTP_Secret`).
