@@ -3,8 +3,9 @@ const path = require('path')
 const jwt = require('jsonwebtoken')
 const { firebase } = require('../lib/firebase')
 
+// Load private key
 const privateKey = fs.readFileSync(
-  path.join(__dirname, '../credentials/private.key')
+  path.join(__dirname, '../external/credentials/private.key')
 )
 
 /**
@@ -15,11 +16,12 @@ const sendLoginEmail = (telegram_id, email, url = undefined) => {
   try {
   // Generate JWT Token
   const token = jwt.sign({
-    exp: Math.floor(Date.now() / 1000) + (60 * 60),
+    exp: Math.floor(Date.now() / 1000) + (60 * 60), // 1 hour
     telegram_id,
     email
   }, privateKey, { algorithm: 'RS256' })
 
+  // Generate login URL and load then token into query
   const login_url = url
     ? url
     : `https://lab-sstk.firebaseapp.com/auth?token=${token}`

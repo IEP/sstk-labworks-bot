@@ -1,8 +1,41 @@
-// Parse the "password" then return the token made by that password
-// or a custom token
 export default (req, res) => {
-  res.send({
-    valid: true,
-    token: 'XXXX'
+  // Fetch OTP
+  const submittedOtp = req.body.otp
+
+  // Load OTP Handler
+  const authenticator = req.authenticator
+  const OTP_SECRET = req.OTP_SECRET
+
+  try {
+    // Verify the OTP received
+    if (!authenticator.check(submittedOtp, OTP_SECRET)) {
+      res.json({
+        correct: false
+      })
+      return
+    }
+  } catch(err) {
+    // Exit on error
+    res.json({
+      correct: false
+    })
+    return
+  }
+
+  // Sign the JWT
+  const jwt = req.jwt
+  const privateKey = req.privateKey
+
+  const token = jwt.sign({
+    data: 'nothing here'
+  }, privateKey, {
+    expiresIn: '12h',
+    algorithm: 'RS256'
+  })
+
+  // Send the JWT to Client
+  res.json({
+    correct: true,
+    token
   })
 }

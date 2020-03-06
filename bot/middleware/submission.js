@@ -10,6 +10,7 @@ const dialog = {
 }
 
 const submission = async (ctx, next) => {
+  // Parse variables needed
   const telegram_id = ctx.message.from.id
   const message_id = ctx.message.message_id
   const submission_timestamp = ctx.message.date
@@ -17,15 +18,7 @@ const submission = async (ctx, next) => {
   const file_size = ctx.message.document.file_size
   const filename = ctx.message.document.file_name
 
-  const filter_list = [
-    /(?<NIF>\d{5})/,
-    /_/,
-    /(?<kode_praktikum>[A-Z]+\d{2})/,
-    /_/,
-    /(?<nama_praktikan>[A-Za-z .]+)/,
-    /\.pdf/
-  ]
-  // Zeroth exit: haven't been registered
+  // Case: haven't been registered
   const mahasiswa = await Mahasiswa.query().findById(telegram_id)
   if (!mahasiswa) {
     ctx.replyWithMarkdown(
@@ -36,28 +29,43 @@ const submission = async (ctx, next) => {
     return
   }
 
+  // Case: wrong file format
+  const filter_list = [
+    // 5 digits NIF
+    /(?<NIF>\d{5})/,
+    // underscore
+    /_/,
+    // arbitrarily sized "A-Z" chars followed by 2 digits of number
+    /(?<kode_praktikum>[A-Z]+\d{2})/,
+    // underscore
+    /_/,
+    // Full name of the student arbitrarily sized "A-Z", "a-z", ".", " " chars
+    /(?<nama_praktikan>[A-Za-z .]+)/,
+    // pdf file extension
+    /\.pdf/
+  ]
+
+  // Concantenate (reduce) the filter_list into a single filter
+  // Example: 12345_TEST01_Full Name Human.pdf
   const filename_filter = new RegExp(filter_list.reduce((acc, item) => {
     return acc + item.source
   }, ""))
 
-  // First exit: wrong file format
   if (!filename_filter.test(filename)) {
     ctx.replyWithMarkdown(dialog.wrong_format, Extra.inReplyTo(message_id))
     next()
     return
   }
+
+  // Extract few information from filename
   const {
     NIF,
     kode_praktikum,
     nama_praktikan
   } = filename.match(filename_filter).groups
 
-  // Second exit: invalid submission time (outside the deadline)
-  const submission_time = new Date(submission_timestamp * 1000)
+  // Case: wrong kode_praktikum
   const deadline = await Deadline.query().findById(kode_praktikum)
-  const submission = await Submission.query()
-    .where('telegram_id', telegram_id)
-    .where('kode_praktikum', kode_praktikum)
   if (!deadline) {
     ctx.replyWithMarkdown(
       `Maaf. Kode praktikum \`${kode_praktikum}\` tidak ditemukan`,
@@ -67,6 +75,10 @@ const submission = async (ctx, next) => {
     return
   }
 
+  // Case: already submitting
+  const submission = await Submission.query()
+    .where('telegram_id', telegram_id)
+    .where('kode_praktikum', kode_praktikum)
   if (submission.length > 0) {
     ctx.reply(
       'Maaf. Pengumpulan laporan praktikum hanya bisa dilakukan satu ' + 
@@ -77,11 +89,17 @@ const submission = async (ctx, next) => {
     return
   }
 
+  // Case: invalid submission time (outside the deadline)
+  const submission_time = new Date(submission_timestamp * 1000)
   const start_deadline = parseISO(deadline.start)
   const end_deadline = parseISO(deadline.end)
+  // Only valid if the submission time is within start and end time (inclusive)
   const is_valid_submission_date = isWithinInterval(
     submission_time,
-    { start: start_deadline, end: end_deadline }
+    {
+      start: start_deadline,
+      end: end_deadline
+    }
   )
   if (!is_valid_submission_date) {
     ctx.reply(
@@ -92,23 +110,26 @@ const submission = async (ctx, next) => {
     return
   }
   
-  // Third exit: file size
+  // Case: exceeding file size limit
+  // I'm not sure what telegram server use, base 2 or base 10
   const file_size_ceil_MB = Math.ceil(file_size / 1000000)
   if (file_size_ceil_MB > 10) {
     ctx.reply(
-      'Ukuran maksimal berkas laporan praktikum yang diijinkan adalah 10 MB',
+      'Ukuran maksimal berkas laporan praktikum yang diijinkan adalah 10 MB.',
       Extra.inReplyTo(message_id)
     )
     next()
     return
   }
+
+  // Finally: save submission
   const final_filename =
     `${telegram_id}_${submission_timestamp}_${NIF}_${kode_praktikum}` +
     `_${nama_praktikan}.pdf`
   console.log('Receiving:', final_filename)
-  saveSubmission(ctx, telegram_id, kode_praktikum, file_id, final_filename)
-  // // Filename after altering
-  // // telegramID_timestamp_NIF_KodePraktikum_Nama Lengkap.pdf
+  saveSubmission(
+    ctx, telegram_id, kode_praktikum, file_id, final_filename, submission_time
+  )
 }
 
 module.exports = submission

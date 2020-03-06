@@ -1,5 +1,7 @@
 import React, { createContext, useReducer, useEffect } from 'react'
 import produce from 'immer'
+import axios from 'axios'
+import useInterval from '../hooks/useInterval'
 
 const initialState = {
   token: '',
@@ -17,6 +19,11 @@ const initialState = {
   },
   submission: {
     list: []
+  },
+  login: {
+    modal: {
+      open: false
+    }
   }
 }
 
@@ -51,6 +58,9 @@ export const StateProvider = ({ children }) => {
       case 'SET_SUBMISSION':
         draft.submission.list = action.payload
         return
+      case 'SET_LOGIN_MODAL':
+        draft.login.modal.open = action.payload
+        return
       case 'SET_ALL': // Load state from localStorage
         return action.payload
     }
@@ -61,6 +71,29 @@ export const StateProvider = ({ children }) => {
       localStorage.setItem('state', JSON.stringify(state))
     }
   }, [state])
+  // Check token function
+  const checkToken = () => {
+    axios.post('/api/validate',
+      {},
+      {
+        headers: { Authorization: `Bearer ${state.token}` }
+      }
+    ).then((res) => {
+      const { valid_token } = res.data
+      if (!valid_token) {
+        dispatch({
+          type: 'SET_TOKEN',
+          payload: ''
+        })
+      }
+    })
+  }
+  // Check token every 5 minutes using custom hooks
+  useInterval(() => {
+    if (state.token) {
+      checkToken()
+    }
+  }, 5 * 60 * 1000)
   // Rendered
   return <Provider value={{ state, dispatch }}>{ children }</Provider>
 }

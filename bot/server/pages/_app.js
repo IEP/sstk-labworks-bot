@@ -11,22 +11,22 @@ const StateInitializer = (props) => {
   const handleInitialized = props.onInitialized
   
   useEffect(() => {
-    // Load localState fron localStorage
+    // Load localState from localStorage
     const localState = JSON.parse(localStorage.getItem('state')) || {}
     // Check auth
     axios.post('/api/validate',
       {},
       {
-        headers: { 'Authorization': `Bearer ${localState.token}` }
+        headers: { Authorization: `Bearer ${localState.token}` }
       }
     ).then((res) => {
       const { valid_token } = res.data
-      if (!valid_token) { // If validator return true
+      if (!valid_token) { // If validator return false
         dispatch({
           type: 'SET_TOKEN',
           payload: ''
         })
-      } else { // only load state if the token is verified to be legitimate
+      } else { // only load state if only the token is verified to be legitimate
         dispatch({
           type: 'SET_ALL',
           payload: Object.assign({}, state, localState, { ready: false })
@@ -34,6 +34,7 @@ const StateInitializer = (props) => {
       }
       // Make sure token is valid before rendering other component
       handleInitialized()
+      // Activate state persistence to localStorage
       dispatch({
         type: 'SET_READY'
       })
@@ -44,42 +45,30 @@ const StateInitializer = (props) => {
   return null
 }
 
-// REFACTOR: change into function if possible
-class MyApp extends App {
-  constructor(props) {
-    super(props)
-    this.state = {
-      initialized: false
-    }
-    this.onInitialized = this.onInitialized.bind(this)
+const CustomApp = ({ Component, pageProps }) => {
+  const [initialized, setInitialized] = useState(false)
+
+  const onInitialized = () => {
+    setInitialized(true)
   }
 
-  onInitialized() {
-    this.setState({
-      initialized: true
-    })
-  }
-
-  render() {
-    const { Component, pageProps } = this.props
-    return (
-      <StateProvider>
-        <StateInitializer onInitialized={this.onInitialized} />
-        {
-          this.state.initialized
-            ? (
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
-              )
-            : <progress
-                className="progress is-small is-dark"
-                max="100"
-              />
-        }
-      </StateProvider>
-    )
-  }
+  return (
+    <StateProvider>
+      <StateInitializer onInitialized={onInitialized} />
+      {
+        initialized
+          ? (
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            )
+          : <progress
+              className="progress is-small is-dark"
+              max="100"
+            />
+      }
+    </StateProvider>
+  )
 }
 
-export default MyApp
+export default CustomApp
