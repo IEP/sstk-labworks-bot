@@ -72,13 +72,10 @@ const Submission = () => {
     })
   }
 
-  // useEffect(() => {
-  //   fetchSubmission()
-  //   const refresh = setInterval(() => {
-  //     fetchSubmission()
-  //   }, 30 * 1000) // autofetch every 30 s
-  //   return () => clearInterval(refresh)
-  // }, [])
+  useEffect(() => {
+    fetchSubmission()
+  }, [])
+
   useInterval(() => {
     fetchSubmission()
   }, 30 * 1000)

@@ -102,12 +102,6 @@ const Mahasiswa = () => {
     fetchMahasiswa()
   }, [mahasiswa.updated])
 
-  // useEffect(() => {
-  //   const refresh = setInterval(() => {
-  //     fetchMahasiswa()
-  //   }, 30 * 1000) // autofetch every 30 s
-  //   return () => clearInterval(refresh)
-  // }, [])
   useInterval(() => {
     fetchMahasiswa()
   }, 30 * 1000)
