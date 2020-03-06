@@ -8,7 +8,6 @@ import Layout from '../components/Layout'
 
 const StateInitializer = (props) => {
   const { state, dispatch } = useContext(store)
-  const { token } = state
   const handleInitialized = props.onInitialized
   
   useEffect(() => {
