@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import App from 'next/app'
 import axios from 'axios'
 import store, { StateProvider } from '../store'
@@ -45,42 +45,30 @@ const StateInitializer = (props) => {
   return null
 }
 
-// REFACTOR: change into function if possible
-class MyApp extends App {
-  constructor(props) {
-    super(props)
-    this.state = {
-      initialized: false
-    }
-    this.onInitialized = this.onInitialized.bind(this)
+const CustomApp = ({ Component, pageProps }) => {
+  const [initialized, setInitialized] = useState(false)
+
+  const onInitialized = () => {
+    setInitialized(true)
   }
 
-  onInitialized() {
-    this.setState({
-      initialized: true
-    })
-  }
-
-  render() {
-    const { Component, pageProps } = this.props
-    return (
-      <StateProvider>
-        <StateInitializer onInitialized={this.onInitialized} />
-        {
-          this.state.initialized
-            ? (
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
-              )
-            : <progress
-                className="progress is-small is-dark"
-                max="100"
-              />
-        }
-      </StateProvider>
-    )
-  }
+  return (
+    <StateProvider>
+      <StateInitializer onInitialized={onInitialized} />
+      {
+        initialized
+          ? (
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            )
+          : <progress
+              className="progress is-small is-dark"
+              max="100"
+            />
+      }
+    </StateProvider>
+  )
 }
 
-export default MyApp
+export default CustomApp
