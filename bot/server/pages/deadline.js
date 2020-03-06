@@ -5,22 +5,7 @@ import axios from 'axios'
 import useInterval from '../hooks/useInterval'
 import DeadlineTable from '../components/DeadlineTable'
 import DeadlineAddModal from '../components/DeadlineAddModal'
-
-const DeadlineAddButton = () => {
-  const { dispatch } = useContext(store)
-  return (
-    <div className="buttons has-addons">
-      <button
-        className="button is-primary"
-        onClick={() => dispatch({
-          type: 'SET_DEADLINE_MODAL', payload: true }
-        )}
-      >
-        Tambah Deadline
-      </button>
-    </div>
-  )
-}
+import DeadlineAddButton from '../components/DeadlineAddButton'
 
 const Deadline = () => {
   const { state, dispatch } = useContext(store)
