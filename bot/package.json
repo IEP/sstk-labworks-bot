@@ -45,6 +45,7 @@
     "telegraf": "^3.36.0"
   },
   "devDependencies": {
+    "faker": "^4.1.0",
     "jest": "^25.1.0",
     "nodemon": "^2.0.2"
   }
