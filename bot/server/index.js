@@ -33,12 +33,14 @@ app.prepare().then(() => {
     try {
       const bearer = req.headers.authorization || 'Bearer'
       const token = bearer.split(' ')[1]
+
       // If verification failed, the routine will jump to catch
       jwt.verify(token, publicKey)
       req.authorized = true
     } catch (err) {
       req.authorized = false
     }
+    
     handle(req, res, parsedUrl)
   }).listen(3000, err => {
     if (err) throw err

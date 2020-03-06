@@ -52,8 +52,7 @@ const submission = async (ctx, next) => {
     nama_praktikan
   } = filename.match(filename_filter).groups
 
-  // Second exit: invalid submission time (outside the deadline)
-  const submission_time = new Date(submission_timestamp * 1000)
+  
   const deadline = await Deadline.query().findById(kode_praktikum)
   const submission = await Submission.query()
     .where('telegram_id', telegram_id)
@@ -77,6 +76,8 @@ const submission = async (ctx, next) => {
     return
   }
 
+  // Second exit: invalid submission time (outside the deadline)
+  const submission_time = new Date(submission_timestamp * 1000)
   const start_deadline = parseISO(deadline.start)
   const end_deadline = parseISO(deadline.end)
   const is_valid_submission_date = isWithinInterval(
@@ -96,7 +97,7 @@ const submission = async (ctx, next) => {
   const file_size_ceil_MB = Math.ceil(file_size / 1000000)
   if (file_size_ceil_MB > 10) {
     ctx.reply(
-      'Ukuran maksimal berkas laporan praktikum yang diijinkan adalah 10 MB',
+      'Ukuran maksimal berkas laporan praktikum yang diijinkan adalah 10 MB.',
       Extra.inReplyTo(message_id)
     )
     next()
@@ -106,9 +107,9 @@ const submission = async (ctx, next) => {
     `${telegram_id}_${submission_timestamp}_${NIF}_${kode_praktikum}` +
     `_${nama_praktikan}.pdf`
   console.log('Receiving:', final_filename)
-  saveSubmission(ctx, telegram_id, kode_praktikum, file_id, final_filename)
-  // // Filename after altering
-  // // telegramID_timestamp_NIF_KodePraktikum_Nama Lengkap.pdf
+  saveSubmission(
+    ctx, telegram_id, kode_praktikum, file_id, final_filename, submission_time
+  )
 }
 
 module.exports = submission

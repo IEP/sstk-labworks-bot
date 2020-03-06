@@ -27,7 +27,7 @@ The content of this folder will be as follows:
 | public.pem          | Parsing JWT              |
 | db.sqlite3          | Database                 |
 
-## Creating
+## Procedures
 
 To create `db.sqlite3` go to db folder where `knexfile.js` lies. Run:
 ```

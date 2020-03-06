@@ -41,10 +41,6 @@ class Submission extends Model {
     }
   }
 
-  $beforeInsert() {
-    this.created_at = formatISO(new Date())
-  }
-
   $beforeUpdate() {
     this.updated_at = formatISO(new Date())
   }

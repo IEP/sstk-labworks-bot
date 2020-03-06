@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import App from 'next/app'
 import axios from 'axios'
 import store, { StateProvider } from '../store'
@@ -8,25 +8,26 @@ import Layout from '../components/Layout'
 
 const StateInitializer = (props) => {
   const { state, dispatch } = useContext(store)
+  const { token } = state
   const handleInitialized = props.onInitialized
   
   useEffect(() => {
-    // Load localState fron localStorage
+    // Load localState from localStorage
     const localState = JSON.parse(localStorage.getItem('state')) || {}
     // Check auth
     axios.post('/api/validate',
       {},
       {
-        headers: { 'Authorization': `Bearer ${localState.token}` }
+        headers: { Authorization: `Bearer ${localState.token}` }
       }
     ).then((res) => {
       const { valid_token } = res.data
-      if (!valid_token) { // If validator return true
+      if (!valid_token) { // If validator return false
         dispatch({
           type: 'SET_TOKEN',
           payload: ''
         })
-      } else { // only load state if the token is verified to be legitimate
+      } else { // only load state if only the token is verified to be legitimate
         dispatch({
           type: 'SET_ALL',
           payload: Object.assign({}, state, localState, { ready: false })
@@ -34,33 +35,11 @@ const StateInitializer = (props) => {
       }
       // Make sure token is valid before rendering other component
       handleInitialized()
+      // Activate state persistence to localStorage
       dispatch({
         type: 'SET_READY'
       })
     })
-  }, [])
-  // 
-  // TODO
-  // Add new effect: refresh token every 5 minutes to make sure the user
-  // is legitimate
-  useEffect(() => {
-    const refresh = setInterval(() => {
-      axios.post('/api/validate',
-        {},
-        {
-          headers: { Authorization: `Bearer ${state.token}` }
-        }
-      ).then((res) => {
-        const { valid_token } = res.data
-        if (!valid_token) {
-          dispatch({
-            type: 'SET_TOKEN',
-            payload: ''
-          })
-        }
-      })
-      return () => clearInterval(refresh)
-    }, 5 * 60 * 1000) // Every 5 minutes
   }, [])
 
   // Token Validator Hook - only fires once at the initial rendering
