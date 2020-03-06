@@ -9,7 +9,7 @@ const NavbarMenu = () => {
   const menuEntry = [
     { label: 'Home', href: '/' },
     { label: 'Mahasiswa', href: '/mahasiswa' },
-    { label: 'Deadine', href: '/deadline' },
+    { label: 'Deadline', href: '/deadline' },
     { label: 'Submission', href: '/submission' }
   ]
 

@@ -7,7 +7,11 @@ import SubmissionMenu from './SubmissionMenu'
 const SubmissionTable = () => {
   const { state } = useContext(store)
   const { submission } = state
-  const show = submission.list.filter(item => item.kode_praktikum == submission.activeDeadline || !submission.activeDeadline)
+  const show = submission.list
+    .filter(item =>
+      item.kode_praktikum ==
+        submission.activeDeadline || !submission.activeDeadline
+    )
   return (
     <div className="columns">
       <div className="column is-one-fifth">
