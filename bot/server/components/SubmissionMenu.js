@@ -56,7 +56,7 @@ const SubmissionMenu = () => {
         </li>
       </ul>
       {
-        groups.map((group, key) => (
+        groups.sort().map((group, key) => (
           <div key={key}>
             <hr/>
             <p className="menu-label">
@@ -64,7 +64,7 @@ const SubmissionMenu = () => {
             </p>
             <ul className="menu-list">
               {
-                group.list.map((item, key) => (
+                group.list.sort().map((item, key) => (
                   <li key={key}>
                     <a 
                       className={
