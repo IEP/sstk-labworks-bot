@@ -34,6 +34,9 @@ bot.hears('/debug memory', middleware.debug.memory)
 // `/start` command handling
 bot.start(middleware.start)
 
+// `/terkumpul <kode_praktikum>`
+bot.hears(/^\/terkumpul [A-Z]+\d{2}$/g, middleware.checkSubmission)
+
 // Launch the bot in polling mode since this is not running on dedicated
 // server
 bot.launch()
