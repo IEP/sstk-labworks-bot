@@ -1,12 +1,10 @@
 import { useContext } from 'react'
 import store from '../store'
-import axios from 'axios'
 import { format, utcToZonedTime } from 'date-fns-tz'
 
 const DeadlineTableRow = ({ item }) => {
   const { kode_praktikum, start, end } = item
   const { state, dispatch } = useContext(store)
-  const { token } = state
 
   const timeZone = 'Asia/Jakarta'
   const display_pattern = 'dd MMMM yyyy HH:mm:ss'
@@ -68,7 +66,6 @@ const DeadlineTableRow = ({ item }) => {
       <td>{ str_end }</td>
       <td>
         <div className="buttons">
-          {/* Ubah: only allow to readjust start and end date */}
           <button
             className="button is-primary is-small"
             onClick={() => handleClickUpdate()}

@@ -12,8 +12,8 @@ const Navbar = () => {
     <nav className="navbar">
       <NavbarTitle />
       { token
-        ? <NavbarMenu />
-        : <NavbarLoginButton />
+          ? <NavbarMenu />
+          : <NavbarLoginButton />
       }
     </nav>
   )
