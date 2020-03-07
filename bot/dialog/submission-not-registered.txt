@@ -1,3 +1,3 @@
-Maaf. Anda belum terdaftar.
+Maaf, Anda belum terdaftar.
 Untuk melakukan pendaftaran silakan balas pesan:
 `/register alamat_surel@mail.ugm.ac.id`
