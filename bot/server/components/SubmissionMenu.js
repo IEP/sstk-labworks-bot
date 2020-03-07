@@ -14,8 +14,13 @@ const SubmissionMenu = () => {
         .filter(i =>
           i.kode_praktikum.slice(0, -2) === item
         )
+        .sort((a, b) => {
+          if (a.kode_praktikum < b.kode_praktikum) {
+            return -1
+          }
+          return 1
+        })
     }))
-
   
   const fetchSubmission = async (kode_praktikum) => {
     const res = await axios.get('/api/submission', {
@@ -28,7 +33,11 @@ const SubmissionMenu = () => {
     })
     dispatch({
       type: 'SET_SUBMISSION',
-      payload: res.data
+      payload: res.data.results
+    })
+    dispatch({
+      type: 'SET_SUBMISSION_TOTAL_PAGES',
+      payload: res.data.totalPages
     })
   }
 
@@ -43,6 +52,7 @@ const SubmissionMenu = () => {
     })
     fetchSubmission(payload)
   }
+
   return (
     <aside className="menu">
       <ul className="menu-list">
@@ -86,4 +96,5 @@ const SubmissionMenu = () => {
     </aside>
   )
 }
+
 export default SubmissionMenu
