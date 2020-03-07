@@ -1,9 +1,10 @@
 import { useContext } from 'react'
 import store from '../store'
+import axios from 'axios'
 
 const SubmissionMenu = () => {
   const { state, dispatch } = useContext(store)
-  const { deadline, submission } = state
+  const { deadline, submission, token } = state
   const groups = deadline.list
     .map(item => item.kode_praktikum.slice(0, -2))
     .filter((v, i, a) => a.indexOf(v) === i)
@@ -15,16 +16,40 @@ const SubmissionMenu = () => {
         )
     }))
 
+  
+  const fetchSubmission = async (kode_praktikum) => {
+    const res = await axios.get('/api/submission', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      params: {
+        kode_praktikum
+      }
+    })
+    dispatch({
+      type: 'SET_SUBMISSION',
+      payload: res.data
+    })
+  }
+
+  const updateList = async (payload) => {
+    dispatch({
+      type: 'SET_SHOW_DEADLINE',
+      payload
+    })
+    dispatch({
+      type: 'SET_SUBMISSION_PAGE',
+      payload: 0
+    })
+    fetchSubmission(payload)
+  }
   return (
     <aside className="menu">
       <ul className="menu-list">
         <li>
           <a 
             className={!submission.activeDeadline ? "is-active" : ""}
-            onClick={() => dispatch({
-              type: 'SET_SHOW_DEADLINE',
-              payload: ''
-            })}
+            onClick={() => updateList('')}
           >
             All
           </a>
@@ -47,10 +72,7 @@ const SubmissionMenu = () => {
                           ? "is-active"
                           : ""
                       }
-                      onClick={() => dispatch({
-                        type: 'SET_SHOW_DEADLINE',
-                        payload: item.kode_praktikum
-                      })}
+                      onClick={() => updateList(item.kode_praktikum)}
                     >
                       {item.kode_praktikum}
                     </a>
