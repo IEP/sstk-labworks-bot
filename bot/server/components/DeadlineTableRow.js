@@ -31,17 +31,10 @@ const DeadlineTableRow = ({ item }) => {
     { timeZone }
   )
 
-  const handleClick = () => {
-    axios.post('/api/deadline/delete', {
-      kode_praktikum
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
+  const handleClickDelete = () => {
     dispatch({
-      type: 'SET_DEADLINE_UPDATED',
-      payload: new Date()
+      type: 'SET_DEADLINE_DELETE_MODAL',
+      payload: kode_praktikum
     })
   }
 
@@ -84,7 +77,7 @@ const DeadlineTableRow = ({ item }) => {
           </button>
           <button
             className="button is-danger is-small"
-            onClick={() => handleClick()}
+            onClick={() => handleClickDelete()}
           >
             Hapus
           </button>

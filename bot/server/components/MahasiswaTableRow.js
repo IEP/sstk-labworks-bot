@@ -18,16 +18,9 @@ const MahasiswaTableRow = ({ mahasiswa }) => {
   )
 
   const handleClick = () => {
-    axios.post('/api/mahasiswa/delete', {
-      telegram_id
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
     dispatch({
-      type: 'SET_MAHASISWA_UPDATED',
-      payload: new Date()
+      type: 'SET_MAHASISWA_DELETE_MODAL',
+      payload: telegram_id
     })
   }
   

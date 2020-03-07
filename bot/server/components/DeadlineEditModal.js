@@ -47,7 +47,7 @@ const DeadlineEditModal = () => {
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  })
+  }, [])
 
   const handleSave = async () => {
     await axios.post('/api/deadline/edit', {
