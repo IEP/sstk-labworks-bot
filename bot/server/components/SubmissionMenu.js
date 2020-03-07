@@ -1,6 +1,7 @@
 import { useContext, useEffect } from 'react'
 import store from '../store'
 import axios from 'axios'
+import lodash from 'lodash'
 
 const SubmissionMenu = () => {
   const { state, dispatch } = useContext(store)
@@ -22,21 +23,17 @@ const SubmissionMenu = () => {
     fetchDeadline()
   }, [])
 
-  const groups = deadline.list
-    .map(item => item.kode_praktikum.slice(0, -2))
+  const groups = lodash
+    .uniq(
+      deadline.list.map(item => item.kode_praktikum.slice(0, -2))
+    )
     .sort()
-    .filter((v, i, a) => a.indexOf(v) === i)
     .map(item => ({
       name: item,
       list: deadline.list
-        .filter(i =>
-          i.kode_praktikum.slice(0, -2) === item
-        )
+        .filter(i => i.kode_praktikum.slice(0, -2) === item)
         .sort((a, b) => {
-          if (a.kode_praktikum < b.kode_praktikum) {
-            return -1
-          }
-          return 1
+          return (a.kode_praktikum < b.kode_praktikum) ? -1 : 1
         })
     }))
   
