@@ -1,12 +1,30 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import store from '../store'
 import axios from 'axios'
 
 const SubmissionMenu = () => {
   const { state, dispatch } = useContext(store)
   const { deadline, submission, token } = state
+
+  const fetchDeadline = async () => {
+    const res = await axios.get('/api/deadline', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    dispatch({
+      type: 'SET_DEADLINE',
+      payload: res.data
+    })
+  }
+
+  useEffect(() => {
+    fetchDeadline()
+  }, [])
+
   const groups = deadline.list
     .map(item => item.kode_praktikum.slice(0, -2))
+    .sort()
     .filter((v, i, a) => a.indexOf(v) === i)
     .map(item => ({
       name: item,
