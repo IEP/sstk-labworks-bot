@@ -13,7 +13,7 @@ const dialog = {
 }
 
 // UGM email address regex filter
-const email_filter = /[a-z.]+@mail\.ugm\.ac\.id/
+const email_filter = /[a-z.0-9]+@mail\.ugm\.ac\.id/
 
 module.exports = async (ctx, next) => {
   // Get few Telegram message parameters

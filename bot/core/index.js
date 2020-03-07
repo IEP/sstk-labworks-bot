@@ -26,7 +26,7 @@ bot.start(middleware.start)
 bot.help(middleware.help)
 
 bot.on('document', middleware.submission)
-bot.hears(/^\/register [a-z@.]+$/g, middleware.register)
+bot.hears(/^\/register [a-z@.0-9]+$/g, middleware.register)
 bot.hears(/^\/terkumpul [A-Z]+\d{2}$/g, middleware.checkSubmission)
 bot.hears(/^\/tenggat [A-Z]+\d{2}$/g, middleware.checkDeadline)
 bot.hears('/debug memory', middleware.debug.memory)
