@@ -14,7 +14,6 @@ const authListener = (telegram) => {
         querySnapshot.forEach(async (doc) => {
           // Extract each user data
           const { email, telegram_id } = doc.data()
-  
           // Check if already exists
           const mahasiswa = await Mahasiswa.query().findById(telegram_id)
           // If already exist then continue to the next mahasiswa
@@ -34,7 +33,7 @@ const authListener = (telegram) => {
 
           console.log(email, 'has been notified')
 
-          // Send notification message
+          // Send notification message to the user
           telegram.sendMessage(
             telegram_id,
             "Akun Anda telah terdaftar. Terimakasih."

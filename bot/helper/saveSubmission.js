@@ -25,7 +25,7 @@ const saveSubmission = async (
       telegram_id,
       kode_praktikum,
       filename,
-      created_at: formatISO(submission_time)
+      created_at: formatISO(submission_time) // use telegram server timestamp
     })
   
   // Notify the user

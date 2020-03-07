@@ -18,7 +18,8 @@ const initialState = {
     updated: ''
   },
   submission: {
-    list: []
+    list: [],
+    activeDeadline : ''
   },
   login: {
     modal: {
@@ -57,6 +58,9 @@ export const StateProvider = ({ children }) => {
         return
       case 'SET_SUBMISSION':
         draft.submission.list = action.payload
+        return
+      case 'SET_SHOW_DEADLINE':
+        draft.submission.activeDeadline = action.payload
         return
       case 'SET_LOGIN_MODAL':
         draft.login.modal.open = action.payload

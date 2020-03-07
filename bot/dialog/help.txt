@@ -1,0 +1,8 @@
+*@sstk_bukan_bot*
+=================
+Daftar perintah:
+`/start` menunjukkan petunjuk registrasi.
+`/register alamat_surel@mail.ugm.ac.id` melakukan pendaftaran.
+`/tenggat kode_praktikum` melihat tenggat waktu pengumpulan laporan praktikum.
+`/terkumpul kode_praktikum` melakukan pemeriksaan terhadap laporan yang telah Anda kumpulkan.
+`/help` menunjukkan pesan perintah ini.

@@ -1,3 +1,3 @@
 Halo, Saya (bukan) sebuah Bot SSTK.
 Untuk melakukan pendaftaran silakan balas pesan:
-`/register alamat_surel@mail.ugm.ac.id`
+`/register alamat_surel@mail.ugm.ac.id`.
