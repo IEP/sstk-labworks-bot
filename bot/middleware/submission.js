@@ -68,7 +68,7 @@ const submission = async (ctx, next) => {
   const deadline = await Deadline.query().findById(kode_praktikum)
   if (!deadline) {
     ctx.replyWithMarkdown(
-      `Maaf. Kode praktikum \`${kode_praktikum}\` tidak ditemukan`,
+      `Maaf, kode praktikum \`${kode_praktikum}\` tidak ditemukan.`,
       Extra.inReplyTo(message_id)
     )
     next()
@@ -81,7 +81,7 @@ const submission = async (ctx, next) => {
     .where('kode_praktikum', kode_praktikum)
   if (submission.length > 0) {
     ctx.reply(
-      'Maaf. Pengumpulan laporan praktikum hanya bisa dilakukan satu ' + 
+      'Maaf, pengumpulan laporan praktikum hanya dapat dilakukan satu ' + 
       'kali saja.',
       Extra.inReplyTo(message_id)
     )
@@ -103,8 +103,8 @@ const submission = async (ctx, next) => {
   )
   if (!is_valid_submission_date) {
     ctx.reply(
-      'Maaf. Anda mengumpulkan laporan praktikum tidak pada tenggat waktu ' + 
-      'yang ditentukan'
+      'Maaf, pengumpulan laporan praktikum Anda tidak sesuai dengan tenggat ' + 
+      'waktu yang telah ditentukan.'
     )
     next()
     return
@@ -115,7 +115,8 @@ const submission = async (ctx, next) => {
   const file_size_ceil_MB = Math.ceil(file_size / 1000000)
   if (file_size_ceil_MB > 10) {
     ctx.reply(
-      'Ukuran maksimal berkas laporan praktikum yang diijinkan adalah 10 MB.',
+      'Maaf, ukuran maksimal berkas laporan praktikum yang diijinkan adalah ' + 
+      'sebesar 10 MB.',
       Extra.inReplyTo(message_id)
     )
     next()
