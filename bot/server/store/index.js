@@ -11,6 +11,11 @@ const initialState = {
     modal: {
       open: false
     },
+    edit: {
+      kode_praktikum: '',
+      start: '',
+      end: ''
+    },
     updated: ''
   },
   mahasiswa: {
@@ -46,6 +51,11 @@ export const StateProvider = ({ children }) => {
         return
       case 'SET_DEADLINE_UPDATED':
         draft.deadline.updated = action.payload
+        return
+      case 'SET_DEADLINE_EDIT':
+        draft.deadline.edit.kode_praktikum = action.payload.kode_praktikum
+        draft.deadline.edit.start = action.payload.start
+        draft.deadline.edit.end = action.payload.end
         return
       case 'SET_MAHASISWA':
         draft.mahasiswa.list = action.payload
