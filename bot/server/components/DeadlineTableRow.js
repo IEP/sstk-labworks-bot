@@ -1,12 +1,10 @@
 import { useContext } from 'react'
 import store from '../store'
-import axios from 'axios'
 import { format, utcToZonedTime } from 'date-fns-tz'
 
 const DeadlineTableRow = ({ item }) => {
   const { kode_praktikum, start, end } = item
   const { state, dispatch } = useContext(store)
-  const { token } = state
 
   const timeZone = 'Asia/Jakarta'
   const display_pattern = 'dd MMMM yyyy HH:mm:ss'
@@ -31,17 +29,10 @@ const DeadlineTableRow = ({ item }) => {
     { timeZone }
   )
 
-  const handleClick = () => {
-    axios.post('/api/deadline/delete', {
-      kode_praktikum
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
+  const handleClickDelete = () => {
     dispatch({
-      type: 'SET_DEADLINE_UPDATED',
-      payload: new Date()
+      type: 'SET_DEADLINE_DELETE_MODAL',
+      payload: kode_praktikum
     })
   }
 
@@ -75,7 +66,6 @@ const DeadlineTableRow = ({ item }) => {
       <td>{ str_end }</td>
       <td>
         <div className="buttons">
-          {/* Ubah: only allow to readjust start and end date */}
           <button
             className="button is-primary is-small"
             onClick={() => handleClickUpdate()}
@@ -84,7 +74,7 @@ const DeadlineTableRow = ({ item }) => {
           </button>
           <button
             className="button is-danger is-small"
-            onClick={() => handleClick()}
+            onClick={() => handleClickDelete()}
           >
             Hapus
           </button>

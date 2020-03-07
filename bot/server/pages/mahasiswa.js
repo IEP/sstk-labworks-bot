@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import Router from 'next/router'
 import store from '../store'
 import axios from 'axios'
 import useInterval from '../hooks/useInterval'
 import MahasiswaTable from '../components/MahasiswaTable'
+import MahasiswaDeleteModal from '../components/MahasiswaDeleteModal'
 
 const Mahasiswa = () => {
   const { state, dispatch } = useContext(store)
@@ -39,6 +40,7 @@ const Mahasiswa = () => {
               Belum ada mahasiswa yang terdaftar
             </div>
       }
+      { (mahasiswa.delete.telegram_id || false) && <MahasiswaDeleteModal /> }
     </>
   )
 }

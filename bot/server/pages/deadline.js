@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import Router from 'next/router'
 import store from '../store'
 import axios from 'axios'
@@ -7,6 +7,7 @@ import DeadlineTable from '../components/DeadlineTable'
 import DeadlineAddModal from '../components/DeadlineAddModal'
 import DeadlineAddButton from '../components/DeadlineAddButton'
 import DeadlineEditModal from '../components/DeadlineEditModal'
+import DeadlineDeleteModal from '../components/DeadlineDeleteModal'
 
 const Deadline = () => {
   const { state, dispatch } = useContext(store)
@@ -43,8 +44,9 @@ const Deadline = () => {
               Belum ada deadline yang telah diatur
             </div>
       }
-      { deadline.modal.open && <DeadlineAddModal /> }
-      { deadline.edit.kode_praktikum && <DeadlineEditModal /> }
+      { (deadline.modal.open || false) && <DeadlineAddModal /> }
+      { (deadline.edit.kode_praktikum || false) && <DeadlineEditModal /> }
+      { (deadline.delete.kode_praktikum || false) && <DeadlineDeleteModal /> }
     </div>
   )
 }
