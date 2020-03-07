@@ -16,10 +16,16 @@ const initialState = {
       start: '',
       end: ''
     },
+    delete: {
+      kode_praktikum: ''
+    },
     updated: ''
   },
   mahasiswa: {
     list: [],
+    delete: {
+      telegram_id: ''
+    },
     updated: ''
   },
   submission: {
@@ -57,8 +63,14 @@ export const StateProvider = ({ children }) => {
         draft.deadline.edit.start = action.payload.start
         draft.deadline.edit.end = action.payload.end
         return
+      case 'SET_DEADLINE_DELETE_MODAL':
+        draft.deadline.delete.kode_praktikum = action.payload
+        return
       case 'SET_MAHASISWA':
         draft.mahasiswa.list = action.payload
+        return
+      case 'SET_MAHASISWA_DELETE_MODAL':
+        draft.mahasiswa.delete.telegram_id = action.payload
         return
       case 'SET_MAHASISWA_UPDATED':
         draft.mahasiswa.updated = action.payload
