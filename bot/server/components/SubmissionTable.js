@@ -14,7 +14,7 @@ const SubmissionTable = () => {
     )
   return (
     <div className="columns">
-      <div className="column is-one-fifth">
+      <div className="column is-2">
         <SubmissionMenu />
       </div>
       <div className="column">

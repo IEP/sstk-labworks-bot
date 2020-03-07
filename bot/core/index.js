@@ -22,17 +22,14 @@ bot.catch((err, ctx) => {
   console.log(`Error: ${ctx.updateType}`, err)
 })
 
-// User registration middleware
-bot.hears(/^\/register [a-z@.]+$/g, middleware.register)
-
-// File submission middleware
-bot.on('document', middleware.submission)
-
-// Memory debug middleware
-bot.hears('/debug memory', middleware.debug.memory)
-
-// `/start` command handling
 bot.start(middleware.start)
+bot.help(middleware.help)
+
+bot.on('document', middleware.submission)
+bot.hears(/^\/register [a-z@.0-9]+$/g, middleware.register)
+bot.hears(/^\/terkumpul [A-Z]+\d{2}$/g, middleware.checkSubmission)
+bot.hears(/^\/tenggat [A-Z]+\d{2}$/g, middleware.checkDeadline)
+bot.hears('/debug memory', middleware.debug.memory)
 
 // Launch the bot in polling mode since this is not running on dedicated
 // server
