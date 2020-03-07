@@ -99,6 +99,7 @@ export const StateProvider = ({ children }) => {
           type: 'SET_TOKEN',
           payload: ''
         })
+        localStorage.removeItem('state')
       }
     })
   }

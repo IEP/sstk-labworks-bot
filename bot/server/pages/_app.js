@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import App from 'next/app'
 import axios from 'axios'
 import store, { StateProvider } from '../store'
 
@@ -12,7 +11,12 @@ const StateInitializer = (props) => {
   
   useEffect(() => {
     // Load localState from localStorage
-    const localState = JSON.parse(localStorage.getItem('state')) || {}
+    let localState
+    try {
+      localState = JSON.parse(localStorage.getItem('state') || {})
+    } catch (err) {
+      localState = {}
+    }
     // Check auth
     axios.post('/api/validate',
       {},
@@ -26,6 +30,7 @@ const StateInitializer = (props) => {
           type: 'SET_TOKEN',
           payload: ''
         })
+        localStorage.removeItem('state')
       } else { // only load state if only the token is verified to be legitimate
         dispatch({
           type: 'SET_ALL',
