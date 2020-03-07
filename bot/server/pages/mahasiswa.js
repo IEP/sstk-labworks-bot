@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import Router from 'next/router'
 import store from '../store'
 import axios from 'axios'
@@ -40,7 +40,7 @@ const Mahasiswa = () => {
               Belum ada mahasiswa yang terdaftar
             </div>
       }
-      { mahasiswa.delete.telegram_id && <MahasiswaDeleteModal /> }
+      { (mahasiswa.delete.telegram_id || false) && <MahasiswaDeleteModal /> }
     </>
   )
 }
