@@ -7,23 +7,28 @@ const DeadlineTableRow = ({ item }) => {
   const { kode_praktikum, start, end } = item
   const { state, dispatch } = useContext(store)
   const { token } = state
+
+  const timeZone = 'Asia/Jakarta'
+  const display_pattern = 'dd MMMM yyyy HH:mm:ss'
+  const pattern = 'yyyy-MM-dd HH:mm:ss'
+
   const zoned_start = utcToZonedTime(
     start,
-    'Asia/Jakarta'
+    timeZone
   )
   const zoned_end = utcToZonedTime(
     end,
-    'Asia/Jakarta'
+    timeZone
   )
   const str_start = format(
     zoned_start,
-    'dd MMMM yyyy HH:mm:ss',
-    { timeZone: 'Asia/Jakarta' }
+    display_pattern,
+    { timeZone }
   )
   const str_end = format(
     zoned_end,
-    'dd MMMM yyyy HH:mm:ss',
-    { timeZone: 'Asia/Jakarta' }
+    display_pattern,
+    { timeZone }
   )
 
   const handleClick = () => {
@@ -40,6 +45,29 @@ const DeadlineTableRow = ({ item }) => {
     })
   }
 
+  const formatted_start = format(
+    zoned_start,
+    pattern,
+    { timeZone }
+  )
+
+  const formatted_end = format(
+    zoned_end,
+    pattern,
+    { timeZone }
+  )
+
+  const handleClickUpdate = () => {
+    dispatch({
+      type: 'SET_DEADLINE_EDIT',
+      payload: {
+        kode_praktikum,
+        start: formatted_start,
+        end: formatted_end
+      }
+    })
+  }
+
   return (
     <tr>
       <td>{ kode_praktikum }</td>
@@ -48,14 +76,14 @@ const DeadlineTableRow = ({ item }) => {
       <td>
         <div className="buttons">
           {/* Ubah: only allow to readjust start and end date */}
-          {/* <button
-            className="button is-primary"
-            disabled
+          <button
+            className="button is-primary is-small"
+            onClick={() => handleClickUpdate()}
           >
             Ubah
-          </button> */}
+          </button>
           <button
-            className="button is-danger"
+            className="button is-danger is-small"
             onClick={() => handleClick()}
           >
             Hapus

@@ -38,7 +38,7 @@ const MahasiswaTableRow = ({ mahasiswa }) => {
       <td>{ date }</td>
       <td>
         <button
-          className="button is-danger"
+          className="button is-small is-danger"
           onClick={() => handleClick()}
         >
           Bebas Lab

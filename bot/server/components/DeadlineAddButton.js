@@ -6,7 +6,7 @@ const DeadlineAddButton = () => {
   return (
     <div className="buttons has-addons">
       <button
-        className="button is-primary"
+        className="button is-primary is-small"
         onClick={() => dispatch({
           type: 'SET_DEADLINE_MODAL',
           payload: true

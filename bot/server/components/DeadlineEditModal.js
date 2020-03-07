@@ -1,41 +1,39 @@
-import { useContext, useEffect, useState  } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import store from '../store'
 import axios from 'axios'
-import DeadlineAddModalInput from './DeadlineAddModalInput'
+import DeadlineAddModalInput from '../components/DeadlineAddModalInput'
 
-const DeadlineAddModal = () => {
-  const [kode_praktikum, setKodePraktikum] = useState()
-  const [start, setStart] = useState()
-  const [end, setEnd] = useState()
+const DeadlineEditModal = () => {
   const { state, dispatch } = useContext(store)
-  const { token } = state
+  const { token, deadline } = state
+  const kode_praktikum = deadline.edit.kode_praktikum
+  const [start, setStart] = useState(deadline.edit.start)
+  const [end, setEnd] = useState(deadline.edit.end)
 
   const rowEntry = [
     {
-      action: setKodePraktikum,
-      label: 'Kode Praktikum',
-      placeholder: 'PKD01',
-      value: kode_praktikum
-    },
-    {
       action: setStart,
       label: 'Mulai',
-      placeholder: '2020-12-31 00:00:00',
-      value: start
+      value: start,
+      placeholder: '2020-12-31 00:00:00'
     },
     {
       action: setEnd,
       label: 'Selesai',
-      placeholder: '2020-12-31 23:59:59',
-      value: end
+      value: end,
+      placeholder: '2020-12-31 23:59:59'
     }
   ]
 
   const handleKeyDown = (e) => {
-    if (e.keyCode === 27) { // Escape key pressed
+    if (e.keyCode === 27) {
       dispatch({
-        type: 'SET_DEADLINE_MODAL',
-        payload: false
+        type: 'SET_DEADLINE_EDIT',
+        payload: {
+          kode_praktikum: '',
+          start: '',
+          end: ''
+        }
       })
     }
   }
@@ -49,29 +47,32 @@ const DeadlineAddModal = () => {
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [])
+  })
 
   const handleSave = async () => {
-    await axios.post('/api/deadline/add', {
+    await axios.post('/api/deadline/edit', {
       kode_praktikum,
       start,
-      end,
+      end
     }, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
-    // Close modal
     dispatch({
-      type: 'SET_DEADLINE_MODAL',
-      payload: false
+      type: 'SET_DEADLINE_EDIT',
+      payload: {
+        kode_praktikum: '',
+        start: '',
+        end: ''
+      }
     })
     dispatch({
       type: 'SET_DEADLINE_UPDATED',
       payload: new Date()
     })
   }
-  
+
   return (
     <div
       className="modal is-active"
@@ -80,7 +81,9 @@ const DeadlineAddModal = () => {
       <div className="modal-background" />
       <div className="modal-card">
         <header className="modal-card-head">
-          <p className="modal-card-title">Tambah Deadline</p>
+          <p className="modal-card-title">
+            Ubah Deadline - {kode_praktikum}
+          </p>
         </header>
         <section className="modal-card-body">
           {
@@ -107,12 +110,16 @@ const DeadlineAddModal = () => {
       <button
         className="modal-close is-large"
         onClick={() => dispatch({
-          type: 'SET_DEADLINE_MODAL',
-          payload: false 
+          type: 'SET_DEADLINE_EDIT',
+          payload: {
+            kode_praktikum: '',
+            start: '',
+            end: ''
+          }
         })}
       />
     </div>
   )
 }
 
-export default DeadlineAddModal
+export default DeadlineEditModal
