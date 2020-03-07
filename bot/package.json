@@ -33,6 +33,7 @@
     "immer": "^6.0.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.20.10",
+    "lodash": "^4.17.15",
     "next": "^9.2.2",
     "next-fonts": "^1.0.3",
     "node-sass": "^4.13.1",

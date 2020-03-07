@@ -3,7 +3,7 @@ export default async (req, res) => {
     res.json([])
     return
   }
-  const perPage = 10 // jumlah baris per halaman
+  const perPage = 40 // jumlah baris per halaman
   const page = req.query.page || 0
   const kode_praktikum = req.query.kode_praktikum || ''
   const { Submission } = req.db
@@ -17,11 +17,21 @@ export default async (req, res) => {
         { column: 'created_at' }
       ]
     )
-    .limit(perPage)
-    .offset(page*perPage)
-  if(kode_praktikum){
-    res.json(await baseQuery.where({kode_praktikum}))
-  }else{
-    res.json(await baseQuery)
+    .page(page, perPage)
+
+  if (kode_praktikum) {
+    const submission = await baseQuery.where({ kode_praktikum })
+    const totalPages = Math.floor(submission.total / perPage)
+    res.json({
+      ...submission,
+      totalPages
+    })
+  } else {
+    const submission = await baseQuery
+    const totalPages = Math.floor(submission.total / perPage)
+    res.json({
+      ...submission,
+      totalPages
+    })
   }
 }

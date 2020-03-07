@@ -22,7 +22,11 @@ const Submission = () => {
     })
     dispatch({
       type: 'SET_SUBMISSION',
-      payload: res.data
+      payload: res.data.results
+    })
+    dispatch({
+      type: 'SET_SUBMISSION_TOTAL_PAGES',
+      payload: res.data.totalPages
     })
   }
 
