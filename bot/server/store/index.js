@@ -30,7 +30,9 @@ const initialState = {
   },
   submission: {
     list: [],
-    activeDeadline : ''
+    activeDeadline : '',
+    page: 0,
+    totalPages: 0
   },
   login: {
     modal: {
@@ -83,6 +85,12 @@ export const StateProvider = ({ children }) => {
         return
       case 'SET_SHOW_DEADLINE':
         draft.submission.activeDeadline = action.payload
+        return
+      case 'SET_SUBMISSION_PAGE':
+        draft.submission.page = action.payload
+        return
+      case 'SET_SUBMISSION_TOTAL_PAGES':
+        draft.submission.totalPages = action.payload
         return
       case 'SET_LOGIN_MODAL':
         draft.login.modal.open = action.payload

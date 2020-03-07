@@ -14,11 +14,19 @@ const Submission = () => {
     const res = await axios.get('/api/submission', {
       headers: {
         Authorization: `Bearer ${token}`
+      },
+      params: {
+        kode_praktikum: submission.activeDeadline || '',
+        page: submission.page || 0
       }
     })
     dispatch({
       type: 'SET_SUBMISSION',
-      payload: res.data
+      payload: res.data.results
+    })
+    dispatch({
+      type: 'SET_SUBMISSION_TOTAL_PAGES',
+      payload: res.data.totalPages
     })
   }
 
@@ -31,15 +39,7 @@ const Submission = () => {
   }, 30 * 1000)
 
   return (
-    <>
-      {
-        submission.list.length > 0
-          ? <SubmissionTable />
-          : <div className="has-text-centered">
-              Belum ada laporan praktikum yang telah dikumpulkan
-            </div>
-      }
-    </>
+    <SubmissionTable />
   )
 }
 
