@@ -8,7 +8,8 @@ const DeadlineAddModalInput = (props) => {
         <input
           className="input"
           type="text"
-          placeholder={props.placeholder} 
+          placeholder={props.placeholder}
+          value={props.value}
           onChange={(e) => props.action(e.target.value)}
         />
       </div>

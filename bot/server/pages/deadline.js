@@ -6,6 +6,7 @@ import useInterval from '../hooks/useInterval'
 import DeadlineTable from '../components/DeadlineTable'
 import DeadlineAddModal from '../components/DeadlineAddModal'
 import DeadlineAddButton from '../components/DeadlineAddButton'
+import DeadlineEditModal from '../components/DeadlineEditModal'
 
 const Deadline = () => {
   const { state, dispatch } = useContext(store)
@@ -43,6 +44,7 @@ const Deadline = () => {
             </div>
       }
       { deadline.modal.open && <DeadlineAddModal /> }
+      { deadline.edit.kode_praktikum && <DeadlineEditModal /> }
     </div>
   )
 }
