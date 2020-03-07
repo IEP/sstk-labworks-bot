@@ -14,6 +14,10 @@ const Submission = () => {
     const res = await axios.get('/api/submission', {
       headers: {
         Authorization: `Bearer ${token}`
+      },
+      params: {
+        kode_praktikum: submission.activeDeadline || '',
+        page: submission.page || 0
       }
     })
     dispatch({
@@ -31,15 +35,7 @@ const Submission = () => {
   }, 30 * 1000)
 
   return (
-    <>
-      {
-        submission.list.length > 0
-          ? <SubmissionTable />
-          : <div className="has-text-centered">
-              Belum ada laporan praktikum yang telah dikumpulkan
-            </div>
-      }
-    </>
+    <SubmissionTable />
   )
 }
 
