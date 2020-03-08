@@ -19,7 +19,11 @@ const SubmissionTableHead = () => {
         <th>Kode Praktikum</th>
         <th>
           <a
-            className={currentOrder === 'email' ? 'has-text-success' : 'has-text-black' }
+            className={
+              currentOrder === 'email'
+                ? 'has-text-success'
+                : 'has-text-black'
+            }
             onClick={() => handleClick('email')}
           >
             Alamat Surat Elektronik
@@ -27,7 +31,11 @@ const SubmissionTableHead = () => {
         </th>
         <th>
           <a
-            className={currentOrder === 'created_at' ? 'has-text-success' : 'has-text-black' }
+            className={
+              currentOrder === 'created_at'
+                ? 'has-text-success'
+                : 'has-text-black'
+            }
             onClick={() => handleClick('created_at')}
           >
             Tanggal Pengumpulan

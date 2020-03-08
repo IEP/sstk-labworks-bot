@@ -4,7 +4,7 @@ export default async (req, res) => {
     return
   }
 
-  const perPage = 40 // jumlah baris per halaman
+  const perPage = 25 // jumlah baris per halaman
   const page = req.query.page || 0
   const kode_praktikum = req.query.kode_praktikum || ''
   const orderedBy = req.query.orderBy || 'email'
