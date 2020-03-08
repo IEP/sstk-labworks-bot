@@ -3,9 +3,12 @@ export default async (req, res) => {
     res.json([])
     return
   }
-  const perPage = 40 // jumlah baris per halaman
+
+  const perPage = 25 // jumlah baris per halaman
   const page = req.query.page || 0
   const kode_praktikum = req.query.kode_praktikum || ''
+  const orderedBy = req.query.orderBy || 'email'
+
   const { Submission } = req.db
   const baseQuery = Submission.query()
     .select('submission.*', 'mahasiswa.email')
@@ -13,7 +16,7 @@ export default async (req, res) => {
     .orderBy(
       [
         { column: 'kode_praktikum' },
-        { column: 'created_at' }
+        { column: orderedBy }
       ]
     )
     .page(page, perPage)
@@ -25,7 +28,7 @@ export default async (req, res) => {
     submission = await baseQuery
   }
 
-  const totalPages = Math.floor(submission.total / perPage)
+  const totalPages = Math.ceil(submission.total / perPage) - 1
   res.json({
     ...submission,
     totalPages

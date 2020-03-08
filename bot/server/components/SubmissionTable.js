@@ -27,7 +27,8 @@ const SubmissionTable = () => {
         },
         params: {
           kode_praktikum: submission.activeDeadline,
-          page
+          page,
+          orderBy: submission.orderBy
         }
       })
       dispatch({
@@ -100,11 +101,7 @@ const SubmissionTable = () => {
                   ))
                 : <tr>
                     <td colSpan="3" className="has-text-centered">
-                      {
-                        submission.page
-                          ? "Selesai"
-                          : "Belum ada laporan praktikum yang telah dikumpulkan"
-                      }
+                      Kosong
                     </td>
                   </tr>
             }

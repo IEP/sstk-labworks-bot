@@ -15,17 +15,25 @@ const Mahasiswa = () => {
     const res = await axios.get('/api/mahasiswa', {
       headers: {
         Authorization: `Bearer ${token}`
+      },
+      params: {
+        page: mahasiswa.page || 0,
+        orderBy: mahasiswa.orderBy || ''
       }
     })
     dispatch({
       type: 'SET_MAHASISWA',
-      payload: res.data
+      payload: res.data.results
+    })
+    dispatch({
+      type: 'SET_MAHASISWA_TOTAL_PAGES',
+      payload: res.data.totalPages
     })
   }
 
   useEffect(() => {
     fetchMahasiswa()
-  }, [mahasiswa.updated])
+  }, [mahasiswa.updated, mahasiswa.orderBy])
 
   useInterval(() => {
     fetchMahasiswa()
@@ -33,13 +41,7 @@ const Mahasiswa = () => {
 
   return (
     <>
-      {
-        mahasiswa.list.length > 0
-          ? <MahasiswaTable />
-          : <div className="has-text-centered">
-              Belum ada mahasiswa yang terdaftar
-            </div>
-      }
+      <MahasiswaTable />
       { (mahasiswa.delete.telegram_id || false) && <MahasiswaDeleteModal /> }
     </>
   )

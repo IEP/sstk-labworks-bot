@@ -26,11 +26,15 @@ const initialState = {
     delete: {
       telegram_id: ''
     },
+    orderBy: '',
+    page: 0,
+    totalPages: 0,
     updated: ''
   },
   submission: {
     list: [],
     activeDeadline : '',
+    orderBy: '',
     page: 0,
     totalPages: 0
   },
@@ -74,6 +78,15 @@ export const StateProvider = ({ children }) => {
       case 'SET_MAHASISWA_DELETE_MODAL':
         draft.mahasiswa.delete.telegram_id = action.payload
         return
+      case 'SET_MAHASISWA_PAGE':
+        draft.mahasiswa.page = action.payload
+        return
+      case 'SET_MAHASISWA_ORDER_BY':
+        draft.mahasiswa.orderBy = action.payload
+        return
+      case 'SET_MAHASISWA_TOTAL_PAGES':
+        draft.mahasiswa.totalPages = action.payload
+        return
       case 'SET_MAHASISWA_UPDATED':
         draft.mahasiswa.updated = action.payload
         return
@@ -88,6 +101,9 @@ export const StateProvider = ({ children }) => {
         return
       case 'SET_SUBMISSION_PAGE':
         draft.submission.page = action.payload
+        return
+      case 'SET_SUBMISSION_ORDER_BY':
+        draft.submission.orderBy = action.payload
         return
       case 'SET_SUBMISSION_TOTAL_PAGES':
         draft.submission.totalPages = action.payload

@@ -17,7 +17,8 @@ const Submission = () => {
       },
       params: {
         kode_praktikum: submission.activeDeadline || '',
-        page: submission.page || 0
+        page: submission.page || 0,
+        orderBy: submission.orderBy || ''
       }
     })
     dispatch({
@@ -32,7 +33,7 @@ const Submission = () => {
 
   useEffect(() => {
     fetchSubmission()
-  }, [])
+  }, [submission.orderBy])
 
   useInterval(() => {
     fetchSubmission()

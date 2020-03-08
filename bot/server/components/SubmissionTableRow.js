@@ -1,5 +1,4 @@
 import { format, utcToZonedTime } from 'date-fns-tz'
-import Router from 'next/router'
 
 const SubmissionTableRow = ({ submission }) => {
   const { telegram_id, email, kode_praktikum, filename, created_at } = submission
