@@ -99,7 +99,7 @@ const SubmissionTable = () => {
                     />
                   ))
                 : <tr>
-                    <td colSpan="5" className="has-text-centered">
+                    <td colSpan="3" className="has-text-centered">
                       {
                         submission.page
                           ? "Selesai"

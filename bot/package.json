@@ -24,6 +24,7 @@
     "@zeit/next-sass": "^1.0.1",
     "axios": "^0.19.2",
     "bulma": "^0.8.0",
+    "bulma-tooltip": "^3.0.2",
     "date-fns": "^2.9.0",
     "date-fns-tz": "^1.0.10",
     "dotenv": "^8.2.0",

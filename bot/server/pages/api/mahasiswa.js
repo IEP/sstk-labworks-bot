@@ -7,5 +7,6 @@ export default async (req, res) => {
   }
   const { Mahasiswa } = req.db
   const mahasiswa = await Mahasiswa.query()
+    .orderBy('email')
   res.json(mahasiswa)
 }

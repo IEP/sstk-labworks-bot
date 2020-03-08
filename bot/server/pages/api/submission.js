@@ -13,25 +13,21 @@ export default async (req, res) => {
     .orderBy(
       [
         { column: 'kode_praktikum' },
-        { column: 'telegram_id' },
         { column: 'created_at' }
       ]
     )
     .page(page, perPage)
 
+  let submission
   if (kode_praktikum) {
-    const submission = await baseQuery.where({ kode_praktikum })
-    const totalPages = Math.floor(submission.total / perPage)
-    res.json({
-      ...submission,
-      totalPages
-    })
+    submission = await baseQuery.where({ kode_praktikum })
   } else {
-    const submission = await baseQuery
-    const totalPages = Math.floor(submission.total / perPage)
-    res.json({
-      ...submission,
-      totalPages
-    })
+    submission = await baseQuery
   }
+
+  const totalPages = Math.floor(submission.total / perPage)
+  res.json({
+    ...submission,
+    totalPages
+  })
 }
