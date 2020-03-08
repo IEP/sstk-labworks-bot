@@ -6,6 +6,7 @@ import useInterval from '../hooks/useInterval'
 const initialState = {
   token: '',
   ready: false,
+  burgerMenu: '',
   deadline: {
     list: [],
     modal: {
@@ -52,6 +53,9 @@ export const StateProvider = ({ children }) => {
   // Initiate Reducer
   const [state, dispatch] = useReducer(produce((draft, action) => {
     switch (action.type) {
+      case 'TOGGLE_MENU':
+        draft.burgerMenu = !draft.burgerMenu
+        return
       case 'SET_TOKEN':
         draft.token = action.payload
         return

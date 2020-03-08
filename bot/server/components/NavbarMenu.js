@@ -4,7 +4,8 @@ import Router from 'next/router'
 import NavbarMenuItem from '../components/NavbarMenuItem'
 
 const NavbarMenu = () => {
-  const { dispatch } = useContext(store)
+  const { state, dispatch } = useContext(store)
+  const { burgerMenu } = state
 
   const menuEntry = [
     { label: 'Home', href: '/' },
@@ -29,7 +30,13 @@ const NavbarMenu = () => {
   }
 
   return (
-    <div className="navbar-menu">
+    <div
+      className={
+        burgerMenu
+          ? "navbar-menu is-active"
+          : "navbar-menu"
+      }
+    >
       <div className="navbar-end">
         {
           menuEntry.map(({ label, href }) => (
