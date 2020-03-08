@@ -27,6 +27,13 @@ export default async (req, res) => {
     return
   }
 
+  // Exit on duplication attempt of kode_praktikum
+  const deadline = await Deadline.query().findById(req.body.kode_praktikum)
+  if (deadline) {
+    res.send('no kode_praktikum duplication is allowed')
+    return
+  }
+
   // Check date format, if incorrect, do nothing to the database
   const startDate = zonedTimeToUtc(req.body.start, 'Asia/Jakarta')
   const endDate = zonedTimeToUtc(req.body.end, 'Asia/Jakarta')
