@@ -11,12 +11,17 @@ const SubmissionTableRow = ({ submission }) => {
     'dd MMMM yyyy HH:mm:ss',
     { timeZone: 'Asia/Jakarta' }
   )
+
+  const tooltip = `ID: ${telegram_id} Filename: ${filename}`
+
   return (
     <tr>
       <td>{ kode_praktikum }</td>
-      <td>{ telegram_id }</td>
-      <td>{ email }</td>
-      <td>{ filename }</td>
+      <td data-tooltip={tooltip} >
+        <a href={`/submitted/${kode_praktikum}/${filename}`} target="_blank">
+          { email }
+        </a>
+      </td>
       <td>{ date }</td>
     </tr>
   )

@@ -1,27 +1,43 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import store from '../store'
 import axios from 'axios'
+import lodash from 'lodash'
 
 const SubmissionMenu = () => {
   const { state, dispatch } = useContext(store)
   const { deadline, submission, token } = state
-  const groups = deadline.list
-    .map(item => item.kode_praktikum.slice(0, -2))
-    .filter((v, i, a) => a.indexOf(v) === i)
+
+  const fetchDeadline = async () => {
+    const res = await axios.get('/api/deadline', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    dispatch({
+      type: 'SET_DEADLINE',
+      payload: res.data
+    })
+  }
+
+  useEffect(() => {
+    fetchDeadline()
+  }, [])
+
+  const groups = lodash
+    .uniq(
+      deadline.list.map(item => item.kode_praktikum.slice(0, -2))
+    )
+    .sort()
     .map(item => ({
       name: item,
       list: deadline.list
-        .filter(i =>
-          i.kode_praktikum.slice(0, -2) === item
-        )
+        .filter(i => i.kode_praktikum.slice(0, -2) === item)
         .sort((a, b) => {
-          if (a.kode_praktikum < b.kode_praktikum) {
-            return -1
-          }
-          return 1
+          return (a.kode_praktikum < b.kode_praktikum) ? -1 : 1
         })
     }))
   
+  // Fired when the user select from menu
   const fetchSubmission = async (kode_praktikum) => {
     const res = await axios.get('/api/submission', {
       headers: {
@@ -38,6 +54,10 @@ const SubmissionMenu = () => {
     dispatch({
       type: 'SET_SUBMISSION_TOTAL_PAGES',
       payload: res.data.totalPages
+    })
+    dispatch({
+      type: 'SET_SUBMISSION_ORDER_BY',
+      payload: ''
     })
   }
 
