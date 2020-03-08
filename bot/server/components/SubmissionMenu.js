@@ -37,6 +37,7 @@ const SubmissionMenu = () => {
         })
     }))
   
+  // Fired when the user select from menu
   const fetchSubmission = async (kode_praktikum) => {
     const res = await axios.get('/api/submission', {
       headers: {
@@ -53,6 +54,10 @@ const SubmissionMenu = () => {
     dispatch({
       type: 'SET_SUBMISSION_TOTAL_PAGES',
       payload: res.data.totalPages
+    })
+    dispatch({
+      type: 'SET_SUBMISSION_ORDER_BY',
+      payload: ''
     })
   }
 

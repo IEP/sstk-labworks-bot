@@ -31,6 +31,7 @@ const initialState = {
   submission: {
     list: [],
     activeDeadline : '',
+    orderBy: '',
     page: 0,
     totalPages: 0
   },
@@ -88,6 +89,9 @@ export const StateProvider = ({ children }) => {
         return
       case 'SET_SUBMISSION_PAGE':
         draft.submission.page = action.payload
+        return
+      case 'SET_SUBMISSION_ORDER_BY':
+        draft.submission.orderBy = action.payload
         return
       case 'SET_SUBMISSION_TOTAL_PAGES':
         draft.submission.totalPages = action.payload

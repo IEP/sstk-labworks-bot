@@ -27,7 +27,8 @@ const SubmissionTable = () => {
         },
         params: {
           kode_praktikum: submission.activeDeadline,
-          page
+          page,
+          orderBy: submission.orderBy
         }
       })
       dispatch({
