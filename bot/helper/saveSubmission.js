@@ -9,13 +9,13 @@ const saveSubmission = async (
   ctx, telegram_id, kode_praktikum, file_id, filename, submission_time
 ) => {
   // Prepare the download folder
-  const folder = join(__dirname, `../external/downloads/${kode_praktikum}`)
+  const folder = join(__dirname, `../server/public/submitted/${kode_praktikum}`)
   await fs.ensureDir(folder)
 
   // Fetch download link using Telegram Bot API
   const download_link = await ctx.telegram.getFileLink(file_id)
 
-  // Fetch the file blob then save into "/external/downloads" folder
+  // Fetch the file blob then save into "/server/public/submitted" folder
   const res = await axios.get(download_link, { responseType: 'stream' })
   await res.data.pipe(fs.createWriteStream(`${folder}/${filename}`))
 
