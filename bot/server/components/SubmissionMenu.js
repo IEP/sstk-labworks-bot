@@ -73,6 +73,13 @@ const SubmissionMenu = () => {
     fetchSubmission(payload)
   }
 
+  const toggleMenu = async payload => {
+    dispatch({
+      type: 'TOGGLE_SHOW_DEADLINE_GROUP',
+      payload
+    })
+  }
+
   return (
     <aside className="menu">
       <ul className="menu-list">
@@ -87,30 +94,45 @@ const SubmissionMenu = () => {
       </ul>
       {
         groups.sort().map((group, key) => (
-          <div key={key}>
-            <hr/>
-            <p className="menu-label">
-              {group.name}
-            </p>
-            <ul className="menu-list">
-              {
-                group.list.sort().map((item, key) => (
-                  <li key={key}>
-                    <a 
-                      className={
-                        submission.activeDeadline === item.kode_praktikum 
-                          ? "is-active"
-                          : ""
-                      }
-                      onClick={() => updateList(item.kode_praktikum)}
-                    >
-                      {item.kode_praktikum}
-                    </a>
-                  </li>
-                ))
-              }
-            </ul>
-          </div>
+          <ul className="menu-list" key={key}>
+            <li>
+              <a href="#" onClick={() => toggleMenu(group.name)}>
+                <span className="">
+                  {group.name}
+                </span>
+                <span className="icon is-small is-pulled-right">
+                  <i className={
+                    (submission.showGroupDeadline && submission.showGroupDeadline.includes(group.name))
+                    ? "fa fa-angle-down"
+                    : "fa fa-angle-right"
+                  }
+                    ></i>
+                </span>
+              </a>
+              <ul className={
+                (submission.showGroupDeadline && submission.showGroupDeadline.includes(group.name))
+                ? "menu-list"
+                : "menu-list is-hidden"
+              }>
+                {
+                  group.list.sort().map((item, key) => (
+                    <li key={key}>
+                      <a href="#"
+                        className={
+                          submission.activeDeadline === item.kode_praktikum 
+                            ? "is-active"
+                            : ""
+                        }
+                        onClick={() => updateList(item.kode_praktikum)}
+                      >
+                        {item.kode_praktikum}
+                      </a>
+                    </li>
+                  ))
+                }
+              </ul>
+            </li>
+          </ul>
         ))
       }
     </aside>
