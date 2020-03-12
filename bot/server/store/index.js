@@ -37,7 +37,8 @@ const initialState = {
     activeDeadline : '',
     orderBy: '',
     page: 0,
-    totalPages: 0
+    totalPages: 0,
+    showGroupDeadline: []
   },
   login: {
     modal: {
@@ -117,6 +118,14 @@ export const StateProvider = ({ children }) => {
         return
       case 'SET_ALL': // Load state from localStorage
         return action.payload
+      case 'TOGGLE_SHOW_DEADLINE_GROUP':
+        if(!draft.submission.showGroupDeadline) draft.submission.showGroupDeadline = []
+        if(draft.submission.showGroupDeadline.includes(action.payload)){
+          draft.submission.showGroupDeadline = draft.submission.showGroupDeadline.filter(e => e !== action.payload) 
+        }else{
+          draft.submission.showGroupDeadline = draft.submission.showGroupDeadline.concat(action.payload)
+        }
+        return
     }
   }), initialState)
   // Add hooks to persist state on localStorage

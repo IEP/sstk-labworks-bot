@@ -2,6 +2,8 @@ import { useContext, useEffect } from 'react'
 import store from '../store'
 import Router from 'next/router'
 import NavbarMenuItem from '../components/NavbarMenuItem'
+import _ from 'lodash' 
+import Head from 'next/head'
 
 const NavbarMenu = () => {
   const { state, dispatch } = useContext(store)
@@ -29,6 +31,8 @@ const NavbarMenu = () => {
     Router.push('/')
   }
 
+  const { label } = _.find(menuEntry, ({ href }) => href == Router.pathname)
+
   return (
     <div
       className={
@@ -37,6 +41,9 @@ const NavbarMenu = () => {
           : "navbar-menu"
       }
     >
+      <Head>
+        <title>{label}</title>
+      </Head>
       <div className="navbar-end">
         {
           menuEntry.map(({ label, href }) => (
