@@ -13,7 +13,8 @@
     "dev": "nodemon -r dotenv/config --max-old-space-size=256 index.js",
     "dev:inspect": "nodemon -r dotenv/config --max-old-space-size=256 --inspect index.js",
     "inspect": "NODE_ENV=production node -r dotenv/config --max-old-space-size=256 --inspect index.js",
-    "server": "node -r dotenv/config --max-old-space-size=256 server/index.js"
+    "server": "node -r dotenv/config --max-old-space-size=256 server/index.js",
+    "format": "prettier --write \"**/*.js\""
   },
   "nodemonConfig": {
     "ignore": [
@@ -49,6 +50,7 @@
   },
   "devDependencies": {
     "jest": "^25.1.0",
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.2",
+    "prettier": "^1.19.1"
   }
 }
