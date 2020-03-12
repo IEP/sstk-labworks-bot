@@ -11,15 +11,23 @@ const Submission = () => {
   if (!token) Router.push('/')
 
   const fetchSubmission = async () => {
+    const page = submission.page > submission.totalPages
+      ? 0
+      : submission.page || 0
     const res = await axios.get('/api/submission', {
       headers: {
         Authorization: `Bearer ${token}`
       },
       params: {
         kode_praktikum: submission.activeDeadline || '',
-        page: submission.page || 0,
-        orderBy: submission.orderBy || ''
+        page,
+        orderBy: submission.orderBy || '',
+        search: submission.search || ''
       }
+    })
+    dispatch({
+      type: 'SET_SUBMISSION_PAGE',
+      payload: page
     })
     dispatch({
       type: 'SET_SUBMISSION',
@@ -33,7 +41,7 @@ const Submission = () => {
 
   useEffect(() => {
     fetchSubmission()
-  }, [submission.orderBy])
+  }, [submission.orderBy, submission.search, submission.page])
 
   useInterval(() => {
     fetchSubmission()

@@ -8,13 +8,18 @@ export default async (req, res) => {
   const page = req.query.page || 0
   const kode_praktikum = req.query.kode_praktikum || ''
   const orderedBy = req.query.orderBy || 'email'
+  const search = req.query.search || ''
 
   const { Submission } = req.db
-  const baseQuery = Submission.query()
+  let baseQuery = Submission.query()
     .select('submission.*', 'mahasiswa.email')
     .joinRelated('mahasiswa')
     .orderBy([{ column: 'kode_praktikum' }, { column: orderedBy }])
     .page(page, perPage)
+  
+  if (search) {
+    baseQuery = baseQuery.where('email', 'like', `%${search}%`)
+  }
 
   let submission
   if (kode_praktikum) {

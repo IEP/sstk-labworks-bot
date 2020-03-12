@@ -38,7 +38,8 @@ const initialState = {
     orderBy: '',
     page: 0,
     totalPages: 0,
-    showGroupDeadline: []
+    showGroupDeadline: [],
+    search: ''
   },
   login: {
     modal: {
@@ -116,6 +117,9 @@ export const StateProvider = ({ children }) => {
           return
         case 'SET_LOGIN_MODAL':
           draft.login.modal.open = action.payload
+          return
+        case 'SET_SUBMISSION_SEARCH':
+          draft.submission.search = action.payload
           return
         case 'SET_ALL': // Load state from localStorage
           return action.payload
