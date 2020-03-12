@@ -22,9 +22,11 @@ class Deadline extends Model {
         },
         end: {
           type: 'string',
-          default: formatISO(add(new Date(), {
-            hours: 1
-          }))
+          default: formatISO(
+            add(new Date(), {
+              hours: 1
+            })
+          )
         }
       }
     }

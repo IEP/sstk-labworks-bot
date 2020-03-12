@@ -1,4 +1,4 @@
-const { Extra } = require('telegraf') 
+const { Extra } = require('telegraf')
 const { Mahasiswa } = require('../db').Models
 const loadDialog = require('../helper/loadDialog')
 const sendLoginEmail = require('../helper/sendLoginEmail')
@@ -8,8 +8,9 @@ const dialog = {
   valid: loadDialog('../dialog/register-valid-email.txt'),
   invalid: loadDialog('../dialog/register-invalid-email.txt'),
   registered_email: loadDialog('../dialog/register-registered-email.txt'),
-  registered_telegram_id:
-    loadDialog('../dialog/register-registered-telegram_id.txt')
+  registered_telegram_id: loadDialog(
+    '../dialog/register-registered-telegram_id.txt'
+  )
 }
 
 // UGM email address regex filter
@@ -25,7 +26,8 @@ module.exports = async (ctx, next) => {
   // the registration
   const mahasiswa = await Mahasiswa.query().findById(telegram_id)
   if (mahasiswa) {
-    ctx.reply(dialog.registered_telegram_id + mahasiswa.email, 
+    ctx.reply(
+      dialog.registered_telegram_id + mahasiswa.email,
       Extra.inReplyTo(message_id)
     )
     next()

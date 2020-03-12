@@ -15,13 +15,13 @@ const NavbarTitle = () => {
       </a>
       <a
         className={
-          burgerMenu
-            ? "navbar-burger burger is-active"
-            : "navbar-burger burger"
+          burgerMenu ? 'navbar-burger burger is-active' : 'navbar-burger burger'
         }
-        onClick={() => dispatch({
-          type: 'TOGGLE_MENU'
-        })}
+        onClick={() =>
+          dispatch({
+            type: 'TOGGLE_MENU'
+          })
+        }
       >
         <span />
         <span />

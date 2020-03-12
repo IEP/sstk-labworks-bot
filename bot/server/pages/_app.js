@@ -8,7 +8,7 @@ import Layout from '../components/Layout'
 const StateInitializer = (props) => {
   const { state, dispatch } = useContext(store)
   const handleInitialized = props.onInitialized
-  
+
   useEffect(() => {
     // Load localState from localStorage
     let localState
@@ -18,32 +18,37 @@ const StateInitializer = (props) => {
       localState = {}
     }
     // Check auth
-    axios.post('/api/validate',
-      {},
-      {
-        headers: { Authorization: `Bearer ${localState.token}` }
-      }
-    ).then((res) => {
-      const { valid_token } = res.data
-      if (!valid_token) { // If validator return false
+    axios
+      .post(
+        '/api/validate',
+        {},
+        {
+          headers: { Authorization: `Bearer ${localState.token}` }
+        }
+      )
+      .then((res) => {
+        const { valid_token } = res.data
+        if (!valid_token) {
+          // If validator return false
+          dispatch({
+            type: 'SET_TOKEN',
+            payload: ''
+          })
+          localStorage.removeItem('state')
+        } else {
+          // only load state if only the token is verified to be legitimate
+          dispatch({
+            type: 'SET_ALL',
+            payload: Object.assign({}, state, localState, { ready: false })
+          })
+        }
+        // Make sure token is valid before rendering other component
+        handleInitialized()
+        // Activate state persistence to localStorage
         dispatch({
-          type: 'SET_TOKEN',
-          payload: ''
+          type: 'SET_READY'
         })
-        localStorage.removeItem('state')
-      } else { // only load state if only the token is verified to be legitimate
-        dispatch({
-          type: 'SET_ALL',
-          payload: Object.assign({}, state, localState, { ready: false })
-        })
-      }
-      // Make sure token is valid before rendering other component
-      handleInitialized()
-      // Activate state persistence to localStorage
-      dispatch({
-        type: 'SET_READY'
       })
-    })
   }, [])
 
   // Token Validator Hook - only fires once at the initial rendering
@@ -60,18 +65,13 @@ const CustomApp = ({ Component, pageProps }) => {
   return (
     <StateProvider>
       <StateInitializer onInitialized={onInitialized} />
-      {
-        initialized
-          ? (
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            )
-          : <progress
-              className="progress is-small is-dark"
-              max="100"
-            />
-      }
+      {initialized ? (
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      ) : (
+        <progress className="progress is-small is-dark" max="100" />
+      )}
     </StateProvider>
   )
 }

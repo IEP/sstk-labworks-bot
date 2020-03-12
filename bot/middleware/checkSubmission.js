@@ -17,12 +17,12 @@ const checkSubmission = async (ctx, next) => {
     .where('telegram_id', telegram_id)
     .where('kode_praktikum', kode_praktikum)
     .limit(1)
-  
+
   // If mahasiswa haven't send any submission to the bot
   if (!submission.length) {
     ctx.replyWithMarkdown(
       `Maaf, Anda belum pernah mengumpulkan laporan praktikum untuk kode ` +
-      `praktikum \`${kode_praktikum}\`.`,
+        `praktikum \`${kode_praktikum}\`.`,
       Extra.inReplyTo(message_id)
     )
     next()
@@ -39,7 +39,7 @@ const checkSubmission = async (ctx, next) => {
 
   ctx.replyWithMarkdown(
     `Laporan praktikum Anda untuk kode praktikum \`${kode_praktikum}\` ` +
-    `telah terkumpul pada ${submission_str}.`,
+      `telah terkumpul pada ${submission_str}.`,
     Extra.inReplyTo(message_id)
   )
 }

@@ -11,7 +11,7 @@ const MahasiswaTable = () => {
   const show = state.mahasiswa.list
   const pageList = lodash
     .range(mahasiswa.page - 5, mahasiswa.page + 6)
-    .filter(page => 0 <= page && page <= mahasiswa.totalPages)
+    .filter((page) => 0 <= page && page <= mahasiswa.totalPages)
 
   const updatePage = async (page) => {
     if (0 <= page && page <= mahasiswa.totalPages) {
@@ -56,22 +56,20 @@ const MahasiswaTable = () => {
             Prev
           </a>
           <ul className="pagination-list">
-            {
-              pageList.map((page) => (
-                <li key={page}>
-                  <a
-                    className={
-                      page === mahasiswa.page
-                        ? "pagination-link is-current"
-                        : "pagination-link"
-                    }
-                    onClick={() => updatePage(page)}
-                  >
-                    {page + 1}
-                  </a>
-                </li>
-              ))
-            }
+            {pageList.map((page) => (
+              <li key={page}>
+                <a
+                  className={
+                    page === mahasiswa.page
+                      ? 'pagination-link is-current'
+                      : 'pagination-link'
+                  }
+                  onClick={() => updatePage(page)}
+                >
+                  {page + 1}
+                </a>
+              </li>
+            ))}
           </ul>
           <a
             className="pagination-next"
@@ -85,20 +83,17 @@ const MahasiswaTable = () => {
       <table className="table is-striped is-hoverable is-fullwidth">
         <MahasiswaTableHead />
         <tbody>
-          {
-            show.length > 0
-              ? show.map((item) => (
-                  <MahasiswaTableRow
-                    key={item.telegram_id}
-                    mahasiswa={item}
-                  />
-                ))
-              : <tr>
-                  <td colSpan="3" className="has-text-centered">
-                    Kosong
-                  </td>
-                </tr>
-          }
+          {show.length > 0 ? (
+            show.map((item) => (
+              <MahasiswaTableRow key={item.telegram_id} mahasiswa={item} />
+            ))
+          ) : (
+            <tr>
+              <td colSpan="3" className="has-text-centered">
+                Kosong
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </>

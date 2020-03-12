@@ -53,7 +53,7 @@ describe('testing database', () => {
   //     expect(psd).toEqual(all[1])
   //     // console.log(psd, all[1])
   //   })
-  
+
   //   test('delete deadline', async () => {
   //     await Deadline.query()
   //       .delete()
@@ -78,8 +78,7 @@ describe('testing database', () => {
           telegram_id: 1234,
           email: 'b@a.com'
         })
-      }
-      catch (err) {
+      } catch (err) {
         expect(err.name).toBe('UniqueViolationError')
       }
     })

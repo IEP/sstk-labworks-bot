@@ -8,8 +8,7 @@ const checkDeadline = async (ctx, next) => {
   const message_filter = /^\/tenggat (?<kode_praktikum>[A-Z]+\d{2})$/
   const { kode_praktikum } = message.match(message_filter).groups
 
-  const deadline = await Deadline.query()
-    .findById(kode_praktikum)
+  const deadline = await Deadline.query().findById(kode_praktikum)
 
   if (!deadline) {
     ctx.replyWithMarkdown(
@@ -37,7 +36,7 @@ const checkDeadline = async (ctx, next) => {
 
   ctx.replyWithMarkdown(
     `Tenggat waktu untuk kode praktikum \`${kode_praktikum}\` adalah ` +
-    `pada ${start_str} hingga ${end_str}.`,
+      `pada ${start_str} hingga ${end_str}.`,
     Extra.inReplyTo(message_id)
   )
 }

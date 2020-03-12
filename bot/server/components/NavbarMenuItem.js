@@ -5,12 +5,10 @@ const NavbarMenuItem = ({ label, href }) => (
   <Link href={href}>
     <a
       className={
-        Router.pathname === href
-          ? "navbar-item has-text-link"
-          : "navbar-item"
+        Router.pathname === href ? 'navbar-item has-text-link' : 'navbar-item'
       }
     >
-      { label }
+      {label}
     </a>
   </Link>
 )

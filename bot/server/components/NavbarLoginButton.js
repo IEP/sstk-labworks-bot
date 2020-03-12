@@ -14,7 +14,8 @@ const NavbarLoginButton = () => {
   }
 
   const handleKeyDown = (e) => {
-    if (e.keyCode === 27) { // Escape key
+    if (e.keyCode === 27) {
+      // Escape key
       dispatch({
         type: 'SET_LOGIN_MODAL',
         payload: false
@@ -39,7 +40,7 @@ const NavbarLoginButton = () => {
           </a>
         </div>
       </div>
-      { login.modal.open && <NavbarLoginModal /> }
+      {login.modal.open && <NavbarLoginModal />}
     </>
   )
 }

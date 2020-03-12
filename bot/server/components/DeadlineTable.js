@@ -10,11 +10,9 @@ const DeadlineTable = () => {
     <table className="table is-striped is-hoverable is-fullwidth">
       <DeadlineTableHead />
       <tbody>
-        {
-          deadline.list.map((item) => (
-            <DeadlineTableRow key={item.kode_praktikum} item={item} />
-          ))
-        }
+        {deadline.list.map((item) => (
+          <DeadlineTableRow key={item.kode_praktikum} item={item} />
+        ))}
       </tbody>
     </table>
   )

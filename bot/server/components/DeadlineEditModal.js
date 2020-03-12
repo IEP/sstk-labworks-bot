@@ -50,15 +50,19 @@ const DeadlineEditModal = () => {
   }, [])
 
   const handleSave = async () => {
-    await axios.post('/api/deadline/edit', {
-      kode_praktikum,
-      start,
-      end
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    await axios.post(
+      '/api/deadline/edit',
+      {
+        kode_praktikum,
+        start,
+        end
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    })
+    )
     dispatch({
       type: 'SET_DEADLINE_EDIT',
       payload: {
@@ -74,49 +78,41 @@ const DeadlineEditModal = () => {
   }
 
   return (
-    <div
-      className="modal is-active"
-      onKeyDown={handleEnter}
-    >
+    <div className="modal is-active" onKeyDown={handleEnter}>
       <div className="modal-background" />
       <div className="modal-card">
         <header className="modal-card-head">
-          <p className="modal-card-title">
-            Ubah Deadline - {kode_praktikum}
-          </p>
+          <p className="modal-card-title">Ubah Deadline - {kode_praktikum}</p>
         </header>
         <section className="modal-card-body">
-          {
-            rowEntry.map((item) => (
-              <DeadlineAddModalInput
-                key={item.label}
-                action={item.action}
-                label={item.label}
-                placeholder={item.placeholder}
-                value={item.value}
-              />
-            ))
-          }
+          {rowEntry.map((item) => (
+            <DeadlineAddModalInput
+              key={item.label}
+              action={item.action}
+              label={item.label}
+              placeholder={item.placeholder}
+              value={item.value}
+            />
+          ))}
         </section>
         <footer className="modal-card-foot">
-          <button
-            className="button is-success"
-            onClick={() => handleSave()}
-          >
+          <button className="button is-success" onClick={() => handleSave()}>
             Simpan
           </button>
         </footer>
       </div>
       <button
         className="modal-close is-large"
-        onClick={() => dispatch({
-          type: 'SET_DEADLINE_EDIT',
-          payload: {
-            kode_praktikum: '',
-            start: '',
-            end: ''
-          }
-        })}
+        onClick={() =>
+          dispatch({
+            type: 'SET_DEADLINE_EDIT',
+            payload: {
+              kode_praktikum: '',
+              start: '',
+              end: ''
+            }
+          })
+        }
       />
     </div>
   )

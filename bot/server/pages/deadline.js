@@ -37,16 +37,16 @@ const Deadline = () => {
   return (
     <div>
       <DeadlineAddButton />
-      {
-        deadline.list.length > 0
-          ? <DeadlineTable />
-          : <div className="has-text-centered">
-              Belum ada deadline yang telah diatur
-            </div>
-      }
-      { (deadline.modal.open || false) && <DeadlineAddModal /> }
-      { (deadline.edit.kode_praktikum || false) && <DeadlineEditModal /> }
-      { (deadline.delete.kode_praktikum || false) && <DeadlineDeleteModal /> }
+      {deadline.list.length > 0 ? (
+        <DeadlineTable />
+      ) : (
+        <div className="has-text-centered">
+          Belum ada deadline yang telah diatur
+        </div>
+      )}
+      {(deadline.modal.open || false) && <DeadlineAddModal />}
+      {(deadline.edit.kode_praktikum || false) && <DeadlineEditModal />}
+      {(deadline.delete.kode_praktikum || false) && <DeadlineDeleteModal />}
     </div>
   )
 }

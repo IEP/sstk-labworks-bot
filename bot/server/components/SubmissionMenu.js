@@ -24,19 +24,17 @@ const SubmissionMenu = () => {
   }, [])
 
   const groups = lodash
-    .uniq(
-      deadline.list.map(item => item.kode_praktikum.slice(0, -2))
-    )
+    .uniq(deadline.list.map((item) => item.kode_praktikum.slice(0, -2)))
     .sort()
-    .map(item => ({
+    .map((item) => ({
       name: item,
       list: deadline.list
-        .filter(i => i.kode_praktikum.slice(0, -2) === item)
+        .filter((i) => i.kode_praktikum.slice(0, -2) === item)
         .sort((a, b) => {
-          return (a.kode_praktikum < b.kode_praktikum) ? -1 : 1
+          return a.kode_praktikum < b.kode_praktikum ? -1 : 1
         })
     }))
-  
+
   // Fired when the user select from menu
   const fetchSubmission = async (kode_praktikum) => {
     const res = await axios.get('/api/submission', {
@@ -73,7 +71,7 @@ const SubmissionMenu = () => {
     fetchSubmission(payload)
   }
 
-  const toggleMenu = async payload => {
+  const toggleMenu = async (payload) => {
     dispatch({
       type: 'TOGGLE_SHOW_DEADLINE_GROUP',
       payload
@@ -84,57 +82,57 @@ const SubmissionMenu = () => {
     <aside className="menu">
       <ul className="menu-list">
         <li>
-          <a 
-            className={!submission.activeDeadline ? "is-active" : ""}
+          <a
+            className={!submission.activeDeadline ? 'is-active' : ''}
             onClick={() => updateList('')}
           >
             All
           </a>
         </li>
       </ul>
-      {
-        groups.sort().map((group, key) => (
-          <ul className="menu-list" key={key}>
-            <li>
-              <a href="#" onClick={() => toggleMenu(group.name)}>
-                <span className="">
-                  {group.name}
-                </span>
-                <span className="icon is-small is-pulled-right">
-                  <i className={
-                    (submission.showGroupDeadline && submission.showGroupDeadline.includes(group.name))
-                    ? "fa fa-angle-down"
-                    : "fa fa-angle-right"
+      {groups.sort().map((group, key) => (
+        <ul className="menu-list" key={key}>
+          <li>
+            <a href="#" onClick={() => toggleMenu(group.name)}>
+              <span className="">{group.name}</span>
+              <span className="icon is-small is-pulled-right">
+                <i
+                  className={
+                    submission.showGroupDeadline &&
+                    submission.showGroupDeadline.includes(group.name)
+                      ? 'fa fa-angle-down'
+                      : 'fa fa-angle-right'
                   }
-                    ></i>
-                </span>
-              </a>
-              <ul className={
-                (submission.showGroupDeadline && submission.showGroupDeadline.includes(group.name))
-                ? "menu-list"
-                : "menu-list is-hidden"
-              }>
-                {
-                  group.list.sort().map((item, key) => (
-                    <li key={key}>
-                      <a href="#"
-                        className={
-                          submission.activeDeadline === item.kode_praktikum 
-                            ? "is-active"
-                            : ""
-                        }
-                        onClick={() => updateList(item.kode_praktikum)}
-                      >
-                        {item.kode_praktikum}
-                      </a>
-                    </li>
-                  ))
-                }
-              </ul>
-            </li>
-          </ul>
-        ))
-      }
+                ></i>
+              </span>
+            </a>
+            <ul
+              className={
+                submission.showGroupDeadline &&
+                submission.showGroupDeadline.includes(group.name)
+                  ? 'menu-list'
+                  : 'menu-list is-hidden'
+              }
+            >
+              {group.list.sort().map((item, key) => (
+                <li key={key}>
+                  <a
+                    href="#"
+                    className={
+                      submission.activeDeadline === item.kode_praktikum
+                        ? 'is-active'
+                        : ''
+                    }
+                    onClick={() => updateList(item.kode_praktikum)}
+                  >
+                    {item.kode_praktikum}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </li>
+        </ul>
+      ))}
     </aside>
   )
 }

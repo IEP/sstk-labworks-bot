@@ -20,9 +20,7 @@ const SubmissionTableHead = () => {
         <th>
           <a
             className={
-              currentOrder === 'email'
-                ? 'has-text-success'
-                : 'has-text-black'
+              currentOrder === 'email' ? 'has-text-success' : 'has-text-black'
             }
             onClick={() => handleClick('email')}
           >

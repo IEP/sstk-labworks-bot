@@ -28,12 +28,12 @@ app.prepare().then(() => {
     req.privateKey = privateKey
     req.authenticator = authenticator
     req.OTP_SECRET = OTP_SECRET
-  
+
     // Check JSON Web Token
     try {
       const bearer = req.headers.authorization || 'Bearer'
       const token = bearer.split(' ')[1]
-  
+
       // If verification failed, the routine will jump to catch
       jwt.verify(token, publicKey)
       req.authorized = true
@@ -64,11 +64,11 @@ app.prepare().then(() => {
       }
     })
   })
-  
+
   server.all('*', (req, res) => {
     handle(req, res)
   })
-  
+
   server.listen(3000, (err) => {
     if (err) throw err
     console.log('> Yoman, Frontend Ready on http://localhost:3000')

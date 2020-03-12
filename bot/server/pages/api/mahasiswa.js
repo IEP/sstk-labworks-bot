@@ -14,7 +14,7 @@ export default async (req, res) => {
     .page(page, perPage)
 
   const totalPages = Math.ceil(mahasiswa.total / perPage) - 1
-    
+
   res.json({
     ...mahasiswa,
     totalPages

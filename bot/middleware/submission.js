@@ -21,10 +21,7 @@ const submission = async (ctx, next) => {
   // Case: haven't been registered
   const mahasiswa = await Mahasiswa.query().findById(telegram_id)
   if (!mahasiswa) {
-    ctx.replyWithMarkdown(
-      dialog.not_registered,
-      Extra.inReplyTo(message_id)
-    )
+    ctx.replyWithMarkdown(dialog.not_registered, Extra.inReplyTo(message_id))
     next()
     return
   }
@@ -47,9 +44,11 @@ const submission = async (ctx, next) => {
 
   // Concantenate (reduce) the filter_list into a single filter
   // Example: 12345_TEST01_Full Name Human.pdf
-  const filename_filter = new RegExp(filter_list.reduce((acc, item) => {
-    return acc + item.source
-  }, ""))
+  const filename_filter = new RegExp(
+    filter_list.reduce((acc, item) => {
+      return acc + item.source
+    }, '')
+  )
 
   if (!filename_filter.test(filename)) {
     ctx.replyWithMarkdown(dialog.wrong_format, Extra.inReplyTo(message_id))
@@ -58,11 +57,9 @@ const submission = async (ctx, next) => {
   }
 
   // Extract few information from filename
-  const {
-    NIF,
-    kode_praktikum,
-    nama_praktikan
-  } = filename.match(filename_filter).groups
+  const { NIF, kode_praktikum, nama_praktikan } = filename.match(
+    filename_filter
+  ).groups
 
   // Case: wrong kode_praktikum
   const deadline = await Deadline.query().findById(kode_praktikum)
@@ -81,8 +78,8 @@ const submission = async (ctx, next) => {
     .where('kode_praktikum', kode_praktikum)
   if (submission.length > 0) {
     ctx.reply(
-      'Maaf, pengumpulan laporan praktikum hanya dapat dilakukan satu ' + 
-      'kali saja.',
+      'Maaf, pengumpulan laporan praktikum hanya dapat dilakukan satu ' +
+        'kali saja.',
       Extra.inReplyTo(message_id)
     )
     next()
@@ -94,29 +91,26 @@ const submission = async (ctx, next) => {
   const start_deadline = parseISO(deadline.start)
   const end_deadline = parseISO(deadline.end)
   // Only valid if the submission time is within start and end time (inclusive)
-  const is_valid_submission_date = isWithinInterval(
-    submission_time,
-    {
-      start: start_deadline,
-      end: end_deadline
-    }
-  )
+  const is_valid_submission_date = isWithinInterval(submission_time, {
+    start: start_deadline,
+    end: end_deadline
+  })
   if (!is_valid_submission_date) {
     ctx.reply(
-      'Maaf, pengumpulan laporan praktikum Anda tidak sesuai dengan tenggat ' + 
-      'waktu yang telah ditentukan.'
+      'Maaf, pengumpulan laporan praktikum Anda tidak sesuai dengan tenggat ' +
+        'waktu yang telah ditentukan.'
     )
     next()
     return
   }
-  
+
   // Case: exceeding file size limit
   // I'm not sure what telegram server use, base 2 or base 10
   const file_size_ceil_MB = Math.ceil(file_size / 1000000)
   if (file_size_ceil_MB > 10) {
     ctx.reply(
-      'Maaf, ukuran maksimal berkas laporan praktikum yang diijinkan adalah ' + 
-      'sebesar 10 MB.',
+      'Maaf, ukuran maksimal berkas laporan praktikum yang diijinkan adalah ' +
+        'sebesar 10 MB.',
       Extra.inReplyTo(message_id)
     )
     next()
@@ -129,7 +123,12 @@ const submission = async (ctx, next) => {
     `_${nama_praktikan}.pdf`
   console.log('Receiving:', final_filename)
   saveSubmission(
-    ctx, telegram_id, kode_praktikum, file_id, final_filename, submission_time
+    ctx,
+    telegram_id,
+    kode_praktikum,
+    file_id,
+    final_filename,
+    submission_time
   )
 }
 

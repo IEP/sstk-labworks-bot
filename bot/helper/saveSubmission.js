@@ -6,7 +6,12 @@ const { join } = require('path')
 const { Submission } = require('../db').Models
 
 const saveSubmission = async (
-  ctx, telegram_id, kode_praktikum, file_id, filename, submission_time
+  ctx,
+  telegram_id,
+  kode_praktikum,
+  file_id,
+  filename,
+  submission_time
 ) => {
   // Prepare the download folder
   const folder = join(__dirname, `../server/public/submitted/${kode_praktikum}`)
@@ -20,14 +25,13 @@ const saveSubmission = async (
   await res.data.pipe(fs.createWriteStream(`${folder}/${filename}`))
 
   // Add the submission information into database
-  await Submission.query()
-    .insert({
-      telegram_id,
-      kode_praktikum,
-      filename,
-      created_at: formatISO(submission_time) // use telegram server timestamp
-    })
-  
+  await Submission.query().insert({
+    telegram_id,
+    kode_praktikum,
+    filename,
+    created_at: formatISO(submission_time) // use telegram server timestamp
+  })
+
   // Notify the user
   ctx.replyWithMarkdown(
     `Laporan praktikum Anda telah berhasil dikumpulkan. Terimakasih.`,
