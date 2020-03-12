@@ -12,18 +12,24 @@ const Mahasiswa = () => {
   if (!token) Router.push('/')
   // Fetch mahasiswa
   const fetchMahasiswa = async () => {
+    const page = mahasiswa.page > mahasiswa.totalPages ? 0 : mahasiswa.page || 0
     const res = await axios.get('/api/mahasiswa', {
       headers: {
         Authorization: `Bearer ${token}`
       },
       params: {
-        page: mahasiswa.page || 0,
-        orderBy: mahasiswa.orderBy || ''
+        page,
+        orderBy: mahasiswa.orderBy || '',
+        search: mahasiswa.search || ''
       }
     })
     dispatch({
       type: 'SET_MAHASISWA',
       payload: res.data.results
+    })
+    dispatch({
+      type: 'SET_MAHASISWA_PAGE',
+      payload: page
     })
     dispatch({
       type: 'SET_MAHASISWA_TOTAL_PAGES',
@@ -33,7 +39,7 @@ const Mahasiswa = () => {
 
   useEffect(() => {
     fetchMahasiswa()
-  }, [mahasiswa.updated, mahasiswa.orderBy])
+  }, [mahasiswa.updated, mahasiswa.orderBy, mahasiswa.search, mahasiswa.page])
 
   useInterval(() => {
     fetchMahasiswa()

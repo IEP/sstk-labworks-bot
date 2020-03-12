@@ -3,12 +3,11 @@ import store from '../store'
 import SubmissionTableHead from './SubmissionTableHead'
 import SubmissionTableRow from './SubmissionTableRow'
 import SubmissionMenu from './SubmissionMenu'
-import axios from 'axios'
 import lodash from 'lodash'
 
 const SubmissionTable = () => {
   const { state, dispatch } = useContext(store)
-  const { submission, token } = state
+  const { submission } = state
   const show = submission.list
 
   const pageList = lodash
@@ -21,25 +20,21 @@ const SubmissionTable = () => {
         type: 'SET_SUBMISSION_PAGE',
         payload: page
       })
-      const res = await axios.get('/api/submission', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        params: {
-          kode_praktikum: submission.activeDeadline,
-          page,
-          orderBy: submission.orderBy
-        }
-      })
-      dispatch({
-        type: 'SET_SUBMISSION',
-        payload: res.data.results
-      })
-      dispatch({
-        type: 'SET_SUBMISSION_TOTAL_PAGES',
-        payload: res.data.totalPages
-      })
     }
+  }
+
+  const handleChangeSearch = (e) => {
+    dispatch({
+      type: 'SET_SUBMISSION_SEARCH',
+      payload: e.target.value
+    })
+  }
+
+  const handleDeleteSearch = () => {
+    dispatch({
+      type: 'SET_SUBMISSION_SEARCH',
+      payload: ''
+    })
   }
 
   return (
@@ -54,6 +49,21 @@ const SubmissionTable = () => {
             marginBottom: 20
           }}
         >
+          <div style={{ marginBottom: 10 }} className="columns">
+            <div className="column is-3">
+              <input
+                className="input"
+                placeholder="Cari"
+                onChange={handleChangeSearch}
+                value={submission.search}
+              />
+            </div>
+            <div className="column">
+              <button className="button" onClick={() => handleDeleteSearch()}>
+                Hapus
+              </button>
+            </div>
+          </div>
           <nav className="pagination is-centered is-small">
             <a
               onClick={() => updatePage(submission.page - 1)}

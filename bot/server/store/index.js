@@ -30,7 +30,8 @@ const initialState = {
     orderBy: '',
     page: 0,
     totalPages: 0,
-    updated: ''
+    updated: '',
+    search: ''
   },
   submission: {
     list: [],
@@ -38,7 +39,8 @@ const initialState = {
     orderBy: '',
     page: 0,
     totalPages: 0,
-    showGroupDeadline: []
+    showGroupDeadline: [],
+    search: ''
   },
   login: {
     modal: {
@@ -96,6 +98,9 @@ export const StateProvider = ({ children }) => {
         case 'SET_MAHASISWA_UPDATED':
           draft.mahasiswa.updated = action.payload
           return
+        case 'SET_MAHASISWA_SEARCH':
+          draft.mahasiswa.search = action.payload
+          return
         case 'SET_READY':
           draft.ready = true
           return
@@ -116,6 +121,9 @@ export const StateProvider = ({ children }) => {
           return
         case 'SET_LOGIN_MODAL':
           draft.login.modal.open = action.payload
+          return
+        case 'SET_SUBMISSION_SEARCH':
+          draft.submission.search = action.payload
           return
         case 'SET_ALL': // Load state from localStorage
           return action.payload
