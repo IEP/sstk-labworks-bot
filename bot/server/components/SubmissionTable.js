@@ -44,7 +44,7 @@ const SubmissionTable = () => {
 
   return (
     <div className="columns">
-      <div className="column is-2">
+      <div className="column is-3">
         <SubmissionMenu />
       </div>
       <div className="column">

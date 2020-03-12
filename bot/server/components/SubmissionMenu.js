@@ -71,7 +71,7 @@ const SubmissionMenu = () => {
     fetchSubmission(payload)
   }
 
-  const toggleMenu = async (payload) => {
+  const toggleMenu = (payload) => {
     dispatch({
       type: 'TOGGLE_SHOW_DEADLINE_GROUP',
       payload

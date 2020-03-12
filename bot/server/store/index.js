@@ -123,13 +123,12 @@ export const StateProvider = ({ children }) => {
           if (!draft.submission.showGroupDeadline)
             draft.submission.showGroupDeadline = []
           if (draft.submission.showGroupDeadline.includes(action.payload)) {
-            draft.submission.showGroupDeadline = draft.submission.showGroupDeadline.filter(
+            const showGroupDeadline = draft.submission.showGroupDeadline
+            draft.submission.showGroupDeadline = showGroupDeadline.filter(
               (e) => e !== action.payload
             )
           } else {
-            draft.submission.showGroupDeadline = draft.submission.showGroupDeadline.concat(
-              action.payload
-            )
+            draft.submission.showGroupDeadline.push(action.payload)
           }
           return
       }
