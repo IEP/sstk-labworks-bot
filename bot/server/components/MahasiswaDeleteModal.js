@@ -12,7 +12,8 @@ const MahasiswaDeleteModal = () => {
   const [otp, setOtp] = useState('')
 
   const handleKeyDown = (e) => {
-    if (e.keyCode === 27) { // Escape key
+    if (e.keyCode === 27) {
+      // Escape key
       dispatch({
         type: 'SET_MAHASISWA_DELETE_MODAL',
         payload: ''
@@ -36,14 +37,18 @@ const MahasiswaDeleteModal = () => {
   }
 
   const handleDelete = async () => {
-    await axios.post('/api/mahasiswa/delete', {
-      telegram_id,
-      otp
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    await axios.post(
+      '/api/mahasiswa/delete',
+      {
+        telegram_id,
+        otp
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    })
+    )
     dispatch({
       type: 'SET_MAHASISWA_DELETE_MODAL',
       payload: ''
@@ -55,16 +60,11 @@ const MahasiswaDeleteModal = () => {
   }
 
   return (
-    <div
-      className="modal is-active"
-      onKeyDown={handleEnter}
-    >
+    <div className="modal is-active" onKeyDown={handleEnter}>
       <div className="modal-background" />
       <div className="modal-card">
         <header className="modal-card-head">
-          <p className="modal-card-title">
-            Bebas Lab - {email}
-          </p>
+          <p className="modal-card-title">Bebas Lab - {email}</p>
         </header>
         <section className="modal-card-body">
           <div className="field is-horizontal">
@@ -84,20 +84,19 @@ const MahasiswaDeleteModal = () => {
           </div>
         </section>
         <footer className="modal-card-foot">
-          <button
-            className="button is-danger"
-            onClick={() => handleDelete()}
-          >
+          <button className="button is-danger" onClick={() => handleDelete()}>
             Hapus
           </button>
         </footer>
       </div>
       <button
         className="modal-close is-large"
-        onClick={() => dispatch({
-          type: 'SET_MAHASISWA_DELETE_MODAL',
-          payload: ''
-        })}
+        onClick={() =>
+          dispatch({
+            type: 'SET_MAHASISWA_DELETE_MODAL',
+            payload: ''
+          })
+        }
       />
     </div>
   )

@@ -12,14 +12,13 @@ const otpauth = authenticator.keyuri(user, service, secret)
 const qr_path = join(__dirname, '../external/qrcode.png')
 
 // Write QRCode to file named "qrcode.png"
-qrcode.toFile(
-  qr_path,
-  [{
+qrcode.toFile(qr_path, [
+  {
     data: Buffer.from(otpauth),
     mode: 'byte'
-  }]
-)
+  }
+])
 
-console.log('> QR Code has been generated. ' + 
-  'You can see it inside "external" folder'
+console.log(
+  '> QR Code has been generated. You can see it inside "external" folder'
 )

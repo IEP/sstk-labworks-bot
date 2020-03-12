@@ -12,26 +12,32 @@ const NavbarLoginModal = () => {
   }
 
   const handleLogin = () => {
-    axios.post('/api/login', {
-      otp
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }).then((res) => {
-      const { correct, token } = res.data
-      if (correct) {
-        dispatch({
-          type: 'SET_TOKEN',
-          payload: token
-        })
-      } else {
-        dispatch({
-          type: 'SET_LOGIN_MODAL',
-          payload: false
-        })
-      }
-    })
+    axios
+      .post(
+        '/api/login',
+        {
+          otp
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      .then((res) => {
+        const { correct, token } = res.data
+        if (correct) {
+          dispatch({
+            type: 'SET_TOKEN',
+            payload: token
+          })
+        } else {
+          dispatch({
+            type: 'SET_LOGIN_MODAL',
+            payload: false
+          })
+        }
+      })
   }
 
   const handleClick = () => {
@@ -39,7 +45,8 @@ const NavbarLoginModal = () => {
   }
 
   const handleEnter = (e) => {
-    if (e.keyCode === 13) { // Enter key
+    if (e.keyCode === 13) {
+      // Enter key
       handleLogin()
     }
   }
@@ -53,9 +60,7 @@ const NavbarLoginModal = () => {
   }
 
   return (
-    <div
-      className="modal is-active"
-    >
+    <div className="modal is-active">
       <div className="modal-background" />
       <div className="modal-card">
         <header className="modal-card-head">
@@ -79,10 +84,7 @@ const NavbarLoginModal = () => {
           </div>
         </section>
         <footer className="modal-card-foot">
-          <button
-            className="button is-link"
-            onClick={() => handleClick()}
-          >
+          <button className="button is-link" onClick={() => handleClick()}>
             Login
           </button>
         </footer>

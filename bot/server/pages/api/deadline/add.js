@@ -12,10 +12,7 @@ export default async (req, res) => {
   const { Deadline } = req.db
 
   // Check format
-  if (!req.body.kode_praktikum ||
-    !req.body.start ||
-    !req.body.end
-  ) {
+  if (!req.body.kode_praktikum || !req.body.start || !req.body.end) {
     res.send('not ok')
     return
   }
@@ -37,8 +34,9 @@ export default async (req, res) => {
   // Check date format, if incorrect, do nothing to the database
   const startDate = zonedTimeToUtc(req.body.start, 'Asia/Jakarta')
   const endDate = zonedTimeToUtc(req.body.end, 'Asia/Jakarta')
-  
-  if (startDate !== 'Invalid Date' &&
+
+  if (
+    startDate !== 'Invalid Date' &&
     endDate !== 'Invalid Date' &&
     isBefore(startDate, endDate)
   ) {

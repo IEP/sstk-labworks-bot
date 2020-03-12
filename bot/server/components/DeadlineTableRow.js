@@ -10,24 +10,10 @@ const DeadlineTableRow = ({ item }) => {
   const display_pattern = 'dd MMMM yyyy HH:mm:ss'
   const pattern = 'yyyy-MM-dd HH:mm:ss'
 
-  const zoned_start = utcToZonedTime(
-    start,
-    timeZone
-  )
-  const zoned_end = utcToZonedTime(
-    end,
-    timeZone
-  )
-  const str_start = format(
-    zoned_start,
-    display_pattern,
-    { timeZone }
-  )
-  const str_end = format(
-    zoned_end,
-    display_pattern,
-    { timeZone }
-  )
+  const zoned_start = utcToZonedTime(start, timeZone)
+  const zoned_end = utcToZonedTime(end, timeZone)
+  const str_start = format(zoned_start, display_pattern, { timeZone })
+  const str_end = format(zoned_end, display_pattern, { timeZone })
 
   const handleClickDelete = () => {
     dispatch({
@@ -36,17 +22,9 @@ const DeadlineTableRow = ({ item }) => {
     })
   }
 
-  const formatted_start = format(
-    zoned_start,
-    pattern,
-    { timeZone }
-  )
+  const formatted_start = format(zoned_start, pattern, { timeZone })
 
-  const formatted_end = format(
-    zoned_end,
-    pattern,
-    { timeZone }
-  )
+  const formatted_end = format(zoned_end, pattern, { timeZone })
 
   const handleClickUpdate = () => {
     dispatch({
@@ -61,9 +39,9 @@ const DeadlineTableRow = ({ item }) => {
 
   return (
     <tr>
-      <td>{ kode_praktikum }</td>
-      <td>{ str_start }</td>
-      <td>{ str_end }</td>
+      <td>{kode_praktikum}</td>
+      <td>{str_start}</td>
+      <td>{str_end}</td>
       <td>
         <div className="buttons">
           <button

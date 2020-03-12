@@ -42,7 +42,7 @@ const Mahasiswa = () => {
   return (
     <>
       <MahasiswaTable />
-      { (mahasiswa.delete.telegram_id || false) && <MahasiswaDeleteModal /> }
+      {(mahasiswa.delete.telegram_id || false) && <MahasiswaDeleteModal />}
     </>
   )
 }

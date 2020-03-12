@@ -4,9 +4,7 @@ import Navbar from './Navbar'
 const Layout = ({ children }) => (
   <>
     <Navbar />
-    <div className="container is-fluid">
-      { children }
-    </div>
+    <div className="container is-fluid">{children}</div>
   </>
 )
 

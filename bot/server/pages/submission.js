@@ -39,9 +39,7 @@ const Submission = () => {
     fetchSubmission()
   }, 30 * 1000)
 
-  return (
-    <SubmissionTable />
-  )
+  return <SubmissionTable />
 }
 
 export default Submission

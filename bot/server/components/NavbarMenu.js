@@ -2,9 +2,12 @@ import { useContext, useEffect } from 'react'
 import store from '../store'
 import Router from 'next/router'
 import NavbarMenuItem from '../components/NavbarMenuItem'
+import _ from 'lodash'
+import Head from 'next/head'
 
 const NavbarMenu = () => {
-  const { dispatch } = useContext(store)
+  const { state, dispatch } = useContext(store)
+  const { burgerMenu } = state
 
   const menuEntry = [
     { label: 'Home', href: '/' },
@@ -28,18 +31,17 @@ const NavbarMenu = () => {
     Router.push('/')
   }
 
+  const { label } = _.find(menuEntry, ({ href }) => href == Router.pathname)
+
   return (
-    <div className="navbar-menu">
+    <div className={burgerMenu ? 'navbar-menu is-active' : 'navbar-menu'}>
+      <Head>
+        <title>{label}</title>
+      </Head>
       <div className="navbar-end">
-        {
-          menuEntry.map(({ label, href }) => (
-            <NavbarMenuItem
-              key={label}
-              label={label}
-              href={href}
-            />
-          ))
-        }
+        {menuEntry.map(({ label, href }) => (
+          <NavbarMenuItem key={label} label={label} href={href} />
+        ))}
         <a
           className="navbar-item has-background-info has-text-white"
           onClick={() => handleClick()}

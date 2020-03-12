@@ -17,7 +17,7 @@ export default async (req, res) => {
       })
       return
     }
-  } catch(err) {
+  } catch (err) {
     res.json({
       status: 'wrong OTP'
     })
@@ -25,7 +25,6 @@ export default async (req, res) => {
   }
 
   const { Deadline } = req.db
-  await Deadline.query()
-    .deleteById(kode_praktikum)
+  await Deadline.query().deleteById(kode_praktikum)
   res.send('ok')
 }

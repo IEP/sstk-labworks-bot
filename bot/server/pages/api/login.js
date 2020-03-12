@@ -14,7 +14,7 @@ export default (req, res) => {
       })
       return
     }
-  } catch(err) {
+  } catch (err) {
     // Exit on error
     res.json({
       correct: false
@@ -26,12 +26,16 @@ export default (req, res) => {
   const jwt = req.jwt
   const privateKey = req.privateKey
 
-  const token = jwt.sign({
-    data: 'nothing here'
-  }, privateKey, {
-    expiresIn: '12h',
-    algorithm: 'RS256'
-  })
+  const token = jwt.sign(
+    {
+      data: 'nothing here'
+    },
+    privateKey,
+    {
+      expiresIn: '12h',
+      algorithm: 'RS256'
+    }
+  )
 
   // Send the JWT to Client
   res.json({

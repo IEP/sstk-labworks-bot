@@ -17,14 +17,13 @@ export default async (req, res) => {
       })
       return
     }
-  } catch(err) {
+  } catch (err) {
     res.json({
       status: 'wrong OTP'
     })
   }
 
-  await Mahasiswa.query()
-    .deleteById(telegram_id)
+  await Mahasiswa.query().deleteById(telegram_id)
 
   res.send('ok')
 }

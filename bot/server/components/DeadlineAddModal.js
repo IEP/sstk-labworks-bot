@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState  } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import store from '../store'
 import axios from 'axios'
 import DeadlineAddModalInput from './DeadlineAddModalInput'
@@ -32,7 +32,8 @@ const DeadlineAddModal = () => {
   ]
 
   const handleKeyDown = (e) => {
-    if (e.keyCode === 27) { // Escape key pressed
+    if (e.keyCode === 27) {
+      // Escape key pressed
       dispatch({
         type: 'SET_DEADLINE_MODAL',
         payload: false
@@ -52,15 +53,19 @@ const DeadlineAddModal = () => {
   }, [])
 
   const handleSave = async () => {
-    await axios.post('/api/deadline/add', {
-      kode_praktikum,
-      start,
-      end,
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    await axios.post(
+      '/api/deadline/add',
+      {
+        kode_praktikum,
+        start,
+        end
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    })
+    )
     // Close modal
     dispatch({
       type: 'SET_DEADLINE_MODAL',
@@ -71,45 +76,39 @@ const DeadlineAddModal = () => {
       payload: new Date()
     })
   }
-  
+
   return (
-    <div
-      className="modal is-active"
-      onKeyDown={handleEnter}
-    >
+    <div className="modal is-active" onKeyDown={handleEnter}>
       <div className="modal-background" />
       <div className="modal-card">
         <header className="modal-card-head">
           <p className="modal-card-title">Tambah Deadline</p>
         </header>
         <section className="modal-card-body">
-          {
-            rowEntry.map((item) => (
-              <DeadlineAddModalInput
-                key={item.label}
-                action={item.action}
-                label={item.label}
-                placeholder={item.placeholder}
-                value={item.value}
-              />
-            ))
-          }
+          {rowEntry.map((item) => (
+            <DeadlineAddModalInput
+              key={item.label}
+              action={item.action}
+              label={item.label}
+              placeholder={item.placeholder}
+              value={item.value}
+            />
+          ))}
         </section>
         <footer className="modal-card-foot">
-          <button
-            className="button is-success"
-            onClick={() => handleSave()}
-          >
+          <button className="button is-success" onClick={() => handleSave()}>
             Simpan
           </button>
         </footer>
       </div>
       <button
         className="modal-close is-large"
-        onClick={() => dispatch({
-          type: 'SET_DEADLINE_MODAL',
-          payload: false 
-        })}
+        onClick={() =>
+          dispatch({
+            type: 'SET_DEADLINE_MODAL',
+            payload: false
+          })
+        }
       />
     </div>
   )

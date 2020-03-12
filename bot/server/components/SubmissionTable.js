@@ -44,7 +44,7 @@ const SubmissionTable = () => {
 
   return (
     <div className="columns">
-      <div className="column is-2">
+      <div className="column is-3">
         <SubmissionMenu />
       </div>
       <div className="column">
@@ -56,31 +56,29 @@ const SubmissionTable = () => {
         >
           <nav className="pagination is-centered is-small">
             <a
-              onClick={() => updatePage(submission.page - 1)} 
+              onClick={() => updatePage(submission.page - 1)}
               className="pagination-previous"
               disabled={submission.page <= 0}
             >
               Prev
             </a>
             <ul className="pagination-list">
-              {
-                pageList.map((page) => (
-                  <li key={page}>
-                    <a
-                      className={
-                        page === submission.page
-                          ? "pagination-link is-current"
-                          : "pagination-link"
-                      }
-                      onClick={() => updatePage(page)}
-                    >
-                      { page + 1 }
-                    </a>
-                  </li>
-                ))
-              }
+              {pageList.map((page) => (
+                <li key={page}>
+                  <a
+                    className={
+                      page === submission.page
+                        ? 'pagination-link is-current'
+                        : 'pagination-link'
+                    }
+                    onClick={() => updatePage(page)}
+                  >
+                    {page + 1}
+                  </a>
+                </li>
+              ))}
             </ul>
-            <a 
+            <a
               onClick={() => updatePage(submission.page + 1)}
               className="pagination-next"
               disabled={submission.page >= submission.totalPages}
@@ -92,19 +90,17 @@ const SubmissionTable = () => {
         <table className="table is-striped is-hoverable is-fullwidth">
           <SubmissionTableHead />
           <tbody>
-            { show.length
-                ? show.map((item) => (
-                    <SubmissionTableRow
-                      key={item.id}
-                      submission={item}
-                    />
-                  ))
-                : <tr>
-                    <td colSpan="3" className="has-text-centered">
-                      Kosong
-                    </td>
-                  </tr>
-            }
+            {show.length ? (
+              show.map((item) => (
+                <SubmissionTableRow key={item.id} submission={item} />
+              ))
+            ) : (
+              <tr>
+                <td colSpan="3" className="has-text-centered">
+                  Kosong
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

@@ -6,4 +6,4 @@ const dialog = {
 
 module.exports = (ctx) => {
   ctx.replyWithMarkdown(dialog.start)
-} 
+}

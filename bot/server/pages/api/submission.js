@@ -13,12 +13,7 @@ export default async (req, res) => {
   const baseQuery = Submission.query()
     .select('submission.*', 'mahasiswa.email')
     .joinRelated('mahasiswa')
-    .orderBy(
-      [
-        { column: 'kode_praktikum' },
-        { column: orderedBy }
-      ]
-    )
+    .orderBy([{ column: 'kode_praktikum' }, { column: orderedBy }])
     .page(page, perPage)
 
   let submission
