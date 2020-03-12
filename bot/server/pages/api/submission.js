@@ -16,7 +16,7 @@ export default async (req, res) => {
     .joinRelated('mahasiswa')
     .orderBy([{ column: 'kode_praktikum' }, { column: orderedBy }])
     .page(page, perPage)
-  
+
   if (search) {
     baseQuery = baseQuery.where('email', 'like', `%${search}%`)
   }

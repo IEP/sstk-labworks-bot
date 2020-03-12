@@ -59,10 +59,7 @@ const SubmissionTable = () => {
               />
             </div>
             <div className="column">
-              <button
-                className="button"
-                onClick={() => handleDeleteSearch()}
-              >
+              <button className="button" onClick={() => handleDeleteSearch()}>
                 Hapus
               </button>
             </div>

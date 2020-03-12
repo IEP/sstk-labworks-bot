@@ -30,7 +30,8 @@ const initialState = {
     orderBy: '',
     page: 0,
     totalPages: 0,
-    updated: ''
+    updated: '',
+    search: ''
   },
   submission: {
     list: [],
@@ -96,6 +97,9 @@ export const StateProvider = ({ children }) => {
           return
         case 'SET_MAHASISWA_UPDATED':
           draft.mahasiswa.updated = action.payload
+          return
+        case 'SET_MAHASISWA_SEARCH':
+          draft.mahasiswa.search = action.payload
           return
         case 'SET_READY':
           draft.ready = true

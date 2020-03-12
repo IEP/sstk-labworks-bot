@@ -1,13 +1,12 @@
 import { useContext } from 'react'
 import store from '../store'
-import axios from 'axios'
 import lodash from 'lodash'
 import MahasiswaTableHead from './MahasiswaTableHead'
 import MahasiswaTableRow from './MahasiswaTableRow'
 
 const MahasiswaTable = () => {
   const { state, dispatch } = useContext(store)
-  const { token, mahasiswa } = state
+  const { mahasiswa } = state
   const show = state.mahasiswa.list
   const pageList = lodash
     .range(mahasiswa.page - 5, mahasiswa.page + 6)
@@ -19,24 +18,21 @@ const MahasiswaTable = () => {
         type: 'SET_MAHASISWA_PAGE',
         payload: page
       })
-      const res = await axios.get('/api/mahasiswa', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        params: {
-          page,
-          orderBy: mahasiswa.orderBy
-        }
-      })
-      dispatch({
-        type: 'SET_MAHASISWA',
-        payload: res.data.results
-      })
-      dispatch({
-        type: 'SET_SUBMISSION_TOTAL_PAGES',
-        payload: res.data.totalPages
-      })
     }
+  }
+
+  const handleChangeSearch = (e) => {
+    dispatch({
+      type: 'SET_MAHASISWA_SEARCH',
+      payload: e.target.value
+    })
+  }
+
+  const handleDeleteSearch = () => {
+    dispatch({
+      type: 'SET_MAHASISWA_SEARCH',
+      payload: ''
+    })
   }
 
   return (
@@ -47,6 +43,21 @@ const MahasiswaTable = () => {
           marginBottom: 20
         }}
       >
+        <div className="columns">
+          <div className="column is-2">
+            <input
+              className="input"
+              placeholder="Cari"
+              onChange={handleChangeSearch}
+              value={mahasiswa.search}
+            />
+          </div>
+          <div className="column">
+            <button className="button" onClick={() => handleDeleteSearch()}>
+              Hapus
+            </button>
+          </div>
+        </div>
         <nav className="pagination is-centered is-small">
           <a
             className="pagination-previous"

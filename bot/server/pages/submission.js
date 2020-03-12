@@ -11,9 +11,8 @@ const Submission = () => {
   if (!token) Router.push('/')
 
   const fetchSubmission = async () => {
-    const page = submission.page > submission.totalPages
-      ? 0
-      : submission.page || 0
+    const page =
+      submission.page > submission.totalPages ? 0 : submission.page || 0
     const res = await axios.get('/api/submission', {
       headers: {
         Authorization: `Bearer ${token}`
@@ -41,7 +40,12 @@ const Submission = () => {
 
   useEffect(() => {
     fetchSubmission()
-  }, [submission.orderBy, submission.search, submission.page])
+  }, [
+    submission.orderBy,
+    submission.search,
+    submission.page,
+    submission.activeDeadline
+  ])
 
   useInterval(() => {
     fetchSubmission()

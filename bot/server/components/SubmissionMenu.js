@@ -35,30 +35,6 @@ const SubmissionMenu = () => {
         })
     }))
 
-  // Fired when the user select from menu
-  const fetchSubmission = async (kode_praktikum) => {
-    const res = await axios.get('/api/submission', {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-      params: {
-        kode_praktikum
-      }
-    })
-    dispatch({
-      type: 'SET_SUBMISSION',
-      payload: res.data.results
-    })
-    dispatch({
-      type: 'SET_SUBMISSION_TOTAL_PAGES',
-      payload: res.data.totalPages
-    })
-    dispatch({
-      type: 'SET_SUBMISSION_ORDER_BY',
-      payload: ''
-    })
-  }
-
   const updateList = async (payload) => {
     dispatch({
       type: 'SET_SHOW_DEADLINE',
@@ -68,7 +44,6 @@ const SubmissionMenu = () => {
       type: 'SET_SUBMISSION_PAGE',
       payload: 0
     })
-    fetchSubmission(payload)
   }
 
   const toggleMenu = (payload) => {
