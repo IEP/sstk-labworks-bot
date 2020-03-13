@@ -4,7 +4,7 @@ import NavbarLoginModal from './NavbarLoginModal'
 
 const NavbarLoginButton = () => {
   const { state, dispatch } = useContext(store)
-  const { login } = state
+  const { login, burgerMenu } = state
 
   const handleClick = () => {
     dispatch({
@@ -30,7 +30,7 @@ const NavbarLoginButton = () => {
 
   return (
     <>
-      <div className="navbar-menu">
+      <div className={burgerMenu ? "navbar-menu is-active" : "navbar-menu"} >
         <div className="navbar-end">
           <a
             className="navbar-item has-background-info has-text-white"
