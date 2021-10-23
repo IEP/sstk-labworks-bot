@@ -40,7 +40,7 @@
     "next": "^11.1.0",
     "next-fonts": "^1.0.3",
     "node-sass": "^4.13.1",
-    "objection": "^2.1.3",
+    "objection": "^2.2.16",
     "otplib": "^12.0.1",
     "qrcode": "^1.4.4",
     "react": "^16.13.0",
